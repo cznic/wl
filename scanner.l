@@ -20,6 +20,7 @@ EOF		\x80
 D		\x81
 L		\x82
 
+blank		__?_?
 d		[0-9]
 decimals	{d}+
 exponent	[eE][+-]?{decimals}*
@@ -28,8 +29,8 @@ ident		{identFirst}{identNext}*
 identFirst	[a-zA-Z$]|{L}
 identNext	{identFirst}|[0-9]|{D}
 int		{decimals}
-blank		_|__|___
-pattern		{ident}?{blank}{ident}?
+pattern		{ident}?{blank}{ident}?\.?
+slot		#({decimals}|{ident})?
 
 %%
 		c = lx.Rule0()
@@ -38,24 +39,36 @@ pattern		{ident}?{blank}{ident}?
 		}
 
 [ \t\r]+
+"(*"([^*\x80]|\*+[^*)\x80])*\*+\)
+
 
 "&&"			return AND
+"->"			return RULE
+"/."			return REPLACEALL
+"//"			return MAPALL
 "/;"			return CONDITION
+"/@"			return MAP
 "::"			return MESSAGE
 ":="			return SET_DELAYED
+"<="			return LEQ
 "=!="			return UNSAME
-\"[^"]*\"		return STRING
+"=="			return EQUAL
+"==="			return SAME
+">="			return GEQ
+"@@"			return APPLY
+\"([^"]|\\.)*\"		return STRING
 {float}			return FLOAT
 {ident}(`{ident})*	return IDENTIFIER
 {int}			return INT
 {pattern}		return PATTERN
+{slot}			return SLOT
 
 %%
 		if c, ok := lx.Abort(); ok {
 			switch c {
-			case '[', '{':
+			case '[', '{', '(':
 				lx.nest++
-			case ']', '}':
+			case ']', '}', ')':
 				lx.nest--
 			}
 			return c

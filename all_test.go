@@ -6,6 +6,7 @@ package wl
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"go/token"
 	"io"
@@ -56,6 +57,10 @@ func init() {
 }
 
 // ============================================================================
+
+func init() {
+	flag.IntVar(&yyDebug, "yydebug", 0, "")
+}
 
 func exampleAST(rule int, src string) interface{} {
 	l, err := lex.New(

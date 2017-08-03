@@ -21,19 +21,46 @@ package wl
 
 %token
 	AND		"&&"
+	APPLY		"@@"
 	CONDITION	"/;"
+	EQUAL		"=="
+	GEQ		">="
+	LEQ		"<="
+	MAP		"/@"
+	MAPALL		"//"
 	MESSAGE		"::"
+	REPLACEALL	"/."
+	RULE		"->"
+	SAME		"==="
 	SET_DELAYED	":="
+	SLOT		"#"
 	UNSAME		"=!="
 
+%left '=' SET_DELAYED
+%precedence '&'
+%left REPLACEALL
+%left RULE
 %left CONDITION
-%left UNSAME
 %left AND
+%left UNSAME
+%left SAME
+%left LEQ
+%left '<'
+%left GEQ
+%left '>'
+%left EQUAL
+%left '-'
 %left '+'
-%left '*' '/'
-%left '!'
-%right	'=' SET_DELAYED
+%left '*'
+%left '/'
 %precedence UNARY
+%right '^'
+%precedence '!'
+%left APPLY
+%left MAPALL
+%left MAP
+%precedence '[' ']'
+%left '?'
 
 %%
 
@@ -41,28 +68,52 @@ Start:
 	Expr
 |	Expr ';'
 
-Expr:
- 	"floating point literal"
+Term:
+	"#"
 |	"identifier"
-|	"identifier" "::" Tag "::" Tag '=' Expr
-|	"identifier" "::" Tag '=' Expr
-|	"identifier" '[' ExprList ']'
 |	"integer literal"
 |	"pattern"
 |	"string literal"
 |	'(' Expr ')'
+|	Term '&'
+|	Term '[' ']'
+|	Term '[' ExprList ']'
+| 	"floating point literal"
+
+Factor:
+	Term
+|	Term Factor
+
+Expr:
+	"identifier" "::" Tag "::" Tag '=' Expr
+|	"identifier" "::" Tag '=' Expr
 |	'-' Expr %prec UNARY
 |	'{' '}'
 |	'{' ExprList '}'
-|	Expr "=!=" Expr
 |	Expr "&&" Expr
+|	Expr "->" Expr
+|	Expr "/." Expr
+|	Expr "//" Expr
 |	Expr "/;" Expr
+|	Expr "/@" Expr
 |	Expr ":=" Expr
+|	Expr "<=" Expr
+|	Expr "=!=" Expr
+|	Expr "==" Expr
+|	Expr "===" Expr
+|	Expr ">=" Expr
+|	Expr "@@" Expr
 |	Expr '!'
 |	Expr '*' Expr
 |	Expr '+' Expr
+|	Expr '-' Expr
 |	Expr '/' Expr
+|	Expr '<' Expr
 |	Expr '=' Expr
+|	Expr '>' Expr
+|	Expr '?' Expr
+|	Expr '^' Expr
+|	Factor
 
 ExprList:
 	Expr

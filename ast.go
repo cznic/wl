@@ -13,32 +13,41 @@ import (
 // Expr represents data reduced by productions:
 //
 //	Expr:
-//	        "floating point literal"
-//	|       "identifier"                             // Case 1
-//	|       "identifier" "::" Tag "::" Tag '=' Expr  // Case 2
-//	|       "identifier" "::" Tag '=' Expr           // Case 3
-//	|       "identifier" '[' ExprList ']'            // Case 4
-//	|       "integer literal"                        // Case 5
-//	|       "pattern"                                // Case 6
-//	|       "string literal"                         // Case 7
-//	|       '(' Expr ')'                             // Case 8
-//	|       '-' Expr                                 // Case 9
-//	|       '{' '}'                                  // Case 10
-//	|       '{' ExprList '}'                         // Case 11
-//	|       Expr "=!=" Expr                          // Case 12
-//	|       Expr "&&" Expr                           // Case 13
-//	|       Expr "/;" Expr                           // Case 14
-//	|       Expr ":=" Expr                           // Case 15
-//	|       Expr '!'                                 // Case 16
-//	|       Expr '*' Expr                            // Case 17
-//	|       Expr '+' Expr                            // Case 18
-//	|       Expr '/' Expr                            // Case 19
-//	|       Expr '=' Expr                            // Case 20
+//	        "identifier" "::" Tag "::" Tag '=' Expr
+//	|       "identifier" "::" Tag '=' Expr           // Case 1
+//	|       '-' Expr                                 // Case 2
+//	|       '{' '}'                                  // Case 3
+//	|       '{' ExprList '}'                         // Case 4
+//	|       Expr "&&" Expr                           // Case 5
+//	|       Expr "->" Expr                           // Case 6
+//	|       Expr "/." Expr                           // Case 7
+//	|       Expr "//" Expr                           // Case 8
+//	|       Expr "/;" Expr                           // Case 9
+//	|       Expr "/@" Expr                           // Case 10
+//	|       Expr ":=" Expr                           // Case 11
+//	|       Expr "<=" Expr                           // Case 12
+//	|       Expr "=!=" Expr                          // Case 13
+//	|       Expr "==" Expr                           // Case 14
+//	|       Expr "===" Expr                          // Case 15
+//	|       Expr ">=" Expr                           // Case 16
+//	|       Expr "@@" Expr                           // Case 17
+//	|       Expr '!'                                 // Case 18
+//	|       Expr '*' Expr                            // Case 19
+//	|       Expr '+' Expr                            // Case 20
+//	|       Expr '-' Expr                            // Case 21
+//	|       Expr '/' Expr                            // Case 22
+//	|       Expr '<' Expr                            // Case 23
+//	|       Expr '=' Expr                            // Case 24
+//	|       Expr '>' Expr                            // Case 25
+//	|       Expr '?' Expr                            // Case 26
+//	|       Expr '^' Expr                            // Case 27
+//	|       Factor                                   // Case 28
 type Expr struct {
 	Case     int
 	Expr     *Expr
 	Expr2    *Expr
 	ExprList *ExprList
+	Factor   *Factor
 	Tag      *Tag
 	Tag2     *Tag
 	Token    Token
@@ -61,9 +70,11 @@ func (n *Expr) Pos() token.Pos {
 	}
 
 	switch n.Case {
-	case 12, 13, 14, 15, 16, 17, 18, 19, 20:
+	case 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27:
 		return n.Expr.Pos()
-	case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11:
+	case 28:
+		return n.Factor.Pos()
+	case 0, 1, 2, 3, 4:
 		return n.Token.Pos()
 	default:
 		panic("internal error")
@@ -122,6 +133,33 @@ func (n *ExprList) Pos() token.Pos {
 	}
 }
 
+// Factor represents data reduced by productions:
+//
+//	Factor:
+//	        Term
+//	|       Term Factor  // Case 1
+type Factor struct {
+	Case   int
+	Factor *Factor
+	Term   *Term
+}
+
+func (n *Factor) fragment() interface{} { return n }
+
+// String implements fmt.Stringer.
+func (n *Factor) String() string {
+	return prettyString(n)
+}
+
+// Pos reports the position of the first component of n or zero if it's empty.
+func (n *Factor) Pos() token.Pos {
+	if n == nil {
+		return 0
+	}
+
+	return n.Term.Pos()
+}
+
 // Start represents data reduced by productions:
 //
 //	Start:
@@ -173,4 +211,49 @@ func (n *Tag) Pos() token.Pos {
 	}
 
 	return n.Token.Pos()
+}
+
+// Term represents data reduced by productions:
+//
+//	Term:
+//	        "#"
+//	|       "identifier"              // Case 1
+//	|       "integer literal"         // Case 2
+//	|       "pattern"                 // Case 3
+//	|       "string literal"          // Case 4
+//	|       '(' Expr ')'              // Case 5
+//	|       Term '&'                  // Case 6
+//	|       Term '[' ']'              // Case 7
+//	|       Term '[' ExprList ']'     // Case 8
+//	|       "floating point literal"  // Case 9
+type Term struct {
+	Case     int
+	Expr     *Expr
+	ExprList *ExprList
+	Term     *Term
+	Token    Token
+	Token2   Token
+}
+
+func (n *Term) fragment() interface{} { return n }
+
+// String implements fmt.Stringer.
+func (n *Term) String() string {
+	return prettyString(n)
+}
+
+// Pos reports the position of the first component of n or zero if it's empty.
+func (n *Term) Pos() token.Pos {
+	if n == nil {
+		return 0
+	}
+
+	switch n.Case {
+	case 6, 7, 8:
+		return n.Term.Pos()
+	case 0, 1, 2, 3, 4, 5, 9:
+		return n.Token.Pos()
+	default:
+		panic("internal error")
+	}
 }
