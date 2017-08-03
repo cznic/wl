@@ -1,2 +1,3 @@
 # wl
-Package WL provides a Wlofram Language parser (Work In Progress)
+
+Package WL provides a Wolfram Language parser (Work In Progress)
