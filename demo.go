@@ -37,43 +37,40 @@ func main() {
 	fmt.Printf("Enter WL expression(s). Newlines will be ignored in places where the input is not valid.\n")
 	fmt.Printf("Closing the input exits the program\n")
 	r := make(stdin, 100)
-	in, err := wl.NewInput(r, true)
-	if err != nil {
-		panic(err)
-	}
 
 	go func() {
 		buf := bufio.NewReader(os.Stdin)
 		for {
 			c, sz, err := buf.ReadRune()
-			r <- char{c, sz, err}
-			if c == '\n' {
-				r <- char{' ', sz, err}
-			}
 			if err != nil {
 				fmt.Println()
 				os.Exit(0)
 			}
+
+			r <- char{c, sz, nil}
+			if c == '\n' {
+				r <- char{' ', 0, nil}
+			}
 		}
 	}()
 
+next:
 	for n := 1; ; n++ {
 		fmt.Printf("In[%v]:= ", n)
-		file := token.NewFileSet().AddFile(os.Stdin.Name(), -1, 1e6)
-		expr, err := in.ParseExpression(file)
+		in, err := wl.NewInput(r, true)
+		if err != nil {
+			panic(err)
+		}
+		expr, err := in.ParseExpression(token.NewFileSet().AddFile(os.Stdin.Name(), -1, 1e6))
 		if err != nil {
 			fmt.Println(err)
-		out:
 			for {
 				select {
 				case <-r:
 				default:
-					r <- char{'\n', 1, nil}
-					r <- char{'\n', 1, nil}
-					break out
+					continue next
 				}
 			}
-			continue
 		}
 
 		fmt.Println(expr)

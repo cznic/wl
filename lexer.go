@@ -103,7 +103,11 @@ more:
 		goto more
 	}
 
-	lval.Token = Token{Rune: rune(r), Val: string(lx.TokenBytes(nil)), pos: lx.First.Pos()}
+	tok := Token{Rune: rune(r), pos: lx.First.Pos()}
+	if r > 0x7f {
+		tok.Val = string(lx.TokenBytes(nil))
+	}
+	lval.Token = tok
 	return r
 }
 

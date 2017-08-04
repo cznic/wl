@@ -20,7 +20,7 @@ func ExampleCommaOpt_case1() {
 	fmt.Println(exampleAST(59, "{ 1.97 , ]"))
 	// Output:
 	// &wl.CommaOpt{
-	// · Token: ',', ",",
+	// · Token: ',',
 	// }
 }
 
@@ -53,7 +53,7 @@ func ExampleExprList_case1() {
 	// · · · · },
 	// · · · },
 	// · · },
-	// · · Token: ',', ",",
+	// · · Token: ',',
 	// · },
 	// · Expression: &wl.Expression{
 	// · · Case: 34,
@@ -78,7 +78,7 @@ func ExampleExpression() {
 	// · · · },
 	// · · },
 	// · },
-	// · Token: '!', "!",
+	// · Token: '!',
 	// }
 }
 
@@ -95,7 +95,7 @@ func ExampleExpression_case01() {
 	// · · · },
 	// · · },
 	// · },
-	// · Token: '-', "-",
+	// · Token: '-',
 	// }
 }
 
@@ -545,7 +545,7 @@ func ExampleExpression_case19() {
 	// · · · },
 	// · · },
 	// · },
-	// · Token: '*', "*",
+	// · Token: '*',
 	// }
 }
 
@@ -570,7 +570,7 @@ func ExampleExpression_case20() {
 	// · · · },
 	// · · },
 	// · },
-	// · Token: '+', "+",
+	// · Token: '+',
 	// }
 }
 
@@ -595,7 +595,7 @@ func ExampleExpression_case21() {
 	// · · · },
 	// · · },
 	// · },
-	// · Token: '-', "-",
+	// · Token: '-',
 	// }
 }
 
@@ -620,7 +620,7 @@ func ExampleExpression_case22() {
 	// · · · },
 	// · · },
 	// · },
-	// · Token: '.', ".",
+	// · Token: '.',
 	// }
 }
 
@@ -645,7 +645,7 @@ func ExampleExpression_case23() {
 	// · · · },
 	// · · },
 	// · },
-	// · Token: '/', "/",
+	// · Token: '/',
 	// }
 }
 
@@ -670,7 +670,7 @@ func ExampleExpression_case24() {
 	// · · · },
 	// · · },
 	// · },
-	// · Token: ':', ":",
+	// · Token: ':',
 	// }
 }
 
@@ -687,7 +687,7 @@ func ExampleExpression_case25() {
 	// · · · },
 	// · · },
 	// · },
-	// · Token: ';', ";",
+	// · Token: ';',
 	// }
 }
 
@@ -712,7 +712,7 @@ func ExampleExpression_case26() {
 	// · · · },
 	// · · },
 	// · },
-	// · Token: ';', ";",
+	// · Token: ';',
 	// }
 }
 
@@ -737,7 +737,7 @@ func ExampleExpression_case27() {
 	// · · · },
 	// · · },
 	// · },
-	// · Token: '<', "<",
+	// · Token: '<',
 	// }
 }
 
@@ -762,7 +762,7 @@ func ExampleExpression_case28() {
 	// · · · },
 	// · · },
 	// · },
-	// · Token: '=', "=",
+	// · Token: '=',
 	// }
 }
 
@@ -787,7 +787,7 @@ func ExampleExpression_case29() {
 	// · · · },
 	// · · },
 	// · },
-	// · Token: '>', ">",
+	// · Token: '>',
 	// }
 }
 
@@ -812,7 +812,7 @@ func ExampleExpression_case30() {
 	// · · · },
 	// · · },
 	// · },
-	// · Token: '?', "?",
+	// · Token: '?',
 	// }
 }
 
@@ -837,7 +837,7 @@ func ExampleExpression_case31() {
 	// · · · },
 	// · · },
 	// · },
-	// · Token: '@', "@",
+	// · Token: '@',
 	// }
 }
 
@@ -862,7 +862,7 @@ func ExampleExpression_case32() {
 	// · · · },
 	// · · },
 	// · },
-	// · Token: '^', "^",
+	// · Token: '^',
 	// }
 }
 
@@ -887,7 +887,7 @@ func ExampleExpression_case33() {
 	// · · · },
 	// · · },
 	// · },
-	// · Token: '|', "|",
+	// · Token: '|',
 	// }
 }
 
@@ -973,8 +973,8 @@ func ExampleTerm_case01() {
 	// · · · },
 	// · · },
 	// · },
-	// · Token: '(', "(",
-	// · Token2: ')', ")",
+	// · Token: '(',
+	// · Token2: ')',
 	// }
 }
 
@@ -983,8 +983,8 @@ func ExampleTerm_case02() {
 	// Output:
 	// &wl.Term{
 	// · Case: 2,
-	// · Token: '{', "{",
-	// · Token2: '}', "}",
+	// · Token: '{',
+	// · Token2: '}',
 	// }
 }
 
@@ -1003,8 +1003,8 @@ func ExampleTerm_case03() {
 	// · · · },
 	// · · },
 	// · },
-	// · Token: '{', "{",
-	// · Token2: '}', "}",
+	// · Token: '{',
+	// · Token2: '}',
 	// }
 }
 
@@ -1114,7 +1114,7 @@ func ExampleTerm_case12() {
 	// · Term: &wl.Term{
 	// · · Token: FLOAT, "1.97",
 	// · },
-	// · Token: '!', "!",
+	// · Token: '!',
 	// }
 }
 
@@ -1126,7 +1126,7 @@ func ExampleTerm_case13() {
 	// · Term: &wl.Term{
 	// · · Token: FLOAT, "1.97",
 	// · },
-	// · Token: '&', "&",
+	// · Token: '&',
 	// }
 }
 
@@ -1138,8 +1138,8 @@ func ExampleTerm_case14() {
 	// · Term: &wl.Term{
 	// · · Token: FLOAT, "1.97",
 	// · },
-	// · Token: '[', "[",
-	// · Token2: ']', "]",
+	// · Token: '[',
+	// · Token2: ']',
 	// }
 }
 
@@ -1161,8 +1161,8 @@ func ExampleTerm_case15() {
 	// · Term: &wl.Term{
 	// · · Token: FLOAT, "1.97",
 	// · },
-	// · Token: '[', "[",
-	// · Token2: ']', "]",
+	// · Token: '[',
+	// · Token2: ']',
 	// }
 }
 
