@@ -74,24 +74,17 @@ func exampleAST(rule int, src string) interface{} {
 		return err.Error()
 	}
 
-	lx, err := newLexer(l)
-	if err != nil {
-		return err.Error()
-	}
-
+	lx := newLexer()
 	lx.exampleRule = rule
-	lx.parse()
+	lx.parse(l, false)
 	return prettyString(lx.exampleAST)
-}
-
-func Test(t *testing.T) {
-	t.Logf("TODO")
 }
 
 func testScannerCorpus(t *testing.T) {
 	f, err := os.Open(filepath.Join("testdata", "corpus"))
 	if err != nil {
-		t.Fatal(err)
+		t.Log(err)
+		return
 	}
 
 	fi, err := f.Stat()
@@ -112,11 +105,8 @@ func testScannerCorpus(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	lx, err := newLexer(l)
-	if err != nil {
-		t.Fatal(err)
-	}
-
+	lx := newLexer()
+	lx.Lexer = l
 	toks := 0
 	for lx.Last.Rune >= 0 {
 		lx.scan()
@@ -133,10 +123,11 @@ func TestScanner(t *testing.T) {
 	t.Run("corpus", testScannerCorpus)
 }
 
-func testParserCorpus(t *testing.T) {
+func testParseCorpus(t *testing.T, interactive bool) {
 	f, err := os.Open(filepath.Join("testdata", "corpus"))
 	if err != nil {
-		t.Fatal(err)
+		t.Log(err)
+		return
 	}
 
 	fi, err := f.Stat()
@@ -144,20 +135,15 @@ func testParserCorpus(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	var lx *lexer
+	testFile = token.NewFileSet().AddFile(f.Name(), -1, int(fi.Size()))
+	defer func() { testFile = nil }()
 
-	file := token.NewFileSet().AddFile(f.Name(), -1, int(fi.Size()))
 	r := bufio.NewReader(f)
-	l, err := lex.New(
-		file,
-		r,
-		lex.BOMMode(lex.BOMIgnoreFirst),
-		lex.RuneClass(runeClass),
-		lex.ErrorFunc(lx.errPos),
-	)
+	p, err := NewInput(r, interactive)
 	if err != nil {
 		t.Fatal(err)
 	}
+
 	n := 0
 	for {
 		_, err := r.Peek(1)
@@ -165,20 +151,16 @@ func testParserCorpus(t *testing.T) {
 			break
 		}
 
-		lx, err := newLexer(l)
-		if err != nil {
-			t.Fatal(err)
-		}
-
-		if err = lx.parse(); err != nil {
+		if _, err = p.ParseExpression(testFile); err != nil {
 			t.Fatal(err)
 		}
 
 		n++
 	}
-	t.Logf("expressions: %v", n)
+	t.Logf("%s: expressions: %v", testFile.Position(p.lex.First.Pos()), n)
 }
 
 func TestParser(t *testing.T) {
-	t.Run("corpus", testParserCorpus)
+	_ = t.Run("corpus bulk", func(t *testing.T) { testParseCorpus(t, false) }) && //TODOOK
+		t.Run("corpus interactive", func(t *testing.T) { testParseCorpus(t, true) })
 }

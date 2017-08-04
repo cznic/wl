@@ -41,14 +41,39 @@ type lexer struct {
 	err         error
 	exampleAST  interface{}
 	exampleRule int
-	nest        int
+	interactive bool
+	stack       []int
 }
 
-func newLexer(lx *lex.Lexer) (*lexer, error) {
-	return &lexer{Lexer: lx}, nil
+func newLexer() *lexer { return &lexer{exampleRule: -1} }
+
+func (lx *lexer) init(l *lex.Lexer, interactive bool) {
+	lx.Lexer = l
+	lx.ast = nil
+	lx.err = nil
+	lx.exampleAST = nil
+	lx.interactive = interactive
+	lx.stack = lx.stack[:0]
 }
 
 func (lx *lexer) position(pos token.Pos) token.Position { return lx.File.Position(pos) }
+func (lx *lexer) push(r int) int                        { lx.stack = append(lx.stack, r); return r }
+
+func (lx *lexer) pop() (r int) {
+	if n := len(lx.stack); n > 0 {
+		r = lx.stack[n-1]
+		lx.stack = lx.stack[:n-1]
+	}
+	return r
+}
+
+func (lx *lexer) sdump() string {
+	var a []string
+	for _, v := range lx.stack {
+		a = append(a, yySymName(v))
+	}
+	return fmt.Sprintf("[%v]", strings.Join(a, ", "))
+}
 
 func (lx *lexer) errPos(pos token.Pos, msg string) {
 	if lx.err == nil {
@@ -63,24 +88,22 @@ func (lx *lexer) Error(msg string) {
 }
 
 // Implements yyLexer.
-func (lx *lexer) Lex(lval *yySymType) int {
+func (lx *lexer) Lex(lval *yySymType) (r int) {
 more:
-	r := lx.scan()
+	r = lx.scan()
 	if r == '\n' {
-		if lx.nest == 0 {
+		if lx.interactive && len(lx.stack) == 0 {
 			for _, sym := range yyFollow[lval.yys] {
 				if sym == yyEofCode {
-					//dbg("%s: EOF in state %v", lx.position(lx.First.Pos()), lval.yys)
 					return -1
 				}
 			}
 		}
 
-		//dbg("%s: skip in state %v", lx.position(lx.First.Pos()), lval.yys)
 		goto more
 	}
 
-	lval.Token = Token{Rune: rune(r), Val: string(lx.TokenBytes(nil))}
+	lval.Token = Token{Rune: rune(r), Val: string(lx.TokenBytes(nil)), pos: lx.First.Pos()}
 	return r
 }
 
@@ -104,9 +127,10 @@ func (lx *lexer) Reduced(rule, state int, lval *yySymType) (stop bool) {
 	return true
 }
 
-func (lx *lexer) parse() error {
+func (lx *lexer) parse(l *lex.Lexer, interactive bool) error {
+	lx.init(l, interactive)
 	if yyParse(lx) != 0 && lx.err == nil {
-		return fmt.Errorf("parse: internal error")
+		return fmt.Errorf("%T.parse: internal error", lx)
 	}
 
 	return lx.err

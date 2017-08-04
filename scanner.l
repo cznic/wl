@@ -11,6 +11,10 @@
 %{
 package wl
 
+import (
+	"github.com/cznic/golex/lex"
+)
+
 func (lx *lexer) scan() int {
 		c := lx.Enter()
 %}
@@ -46,19 +50,34 @@ slot		#({decimals}|{ident})?
 "->"			return RULE
 "/."			return REPLACEALL
 "//"			return MAPALL
+"//."			return REPLACEREP
 "/;"			return CONDITION
 "/@"			return MAP
 "::"			return MESSAGE
 ":="			return SET_DELAYED
+":>"			return RULEDELAYED
 "<="			return LEQ
+"<>"			return STRINGJOIN
 "=!="			return UNSAME
 "=="			return EQUAL
 "==="			return SAME
 ">="			return GEQ
 "@@"			return APPLY
+"[["			return lx.push(LPART)
+"||"			return OR
+
+"]]"			if lx.pop() == LPART {
+				return RPART
+			}
+			if la := lx.Lookahead(); la.Rune != 0 {
+				lx.Unget(la)
+			}
+			lx.Unget(lex.NewChar(lx.First.Pos()+1, ']'))
+			return ']'
+
 \"([^"]|\\.)*\"		return STRING
 {float}			return FLOAT
-{ident}(`{ident})*	return IDENTIFIER
+{ident}(`{ident})*	return IDENT
 {int}			return INT
 {pattern}		return PATTERN
 {slot}			return SLOT
@@ -66,10 +85,10 @@ slot		#({decimals}|{ident})?
 %%
 		if c, ok := lx.Abort(); ok {
 			switch c {
-			case '[', '{', '(':
-				lx.nest++
-			case ']', '}', ')':
-				lx.nest--
+			case '(', '[',	'{':
+				lx.push(c)
+			case ')', ']',	'}':
+				lx.pop()
 			}
 			return c
 		}

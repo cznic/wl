@@ -7,7 +7,7 @@
 //go:generate goyacc -xegen tmp -o parser.go parser.y
 //go:generate touch xerrors
 //go:generate sh -c "cat xerrors tmp > xegen"
-//go:generate goyacc -ex -fs -xe xegen -o parser.go parser.y
+//go:generate goyacc -dlval "__yyfmt__.Sprint(yylex.(*lexer).sdump())+` `+prettyString(lval.Token)" -dlvalf %v -ex -fs -xe xegen -o parser.go parser.y
 //go:generate rm -f tmp xegen
 //go:generate sh -c "go test -run ^Example | fe"
 

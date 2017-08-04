@@ -44,7 +44,7 @@ package wl
 	\!boxes	(interpreted version of boxes)
 PTEST	expr1?expr2	PatternTest[expr1,expr2]		⊲
 EXPR	expr1[expr2,…]	expr1[expr2,…]	(e[e])[e]	⊲
-	expr1[[expr2,…]]	Part[expr1,expr2,…]	(e[[e]])[[e]]	⊲
+PART	expr1[[expr2,…]]	Part[expr1,expr2,…]	(e[[e]])[[e]]	⊲
 	expr1〚expr2,…〛	Part[expr1,expr2,…]	(e〚e〛)〚e〛	⊲
 	expr1〚expr2〛	Part[expr1,expr2,…]	(e〚e〛)〚e〛	⊲
 	\*expr	(boxes constructed from expr)
@@ -54,7 +54,7 @@ EXPR	expr1[expr2,…]	expr1[expr2,…]	(e[e])[e]	⊲
 	--expr	PreDecrement[expr]		⊲
 	expr1@*expr2	Composition[expr1,expr2]	e@*e@*e	⊲
 	expr1/*expr2	RightComposition[expr1,expr2]	e/*e/*e	⊲
-	expr1@expr2	expr1[expr2]	e@(e@e)	⊲
+EXPR@	expr1@expr2	expr1[expr2]	e@(e@e)	⊲
 	expr1 expr2	(invisible application, input as expr1 Esc@Esc expr2)	⊲
 	expr1[expr2]
 	expr1~expr2~expr3	expr2[expr1,expr3]	(e~e~e)~e~e	⊲
@@ -70,7 +70,7 @@ FACTORIAL	expr!	Factorial[expr]		⊲
 	expr	ConjugateTranspose[expr]		⊲
 	expr'	Derivative[1][expr]		⊲
 	expr''…' (n times)	Derivative[n][expr]		⊲
-	expr1<>expr2<>expr3	StringJoin[expr1,expr2,expr3]	e<>e<>e	⊲
+STRINGJOIN	expr1<>expr2<>expr3	StringJoin[expr1,expr2,expr3]	e<>e<>e	⊲
 EXP	expr1^expr2	Power[expr1,expr2]	e^(e^e)	⊲
 	expr1expr2	Power[expr1,expr2]	e(ee)	⊲
 		Power[Subscript[expr1,expr2],expr3]		⊲
@@ -92,7 +92,7 @@ EXP	expr1^expr2	Power[expr1,expr2]	e^(e^e)	⊲
 	expr1⊙ expr2⊙ expr3	CircleDot[expr1,expr2,expr3]	e ⊙ e ⊙ e
 	expr1**expr2**expr3	NonCommutativeMultiply[expr1,expr2,expr3]	e**e**e
 	expr1expr2expr3	Cross[expr1,expr2,expr3]	eee	⊲
-	expr1.expr2.expr3	Dot[expr1,expr2,expr3]	e.e.e	⊲
+DOT	expr1.expr2.expr3	Dot[expr1,expr2,expr3]	e.e.e	⊲
 UNARY_MINUS	-expr	Times[-1,expr]		⊲
 	+expr	expr		⊲
 	±expr	PlusMinus[expr]
@@ -158,14 +158,14 @@ UNSAME	expr1=!=expr2	UnsameQ[expr1,expr2]	e=!=e=!=e	⊲
 	∀expr1expr2	ForAll[expr1,expr2]	∀e(∀ee)	⊲
 	∃expr1expr2	Exists[expr1,expr2]	∃e(∃ee)	⊲
 	∄expr1expr2	NotExists[expr1,expr2]	∄e(∄ee)
-	!expr	Not[expr]	!(!e)	⊲
+NOT	!expr	Not[expr]	!(!e)	⊲
 	¬expr	Not[expr]	¬(¬e)	⊲
 AND	expr1&&expr2&&expr3	And[expr1,expr2,expr3]	e&&e&&e	⊲
 	expr1∧expr2∧expr3	And[expr1,expr2,expr3]	e∧e∧e	⊲
 	expr1⊼expr2⊼expr3	Nand[expr1,expr2,expr3]	e⊼e⊼e	⊲
 	expr1⊻expr2⊻expr3	Xor[expr1,expr2,expr3]	e⊻e⊻e	⊲
 	expr1expr2expr3	Xnor[expr1,expr2,expr3]	eee	⊲
-	expr1||expr2||expr3	Or[expr1,expr2,expr3]	e||e||e	⊲
+OR	expr1||expr2||expr3	Or[expr1,expr2,expr3]	e||e||e	⊲
 	expr1∨expr2∨expr3	Or[expr1,expr2,expr3]	e∨e∨e	⊲
 	expr1⊽expr2⊽expr3	Nor[expr1,expr2,expr3]	e⊽e⊽e	⊲
 	expr1⧦expr2⧦expr3	Equivalent[expr1,expr2,expr3]	e⧦e⧦e	⊲
@@ -180,23 +180,23 @@ AND	expr1&&expr2&&expr3	And[expr1,expr2,expr3]	e&&e&&e	⊲
 	expr1∍expr2	SuchThat[expr1,expr2]	e∍(e∍e)
 	expr..	Repeated[expr]		⊲
 	expr...	RepeatedNull[expr]		⊲
-	expr1|expr2	Alternatives[expr1,expr2]	e|e|e	⊲
-	symb:expr	Pattern[symb,expr]		⊲
+ALT	expr1|expr2	Alternatives[expr1,expr2]	e|e|e	⊲
+PATTERN	symb:expr	Pattern[symb,expr]		⊲
 	patt:expr	Optional[patt,expr]		⊲
 	expr1~~expr2~~expr3	StringExpression[expr1,expr2,expr3]	e~~e~~e	⊲
 CONDITION	expr1/;expr2	Condition[expr1,expr2]	(e/;e)/;e	⊲
 RULE	expr1->expr2	Rule[expr1,expr2]	e->(e->e)	⊲
 	expr1expr2	Rule[expr1,expr2]	e(ee)	⊲
-	expr1:>expr2	RuleDelayed[expr1,expr2]	e:>(e:>e)	⊲
+RULEDELAYED	expr1:>expr2	RuleDelayed[expr1,expr2]	e:>(e:>e)	⊲
 	expr1 expr2	RuleDelayed[expr1,expr2]	e(ee)	⊲
 REPLACEALL	expr1/.expr2	ReplaceAll[expr1,expr2]	(e/.e)/.e	⊲
-	expr1//.expr2	ReplaceRepeated[expr1,expr2]	(e//.e)//.e	⊲
+REPLACEREP	expr1//.expr2	ReplaceRepeated[expr1,expr2]	(e//.e)//.e	⊲
 	expr1+=expr2	AddTo[expr1,expr2]	e+=(e+=e)	⊲
 	expr1-=expr2	SubtractFrom[expr1,expr2]	e-=(e-=e)	⊲
 	expr1*=expr2	TimesBy[expr1,expr2]	e*=(e*=e)	⊲
 	expr1/=expr2	DivideBy[expr1,expr2]	e/=(e/=e)	⊲
 FUNCTION	expr&	Function[expr]		⊲
-	expr1∶expr2	Colon[expr1:expr2]	e∶e∶e
+COLON	expr1∶expr2	Colon[expr1:expr2]	e∶e∶e
 	expr1//expr2	expr2[expr1]	(e//e)//e
 	expr1expr2	VerticalSeparator[expr1,expr2]	eee
 	expr1∴expr2	Therefore[expr1,expr2]	e∴(e∴e)
@@ -212,7 +212,7 @@ SET_DELAYED	expr1:=expr2	SetDelayed[expr1,expr2]	e:=(e:=e)	⊲
 	expr1expr2	Function[{expr1},expr2]	e(ee)	⊲
 	expr>>filename	Put[expr,"filename"]		⊲
 	expr>>>filename	PutAppend[expr,"filename"]		⊲
-	expr1;expr2;expr3	CompoundExpression[expr1,expr2,expr3]		⊲
+COMPOUND	expr1;expr2;expr3	CompoundExpression[expr1,expr2,expr3]		⊲
 	expr1;expr2;	CompoundExpression[expr1,expr2,Null]		⊲
 	expr1\`expr2	FormBox[expr2,expr1]	e\`(e\`e)	⊲
 	Operator input forms, in order of decreasing precedence. Operators of equal precedence are grouped together.

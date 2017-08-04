@@ -13,11 +13,12 @@ package wl
 }
 
 %token
-	/*yy:token "%c"     */	IDENTIFIER	"identifier"
+	/*yy:token "#%d"    */	SLOT		"slot"
+	/*yy:token "%c"     */	IDENT		"identifier"
+	/*yy:token "%c_"    */	PATTERN		"pattern"
 	/*yy:token "%d"     */	INT		"integer literal"
 	/*yy:token "1.%d"   */	FLOAT		"floating point literal"
 	/*yy:token "\"%c\"" */	STRING		"string literal"
-	/*yy:token "_"      */	PATTERN		"pattern"
 
 %token
 	AND		"&&"
@@ -26,22 +27,36 @@ package wl
 	EQUAL		"=="
 	GEQ		">="
 	LEQ		"<="
+	LPART		"[["
 	MAP		"/@"
 	MAPALL		"//"
 	MESSAGE		"::"
+	OR		"||"
 	REPLACEALL	"/."
+	REPLACEREP	"//."
+	RPART		"]]"
 	RULE		"->"
+	RULEDELAYED	":>"
 	SAME		"==="
 	SET_DELAYED	":="
-	SLOT		"#"
+	STRINGJOIN	"<>"
 	UNSAME		"=!="
 
+%left ';'
 %left '=' SET_DELAYED
+%left ':'
 %precedence '&'
+%left REPLACEREP
 %left REPLACEALL
+%left RULEDELAYED
 %left RULE
 %left CONDITION
+%precedence NOPATTERN
+%left PATTERN
+%left '|'
+%left OR
 %left AND
+%precedence NOT
 %left UNSAME
 %left SAME
 %left LEQ
@@ -53,74 +68,93 @@ package wl
 %left '+'
 %left '*'
 %left '/'
-%precedence UNARY
+%precedence UNARYMINUS
+%left '.'
 %right '^'
-%precedence '!'
+%left STRINGJOIN
+%precedence '!' // Factorial
 %left APPLY
 %left MAPALL
 %left MAP
-%precedence '[' ']'
+%left '@'
+%left LPART RPART
+%left '[' ']'
 %left '?'
 
 %%
 
-Start:
-	Expr
-|	Expr ';'
+start:
+	Expression
+
+Expression:
+	'!' Expression %prec NOT
+|	'-' Expression %prec UNARYMINUS
+|	Expression "&&" Expression
+|	Expression "->" Expression
+|	Expression "/." Expression
+|	Expression "//" Expression
+|	Expression "//." Expression
+|	Expression "/;" Expression
+|	Expression "/@" Expression
+|	Expression ":=" Expression
+|	Expression ":>" Expression
+|	Expression "<=" Expression
+|	Expression "<>" Expression
+|	Expression "=!=" Expression
+|	Expression "==" Expression
+|	Expression "===" Expression
+|	Expression ">=" Expression
+|	Expression "@@" Expression
+|	Expression "||" Expression
+|	Expression '*' Expression
+|	Expression '+' Expression
+|	Expression '-' Expression
+|	Expression '.' Expression
+|	Expression '/' Expression
+|	Expression ':' Expression
+|	Expression ';'
+|	Expression ';' Expression
+|	Expression '<' Expression
+|	Expression '=' Expression
+|	Expression '>' Expression
+|	Expression '?' Expression
+|	Expression '@' Expression
+|	Expression '^' Expression
+|	Expression '|' Expression
+|	Factor %prec NOPATTERN
+|	Factor ':' Expression %prec PATTERN
 
 Term:
-	"#"
-|	"identifier"
-|	"integer literal"
-|	"pattern"
-|	"string literal"
-|	'(' Expr ')'
+	FLOAT
+|	'(' Expression ')'
+|	'{' '}'
+|	'{' ExprList CommaOpt '}'
+|	IDENT
+|	IDENT "::" Tag
+|	IDENT "::" Tag "::" Tag
+|	INT
+|	PATTERN
+|	SLOT
+|	STRING
+|	Term "[[" ExprList CommaOpt "]]"
+|	Term '!'
 |	Term '&'
 |	Term '[' ']'
-|	Term '[' ExprList ']'
-| 	"floating point literal"
+|	Term '[' ExprList CommaOpt ']'
 
 Factor:
 	Term
 |	Term Factor
 
-Expr:
-	"identifier" "::" Tag "::" Tag '=' Expr
-|	"identifier" "::" Tag '=' Expr
-|	'-' Expr %prec UNARY
-|	'{' '}'
-|	'{' ExprList '}'
-|	Expr "&&" Expr
-|	Expr "->" Expr
-|	Expr "/." Expr
-|	Expr "//" Expr
-|	Expr "/;" Expr
-|	Expr "/@" Expr
-|	Expr ":=" Expr
-|	Expr "<=" Expr
-|	Expr "=!=" Expr
-|	Expr "==" Expr
-|	Expr "===" Expr
-|	Expr ">=" Expr
-|	Expr "@@" Expr
-|	Expr '!'
-|	Expr '*' Expr
-|	Expr '+' Expr
-|	Expr '-' Expr
-|	Expr '/' Expr
-|	Expr '<' Expr
-|	Expr '=' Expr
-|	Expr '>' Expr
-|	Expr '?' Expr
-|	Expr '^' Expr
-|	Factor
-
 ExprList:
-	Expr
-|	ExprList ',' Expr
+	Expression
+|	ExprList ',' Expression
+
+CommaOpt:
+|	','
 
 Tag:
-	"identifier"
-|	"string literal"
+	IDENT
+|	STRING
 
 %%
