@@ -48,7 +48,7 @@ func main() {
 			c, sz, err := buf.ReadRune()
 			r <- char{c, sz, err}
 			if c == '\n' {
-				r <- char{c, sz, err}
+				r <- char{' ', sz, err}
 			}
 			if err != nil {
 				fmt.Println()
@@ -63,6 +63,14 @@ func main() {
 		expr, err := in.ParseExpression(file)
 		if err != nil {
 			fmt.Println(err)
+		out:
+			for {
+				select {
+				case <-r:
+				default:
+					break out
+				}
+			}
 			continue
 		}
 

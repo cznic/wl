@@ -57,7 +57,6 @@ func prettyString(v interface{}) string { return strutil.PrettyString(v, "", "",
 type Input struct {
 	interactive bool
 	lex         *lex.Lexer
-	lookahead   lex.Char
 	lx          *lexer
 }
 
@@ -78,7 +77,6 @@ func NewInput(r io.RuneReader, interactive bool) (*Input, error) {
 	}
 
 	p := &Input{lx: lx, lex: l, interactive: interactive}
-	p.lookahead.Rune = -1
 	return p, nil
 }
 
@@ -87,14 +85,9 @@ func NewInput(r io.RuneReader, interactive bool) (*Input, error) {
 // *Expression or an error, if any.
 func (p *Input) ParseExpression(file *token.File) (*Expression, error) {
 	p.lex.File = file
-	if p.lookahead.IsValid() && p.lookahead.Rune > 0 {
-		p.lex.Unget(p.lookahead)
-		p.lookahead = lex.Char{}
-	}
 	if err := p.lx.parse(p.lex, p.interactive); err != nil {
 		return nil, err
 	}
 
-	p.lookahead = p.lex.Lookahead()
 	return p.lx.ast.(*start).Expression, nil
 }
