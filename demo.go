@@ -68,6 +68,8 @@ func main() {
 				select {
 				case <-r:
 				default:
+					r <- char{'\n', 1, nil}
+					r <- char{'\n', 1, nil}
 					break out
 				}
 			}
