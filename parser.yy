@@ -16,9 +16,9 @@ package wl
 	/*yy:token "#%d"    */	SLOT		"slot"
 	/*yy:token "%c"     */	IDENT		"identifier"
 	/*yy:token "%c_"    */	PATTERN		"pattern"
-	/*yy:token "%d"     */	INT		"integer literal"
-	/*yy:token "1.%d"   */	FLOAT		"floating point literal"
-	/*yy:token "\"%c\"" */	STRING		"string literal"
+	/*yy:token "%d"     */	INT		"integer"
+	/*yy:token "1.%d"   */	FLOAT		"real"
+	/*yy:token "\"%c\"" */	STRING		"string"
 
 %token
 	AND		"&&"
@@ -29,9 +29,9 @@ package wl
 	LEQ		"<="
 	LPART		"[["
 	MAP		"/@"
-	MAPALL		"//"
 	MESSAGE		"::"
 	OR		"||"
+	POSTFIX		"//"
 	REPLACEALL	"/."
 	REPLACEREP	"//."
 	RPART		"]]"
@@ -42,8 +42,18 @@ package wl
 	STRINGJOIN	"<>"
 	UNSAME		"=!="
 
+%type	<Node>
+	start		"valid input"
+	CommaOpt	"optional comma"
+	ExprList	"expression list"
+	Expression	"expression"
+	Factor		"factor"
+	Tag		"tag"
+	Term		"term"
+
 %left ';'
 %left '=' SET_DELAYED
+%left POSTFIX
 %left ':'
 %precedence '&'
 %left REPLACEREP
@@ -74,7 +84,6 @@ package wl
 %left STRINGJOIN
 %precedence '!' // Factorial
 %left APPLY
-%left MAPALL
 %left MAP
 %left '@'
 %left LPART RPART
@@ -151,6 +160,7 @@ ExprList:
 |	ExprList ',' Expression
 
 CommaOpt:
+	/* empty */ {}
 |	','
 
 Tag:

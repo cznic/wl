@@ -63,9 +63,10 @@ func init() {
 }
 
 func exampleAST(rule int, src string) interface{} {
+	lx := newLexer(strings.NewReader(src))
 	l, err := lex.New(
 		token.NewFileSet().AddFile(fmt.Sprint(rule), -1, len(src)),
-		strings.NewReader(src),
+		lx,
 		lex.BOMMode(lex.BOMIgnoreFirst),
 		lex.RuneClass(runeClass),
 		lex.ErrorFunc(func(token.Pos, string) {}),
@@ -74,7 +75,6 @@ func exampleAST(rule int, src string) interface{} {
 		return err.Error()
 	}
 
-	lx := newLexer()
 	lx.exampleRule = rule
 	lx.parse(l, false)
 	return prettyString(lx.exampleAST)
@@ -94,9 +94,10 @@ func testScannerCorpus(t *testing.T) {
 
 	file := token.NewFileSet().AddFile(f.Name(), -1, int(fi.Size()))
 	r := bufio.NewReader(f)
+	lx := newLexer(r)
 	l, err := lex.New(
 		file,
-		r,
+		lx,
 		lex.BOMMode(lex.BOMIgnoreFirst),
 		lex.RuneClass(runeClass),
 		lex.ErrorFunc(func(pos token.Pos, msg string) { t.Fatalf("%s: %s", file.Position(pos), msg) }),
@@ -105,7 +106,6 @@ func testScannerCorpus(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	lx := newLexer()
 	lx.Lexer = l
 	toks := 0
 	for lx.Last.Rune >= 0 {

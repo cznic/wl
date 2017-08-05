@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+// Package WL provides a Wolfram Language parser (Work In Progress)
 package wl
 
 import (
@@ -64,10 +65,10 @@ type Input struct {
 // argument enables ParseExpression to return on newlines in input whenever the
 // expression at that point is valid.
 func NewInput(r io.RuneReader, interactive bool) (*Input, error) {
-	lx := newLexer()
+	lx := newLexer(r)
 	l, err := lex.New(
 		nil,
-		r,
+		lx,
 		lex.BOMMode(lex.BOMIgnoreFirst),
 		lex.RuneClass(runeClass),
 		lex.ErrorFunc(lx.errPos),

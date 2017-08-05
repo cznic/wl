@@ -195,7 +195,7 @@ func ExampleExpression_case05() {
 	// · · · },
 	// · · },
 	// · },
-	// · Token: MAPALL, "//",
+	// · Token: POSTFIX, "//",
 	// }
 }
 

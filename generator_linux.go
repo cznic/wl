@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+//go:generate golex -o input.go input.l
 //go:generate golex -o scanner.go scanner.l
 //go:generate yy -kind Case -node Node -astImport `go/token` parser.yy
 //go:generate goyacc -xegen tmp -o parser.go parser.y

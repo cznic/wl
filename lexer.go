@@ -7,6 +7,7 @@ package wl
 import (
 	"fmt"
 	"go/token"
+	"io"
 	"strings"
 	"unicode"
 
@@ -17,7 +18,52 @@ const (
 	ccEOF = iota + 0x80
 	ccDigit
 	ccLetter
+	ccLetterLike
 	ccOther
+)
+
+var (
+	letterLike = &unicode.RangeTable{
+		R16: []unicode.Range16{
+			{'\u2100', '\u214f', 1},
+		},
+	}
+
+	namedChars = map[string]rune{
+		"RawSpace":            ' ',
+		"RawExclamation":      '!',
+		"RawDoubleQuote":      '"',
+		"RawNumberSign":       '#',
+		"RawDollar":           '$',
+		"RawPercent":          '%',
+		"RawAmpersand":        '&',
+		"RawQuote":            '\'',
+		"RawLeftParenthesis":  '(',
+		"RawRightParenthesis": ')',
+		"RawStar":             '*',
+		"RawPlus":             '+',
+		"RawComma":            ',',
+		"RawDash":             '-',
+		"RawDot":              '.',
+		"RawSlash":            '/',
+		"RawColon":            ':',
+		"RawSemicolon":        ';',
+		"RawLess":             '<',
+		"RawEqual":            '=',
+		"RawGreater":          '>',
+		"RawQuestion":         '?',
+		"RawAt":               '@',
+		"RawLeftBracket":      '[',
+		"RawBackslash":        '∖',
+		"RawRightBracket":     ']',
+		"RawWedge":            '^',
+		"RawUnderscore":       '_',
+		"RawBackquote":        '`',
+		"RawLeftBrace":        '{',
+		"RawVerticalBar":      '|',
+		"RawRightBrace":       '}',
+		"RawTilde":            '~',
+	}
 )
 
 func runeClass(r rune) int {
@@ -30,6 +76,8 @@ func runeClass(r rune) int {
 		return ccDigit
 	case unicode.IsLetter(r):
 		return ccLetter
+	case unicode.Is(letterLike, r):
+		return ccLetterLike
 	default:
 		return ccOther
 	}
@@ -38,23 +86,63 @@ func runeClass(r rune) int {
 type lexer struct {
 	*lex.Lexer
 	ast         Node
+	buf         []rune
+	c           rune
 	err         error
 	exampleAST  interface{}
 	exampleRule int
 	interactive bool
+	r           io.RuneReader
+	rerr        error
 	stack       []int
+	sz          int
 }
 
-func newLexer() *lexer { return &lexer{exampleRule: -1} }
+func newLexer(r io.RuneReader) *lexer {
+	return &lexer{
+		c:           -1,
+		exampleRule: -1,
+		r:           r,
+	}
+}
 
 func (lx *lexer) init(l *lex.Lexer, interactive bool) {
 	lx.Lexer = l
 	lx.ast = nil
+	lx.c = -1
 	lx.err = nil
 	lx.exampleAST = nil
 	lx.interactive = interactive
 	lx.stack = lx.stack[:0]
 }
+
+func (lx *lexer) enter() (r int) {
+	lx.buf = lx.buf[:0]
+	if lx.c < 0 {
+		return lx.next()
+	}
+
+	lx.buf = append(lx.buf, lx.c)
+	return int(lx.c)
+}
+
+func (lx *lexer) next() (r int) {
+	lx.c = -1
+	lx.c, lx.sz, lx.rerr = lx.r.ReadRune()
+	lx.buf = append(lx.buf, lx.c)
+	return int(lx.c)
+}
+
+func (lx *lexer) named(name string) (rune, int, error) {
+	c, ok := namedChars[name]
+	if !ok {
+		return 0, 1, fmt.Errorf("unknown character name %q", name)
+	}
+
+	return c, len(name) + len("\\[]"), nil
+}
+
+func (lx *lexer) token() string { return string(lx.buf) }
 
 func (lx *lexer) position(pos token.Pos) token.Position { return lx.File.Position(pos) }
 func (lx *lexer) push(r int) int                        { lx.stack = append(lx.stack, r); return r }
@@ -65,6 +153,14 @@ func (lx *lexer) pop() (r int) {
 		lx.stack = lx.stack[:n-1]
 	}
 	return r
+}
+
+func (lx *lexer) unget(r rune) int {
+	if la := lx.Lookahead(); la.Rune != 0 {
+		lx.Unget(la)
+	}
+	lx.Unget(lex.NewChar(lx.First.Pos()+1, r))
+	return int(r)
 }
 
 func (lx *lexer) sdump() string {
@@ -89,6 +185,9 @@ func (lx *lexer) Error(msg string) {
 
 // Implements yyLexer.
 func (lx *lexer) Lex(lval *yySymType) (r int) {
+	if lx.err != nil {
+		return -1
+	}
 more:
 	r = lx.scan()
 	if r == '\n' {
