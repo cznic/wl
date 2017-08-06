@@ -6,35 +6,35 @@
 
 %yyc c
 %yyn c = lx.next()
+%yym lx.mark = len(lx.in)
 
 %{
 package wl
 
 import (
 	"strconv"
+	"unicode/utf8"
 )
 
 func (lx *lexer) ReadRune() (r rune, sz int, err error) {
-	c := lx.enter()
+	// fmt.Printf("%T.ReadRune, lx.c %U\n", lx, lx.c)
+	// defer func() { fmt.Printf("\t%T.ReadRune: %U %v %v\n", lx, r, sz, err) }()
+	if lx.c < 0 {
+		lx.next()
+	}
+	c := int(lx.c)
 %}
 
 d	[0-9]
 h	{d}|[A-Fa-f]
 
 %%
-
-\\\\	return '\\', 2, lx.rerr
-\\\x20	return ' ', 2, lx.rerr
-\\\"	return '"', 2, lx.rerr
-\\b	return '\b', 2, lx.rerr
-\\t	return '\t', 2, lx.rerr
-\\n	return '\n', 2, lx.rerr
-\\f	return '\f', 2, lx.rerr
-\\r	return '\r', 2, lx.rerr
+	lx.in = lx.in[:0]
+	lx.mark = -1
 
 "\["[A-Z][A-Za-z]*"]"
 	s := lx.token()
-	return lx.named(s[2:len(s)-2])
+	return lx.named(s[2:len(s)-1])
 
 \\{d}{d}{d}
 	n, err := strconv.ParseInt(lx.token()[1:4], 8, 8)
@@ -62,6 +62,33 @@ h	{d}|[A-Fa-f]
 	return rune(n), 6, lx.rerr
 
 %%
-	lx.c = -1
-	return rune(c), lx.sz, lx.rerr
+	//fmt.Printf("lx.mark %v c %U lx.c %U\n", lx.mark, c, lx.c)
+	if lx.mark >= 0 {
+		if len(lx.in) > lx.mark {
+			lx.unget(rune(c))
+			for i := len(lx.in)-1; i >= lx.mark; i-- {
+				lx.unget(lx.in[i])
+			}
+			lx.next()
+		}
+		lx.in = lx.in[:lx.mark]
+		goto yyAction
+	}
+	
+	switch n := len(lx.in); n {
+	case 0: // [] z
+		lx.c = -1
+	case 1: // [x] z
+		c = int(lx.in[0])
+	}
+
+	switch c {
+	case '\n':
+		lx.unget(IGNORE)
+		return rune(c), 1, lx.err
+	case IGNORE:
+		return rune(c), 0, lx.err
+	}
+
+	return rune(c), utf8.RuneLen(rune(c)), lx.err
 }

@@ -161,6 +161,6 @@ func testParseCorpus(t *testing.T, interactive bool) {
 }
 
 func TestParser(t *testing.T) {
-	_ = t.Run("corpus bulk", func(t *testing.T) { testParseCorpus(t, false) }) && //TODOOK
-		t.Run("corpus interactive", func(t *testing.T) { testParseCorpus(t, true) })
+	t.Run("corpus bulk", func(t *testing.T) { testParseCorpus(t, false) })
+	t.Run("corpus interactive", func(t *testing.T) { testParseCorpus(t, true) })
 }

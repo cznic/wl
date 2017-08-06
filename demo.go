@@ -48,9 +48,6 @@ func main() {
 			}
 
 			r <- char{c, sz, nil}
-			if c == '\n' {
-				r <- char{' ', 0, nil}
-			}
 		}
 	}()
 

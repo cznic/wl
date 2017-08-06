@@ -8,16 +8,38 @@ package wl
 
 import (
 	"strconv"
+	"unicode/utf8"
 )
 
 func (lx *lexer) ReadRune() (r rune, sz int, err error) {
-	c := lx.enter()
+	// fmt.Printf("%T.ReadRune, lx.c %U\n", lx, lx.c)
+	// defer func() { fmt.Printf("\t%T.ReadRune: %U %v %v\n", lx, r, sz, err) }()
+	if lx.c < 0 {
+		lx.next()
+	}
+	c := int(lx.c)
 
 yystate0:
+	yyrule := -1
+	_ = yyrule
+	lx.in = lx.in[:0]
+	lx.mark = -1
 
 	goto yystart1
 
 	goto yystate0 // silence unused label error
+	goto yyAction // silence unused label error
+yyAction:
+	switch yyrule {
+	case 1:
+		goto yyrule1
+	case 2:
+		goto yyrule2
+	case 3:
+		goto yyrule3
+	case 4:
+		goto yyrule4
+	}
 	goto yystate1 // silence unused label error
 yystate1:
 	c = lx.next()
@@ -34,83 +56,81 @@ yystate2:
 	switch {
 	default:
 		goto yyabort
-	case c == ' ':
-		goto yystate3
-	case c == '"':
-		goto yystate4
 	case c == '.':
-		goto yystate5
+		goto yystate3
 	case c == ':':
-		goto yystate11
+		goto yystate9
 	case c == '[':
-		goto yystate16
-	case c == '\\':
-		goto yystate19
-	case c == 'b':
-		goto yystate20
-	case c == 'f':
-		goto yystate21
-	case c == 'n':
-		goto yystate22
-	case c == 'r':
-		goto yystate23
-	case c == 't':
-		goto yystate24
+		goto yystate14
 	case c >= '0' && c <= '9':
-		goto yystate8
+		goto yystate6
 	}
 
 yystate3:
-	c = lx.next()
-	goto yyrule2
-
-yystate4:
-	c = lx.next()
-	goto yyrule3
-
-yystate5:
 	c = lx.next()
 	switch {
 	default:
 		goto yyabort
 	case c >= '0' && c <= '9' || c >= 'A' && c <= 'F' || c >= 'a' && c <= 'f':
-		goto yystate6
+		goto yystate4
 	}
+
+yystate4:
+	c = lx.next()
+	switch {
+	default:
+		goto yyabort
+	case c >= '0' && c <= '9' || c >= 'A' && c <= 'F' || c >= 'a' && c <= 'f':
+		goto yystate5
+	}
+
+yystate5:
+	c = lx.next()
+	yyrule = 3
+	lx.mark = len(lx.in)
+	goto yyrule3
 
 yystate6:
 	c = lx.next()
 	switch {
 	default:
 		goto yyabort
-	case c >= '0' && c <= '9' || c >= 'A' && c <= 'F' || c >= 'a' && c <= 'f':
+	case c >= '0' && c <= '9':
 		goto yystate7
 	}
 
 yystate7:
 	c = lx.next()
-	goto yyrule11
-
-yystate8:
-	c = lx.next()
 	switch {
 	default:
 		goto yyabort
 	case c >= '0' && c <= '9':
-		goto yystate9
+		goto yystate8
 	}
+
+yystate8:
+	c = lx.next()
+	yyrule = 2
+	lx.mark = len(lx.in)
+	goto yyrule2
 
 yystate9:
 	c = lx.next()
 	switch {
 	default:
 		goto yyabort
-	case c >= '0' && c <= '9':
+	case c >= '0' && c <= '9' || c >= 'A' && c <= 'F' || c >= 'a' && c <= 'f':
 		goto yystate10
 	}
 
 yystate10:
 	c = lx.next()
-	goto yyrule10
+	switch {
+	default:
+		goto yyabort
+	case c >= '0' && c <= '9' || c >= 'A' && c <= 'F' || c >= 'a' && c <= 'f':
+		goto yystate11
+	}
 
 yystate11:
 	c = lx.next()
@@ -132,113 +152,43 @@ yystate12:
 
 yystate13:
 	c = lx.next()
-	switch {
-	default:
-		goto yyabort
-	case c >= '0' && c <= '9' || c >= 'A' && c <= 'F' || c >= 'a' && c <= 'f':
-		goto yystate14
-	}
+	yyrule = 4
+	lx.mark = len(lx.in)
+	goto yyrule4
 
 yystate14:
 	c = lx.next()
 	switch {
 	default:
 		goto yyabort
-	case c >= '0' && c <= '9' || c >= 'A' && c <= 'F' || c >= 'a' && c <= 'f':
+	case c >= 'A' && c <= 'Z':
 		goto yystate15
 	}
 
 yystate15:
 	c = lx.next()
-	goto yyrule12
-
-yystate16:
-	c = lx.next()
-	switch {
-	default:
-		goto yyabort
-	case c >= 'A' && c <= 'Z':
-		goto yystate17
-	}
-
-yystate17:
-	c = lx.next()
 	switch {
 	default:
 		goto yyabort
 	case c == ']':
-		goto yystate18
+		goto yystate16
 	case c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z':
-		goto yystate17
+		goto yystate15
 	}
 
-yystate18:
+yystate16:
 	c = lx.next()
-	goto yyrule9
-
-yystate19:
-	c = lx.next()
+	yyrule = 1
+	lx.mark = len(lx.in)
 	goto yyrule1
 
-yystate20:
-	c = lx.next()
-	goto yyrule4
-
-yystate21:
-	c = lx.next()
-	goto yyrule7
-
-yystate22:
-	c = lx.next()
-	goto yyrule6
-
-yystate23:
-	c = lx.next()
-	goto yyrule8
-
-yystate24:
-	c = lx.next()
-	goto yyrule5
-
-yyrule1: // \\\\
-	{
-		return '\\', 2, lx.rerr
-	}
-yyrule2: // \\\x20
-	{
-		return ' ', 2, lx.rerr
-	}
-yyrule3: // \\\"
-	{
-		return '"', 2, lx.rerr
-	}
-yyrule4: // \\b
-	{
-		return '\b', 2, lx.rerr
-	}
-yyrule5: // \\t
-	{
-		return '\t', 2, lx.rerr
-	}
-yyrule6: // \\n
-	{
-		return '\n', 2, lx.rerr
-	}
-yyrule7: // \\f
-	{
-		return '\f', 2, lx.rerr
-	}
-yyrule8: // \\r
-	{
-		return '\r', 2, lx.rerr
-	}
-yyrule9: // "\["[A-Z][A-Za-z]*"]"
+yyrule1: // "\["[A-Z][A-Za-z]*"]"
 	{
 
 		s := lx.token()
-		return lx.named(s[2 : len(s)-2])
+		return lx.named(s[2 : len(s)-1])
 	}
-yyrule10: // \\{d}{d}{d}
+yyrule2: // \\{d}{d}{d}
 	{
 
 		n, err := strconv.ParseInt(lx.token()[1:4], 8, 8)
@@ -247,7 +197,7 @@ yyrule10: // \\{d}{d}{d}
 		}
 		return rune(n), 4, lx.rerr
 	}
-yyrule11: // \\\.{h}{h}
+yyrule3: // \\\.{h}{h}
 	{
 
 		n, err := strconv.ParseInt(lx.token()[2:4], 16, 8)
@@ -256,7 +206,7 @@ yyrule11: // \\\.{h}{h}
 		}
 		return rune(n), 4, lx.rerr
 	}
-yyrule12: // \\\:{h}{h}{h}{h}
+yyrule4: // \\\:{h}{h}{h}{h}
 	{
 
 		n, err := strconv.ParseInt(lx.token()[2:6], 16, 16)
@@ -271,6 +221,33 @@ yyrule12: // \\\:{h}{h}{h}{h}
 	goto yyabort // silence unused label error
 
 yyabort: // no lexem recognized
-	lx.c = -1
-	return rune(c), lx.sz, lx.rerr
+	//fmt.Printf("lx.mark %v c %U lx.c %U\n", lx.mark, c, lx.c)
+	if lx.mark >= 0 {
+		if len(lx.in) > lx.mark {
+			lx.unget(rune(c))
+			for i := len(lx.in) - 1; i >= lx.mark; i-- {
+				lx.unget(lx.in[i])
+			}
+			lx.next()
+		}
+		lx.in = lx.in[:lx.mark]
+		goto yyAction
+	}
+
+	switch n := len(lx.in); n {
+	case 0: // [] z
+		lx.c = -1
+	case 1: // [x] z
+		c = int(lx.in[0])
+	}
+
+	switch c {
+	case '\n':
+		lx.unget(IGNORE)
+		return rune(c), 1, lx.err
+	case IGNORE:
+		return rune(c), 0, lx.err
+	}
+
+	return rune(c), utf8.RuneLen(rune(c)), lx.err
 }

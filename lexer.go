@@ -19,6 +19,7 @@ const (
 	ccDigit
 	ccLetter
 	ccLetterLike
+	ccIgnore
 	ccOther
 )
 
@@ -70,6 +71,8 @@ func runeClass(r rune) int {
 	switch {
 	case r == lex.RuneEOF:
 		return ccEOF
+	case r == IGNORE:
+		return ccIgnore
 	case r < 0x80:
 		return int(r)
 	case unicode.IsDigit(r):
@@ -86,16 +89,20 @@ func runeClass(r rune) int {
 type lexer struct {
 	*lex.Lexer
 	ast         Node
-	buf         []rune
 	c           rune
 	err         error
 	exampleAST  interface{}
 	exampleRule int
+	in          []rune
 	interactive bool
+	mark        int
 	r           io.RuneReader
 	rerr        error
+	sc          int // Start condition.
 	stack       []int
+	str         []byte
 	sz          int
+	un          []rune
 }
 
 func newLexer(r io.RuneReader) *lexer {
@@ -112,24 +119,38 @@ func (lx *lexer) init(l *lex.Lexer, interactive bool) {
 	lx.c = -1
 	lx.err = nil
 	lx.exampleAST = nil
+	lx.in = lx.in[:0]
 	lx.interactive = interactive
+	lx.mark = -1
+	lx.sc = 0
 	lx.stack = lx.stack[:0]
+	lx.str = lx.str[:0]
+	lx.un = lx.un[:0]
 }
 
-func (lx *lexer) enter() (r int) {
-	lx.buf = lx.buf[:0]
-	if lx.c < 0 {
-		return lx.next()
-	}
-
-	lx.buf = append(lx.buf, lx.c)
-	return int(lx.c)
+func (lx *lexer) unget(r rune) {
+	lx.un = append(lx.un, r)
 }
 
 func (lx *lexer) next() (r int) {
-	lx.c = -1
+	// fmt.Printf("%T.next\n", lx)
+	// defer func() { fmt.Printf("\t%T.next: %U\n", lx, r) }()
+	if len(lx.un) != 0 {
+		r = int(lx.un[len(lx.un)-1])
+		lx.un = lx.un[:len(lx.un)-1]
+		lx.c = rune(r)
+		return r
+	}
+
+	lx.in = append(lx.in, lx.c)
+	// fmt.Printf("%T.r.ReadRune\n", lx)
 	lx.c, lx.sz, lx.rerr = lx.r.ReadRune()
-	lx.buf = append(lx.buf, lx.c)
+	// fmt.Printf("\t%T.r.ReadRune: %U\n", lx, lx.c)
+	if lx.rerr != nil {
+		lx.c = -1
+		return -1
+	}
+
 	return int(lx.c)
 }
 
@@ -142,7 +163,7 @@ func (lx *lexer) named(name string) (rune, int, error) {
 	return c, len(name) + len("\\[]"), nil
 }
 
-func (lx *lexer) token() string { return string(lx.buf) }
+func (lx *lexer) token() string { return string(lx.in) }
 
 func (lx *lexer) position(pos token.Pos) token.Position { return lx.File.Position(pos) }
 func (lx *lexer) push(r int) int                        { lx.stack = append(lx.stack, r); return r }
@@ -155,13 +176,8 @@ func (lx *lexer) pop() (r int) {
 	return r
 }
 
-func (lx *lexer) unget(r rune) int {
-	if la := lx.Lookahead(); la.Rune != 0 {
-		lx.Unget(la)
-	}
-	lx.Unget(lex.NewChar(lx.First.Pos()+1, r))
-	return int(r)
-}
+// func (lx *lexer) unget(r rune) int {
+// }
 
 func (lx *lexer) sdump() string {
 	var a []string
@@ -185,11 +201,19 @@ func (lx *lexer) Error(msg string) {
 
 // Implements yyLexer.
 func (lx *lexer) Lex(lval *yySymType) (r int) {
+	// fmt.Printf("%T.Lex\n", lx)
+	// defer func() { fmt.Printf("\t%T.Lex: %U %s\n", lx, r, yySymName(r)) }()
 	if lx.err != nil {
+		// fmt.Printf("\t%T.Lex err %q", lx, lx.err)
 		return -1
 	}
 more:
 	r = lx.scan()
+	if r == IGNORE {
+		// fmt.Printf("\t%T.Lex ignore", lx)
+		goto more
+	}
+
 	if r == '\n' {
 		if lx.interactive && len(lx.stack) == 0 {
 			for _, sym := range yyFollow[lval.yys] {
@@ -204,7 +228,12 @@ more:
 
 	tok := Token{Rune: rune(r), pos: lx.First.Pos()}
 	if r > 0x7f {
-		tok.Val = string(lx.TokenBytes(nil))
+		switch r {
+		case STRING:
+			tok.Val = string(lx.str)
+		default:
+			tok.Val = string(lx.TokenBytes(nil))
+		}
 	}
 	lval.Token = tok
 	return r

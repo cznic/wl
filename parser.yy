@@ -21,26 +21,36 @@ package wl
 	/*yy:token "\"%c\"" */	STRING		"string"
 
 %token
-	AND		"&&"
-	APPLY		"@@"
-	CONDITION	"/;"
-	EQUAL		"=="
-	GEQ		">="
-	LEQ		"<="
-	LPART		"[["
-	MAP		"/@"
-	MESSAGE		"::"
-	OR		"||"
-	POSTFIX		"//"
-	REPLACEALL	"/."
-	REPLACEREP	"//."
-	RPART		"]]"
-	RULE		"->"
-	RULEDELAYED	":>"
-	SAME		"==="
-	SET_DELAYED	":="
-	STRINGJOIN	"<>"
-	UNSAME		"=!="
+	AND			"&&"
+	APPLY			"@@"
+	APPLY_ALL		"@@@"
+	COMPOSITION		"@*"
+	CONDITION		"/;"
+	DEC			"--"
+	EQUAL			"=="
+	GEQ			">="
+	GET			"<<"
+	INC			"++"
+	LEQ			"<="
+	LPART			"[["
+	MAP			"/@"
+	MAP_ALL			"//@"
+	MESSAGE_NAME		"::"
+	OR			"||"
+	OVERSCRIPT		"\\&"
+	POSTFIX			"//"
+	REPLACEALL		"/."
+	REPLACEREP		"//."
+	RIGHT_COMPOSITION	"/*"
+	RPART			"]]"
+	RULE			"->"
+	RULEDELAYED		":>"
+	SAME			"==="
+	SET_DELAYED		":="
+	STRINGJOIN		"<>"
+	SUBSCRIPT		"\\_"
+	UNDERSCRIPT		"\\+"
+	UNSAME			"=!="
 
 %type	<Node>
 	start		"valid input"
@@ -50,6 +60,8 @@ package wl
 	Factor		"factor"
 	Tag		"tag"
 	Term		"term"
+
+%token IGNORE
 
 %left ';'
 %left '=' SET_DELAYED
@@ -66,7 +78,7 @@ package wl
 %left '|'
 %left OR
 %left AND
-%precedence NOT
+%right '!'			// Not
 %left UNSAME
 %left SAME
 %left LEQ
@@ -82,13 +94,22 @@ package wl
 %left '.'
 %right '^'
 %left STRINGJOIN
-%precedence '!' // Factorial
-%left APPLY
-%left MAP
-%left '@'
-%left LPART RPART
-%left '[' ']'
-%left '?'
+
+%nonassoc	FACTORIAL
+%right	MAP MAP_ALL APPLY APPLY_ALL
+%left	'~'
+%right	'@'
+%left	COMPOSITION RIGHT_COMPOSITION
+%precedence	PRE_INC		// PreIncrement, PreDecrement
+%nonassoc	INC DEC		// Increment, Decrement
+%left	'[' ']' LPART RPART	// expr, Part
+%left	'?'	// PatternTest
+%right	SUBSCRIPT
+%right	OVERSCRIPT UNDERSCRIPT
+%nonassoc	GET
+/*TODO forms containing # */
+%left	MESSAGE_NAME
+/* TODO Piecewise */
 
 %%
 
@@ -96,13 +117,19 @@ start:
 	Expression
 
 Expression:
-	'!' Expression %prec NOT
+	"++" Expression %prec PRE_INC
+|	"--" Expression %prec PRE_INC
+|	'!' Expression
 |	'-' Expression %prec UNARYMINUS
 |	Expression "&&" Expression
+|	Expression "++"
+|	Expression "--"
 |	Expression "->" Expression
+|	Expression "/*" Expression
 |	Expression "/." Expression
 |	Expression "//" Expression
 |	Expression "//." Expression
+|	Expression "//@" Expression
 |	Expression "/;" Expression
 |	Expression "/@" Expression
 |	Expression ":=" Expression
@@ -113,8 +140,16 @@ Expression:
 |	Expression "==" Expression
 |	Expression "===" Expression
 |	Expression ">=" Expression
+|	Expression "@*" Expression
 |	Expression "@@" Expression
+|	Expression "@@@" Expression
+|	Expression "\\&" Expression
+|	Expression "\\+" Expression
+|	Expression "\\_" Expression
 |	Expression "||" Expression
+|	Expression '!' '!' %prec FACTORIAL
+|	Expression '!' %prec FACTORIAL
+|	Expression '!' Expression %prec FACTORIAL
 |	Expression '*' Expression
 |	Expression '+' Expression
 |	Expression '-' Expression
@@ -130,11 +165,13 @@ Expression:
 |	Expression '@' Expression
 |	Expression '^' Expression
 |	Expression '|' Expression
+|	Expression '~' Expression
 |	Factor %prec NOPATTERN
-|	Factor ':' Expression %prec PATTERN
+|	Factor ':' Expression %prec PATTERN /* TODO example fail */
 
 Term:
 	FLOAT
+|	"<<" STRING
 |	'(' Expression ')'
 |	'{' '}'
 |	'{' ExprList CommaOpt '}'
@@ -146,7 +183,6 @@ Term:
 |	SLOT
 |	STRING
 |	Term "[[" ExprList CommaOpt "]]"
-|	Term '!'
 |	Term '&'
 |	Term '[' ']'
 |	Term '[' ExprList CommaOpt ']'
