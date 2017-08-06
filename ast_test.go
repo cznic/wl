@@ -11,13 +11,13 @@ import (
 )
 
 func ExampleCommaOpt() {
-	fmt.Println(exampleAST(73, "1.97 [ 1.98 ]") == (*CommaOpt)(nil))
+	fmt.Println(exampleAST(81, "1.97 [ 1.98 ]") == (*CommaOpt)(nil))
 	// Output:
 	// false
 }
 
 func ExampleCommaOpt_case1() {
-	fmt.Println(exampleAST(74, "{ 1.97 , ]"))
+	fmt.Println(exampleAST(82, "{ 1.97 , ]"))
 	// Output:
 	// &wl.CommaOpt{
 	// · Token: ',',
@@ -25,13 +25,14 @@ func ExampleCommaOpt_case1() {
 }
 
 func ExampleExprList() {
-	fmt.Println(exampleAST(71, "{ 1.97 ,"))
+	fmt.Println(exampleAST(79, "{ 1.97 ,"))
 	// Output:
 	// &wl.ExprList{
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
@@ -40,15 +41,16 @@ func ExampleExprList() {
 }
 
 func ExampleExprList_case1() {
-	fmt.Println(exampleAST(72, "{ 1.97 , 1.98 ,"))
+	fmt.Println(exampleAST(80, "{ 1.97 , 1.98 ,"))
 	// Output:
 	// &wl.ExprList{
 	// · ExprList: &wl.ExprList{
 	// · · Case: 1,
 	// · · Expression: &wl.Expression{
-	// · · · Case: 49,
+	// · · · Case: 55,
 	// · · · Factor: &wl.Factor{
 	// · · · · Term: &wl.Term{
+	// · · · · · Case: 4,
 	// · · · · · Token: FLOAT, "1.98",
 	// · · · · },
 	// · · · },
@@ -56,9 +58,10 @@ func ExampleExprList_case1() {
 	// · · Token: ',',
 	// · },
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
@@ -71,9 +74,10 @@ func ExampleExpression() {
 	// Output:
 	// &wl.Expression{
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
@@ -88,9 +92,10 @@ func ExampleExpression_case01() {
 	// &wl.Expression{
 	// · Case: 1,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
@@ -100,14 +105,107 @@ func ExampleExpression_case01() {
 }
 
 func ExampleExpression_case02() {
-	fmt.Println(exampleAST(4, "! 1.97"))
+	fmt.Println(exampleAST(4, "\\@ 1.97"))
 	// Output:
 	// &wl.Expression{
 	// · Case: 2,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
+	// · · · · Token: FLOAT, "1.97",
+	// · · · },
+	// · · },
+	// · },
+	// · Token: SQRT2, "\\@",
+	// }
+}
+
+func ExampleExpression_case03() {
+	fmt.Println(exampleAST(5, "\\@ 1.97 \\% 1.98"))
+	// Output:
+	// &wl.Expression{
+	// · Case: 3,
+	// · Expression: &wl.Expression{
+	// · · Case: 55,
+	// · · Factor: &wl.Factor{
+	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
+	// · · · · Token: FLOAT, "1.97",
+	// · · · },
+	// · · },
+	// · },
+	// · Expression2: &wl.Expression{
+	// · · Case: 55,
+	// · · Factor: &wl.Factor{
+	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
+	// · · · · Token: FLOAT, "1.98",
+	// · · · },
+	// · · },
+	// · },
+	// · Token: SQRT2, "\\@",
+	// · Token2: POWER_SUBSCRIPT2, "\\%",
+	// }
+}
+
+func ExampleExpression_case04() {
+	fmt.Println(exampleAST(6, "√ 1.97"))
+	// Output:
+	// &wl.Expression{
+	// · Case: 4,
+	// · Expression: &wl.Expression{
+	// · · Case: 55,
+	// · · Factor: &wl.Factor{
+	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
+	// · · · · Token: FLOAT, "1.97",
+	// · · · },
+	// · · },
+	// · },
+	// · Token: SQRT, "√",
+	// }
+}
+
+func ExampleExpression_case05() {
+	fmt.Println(exampleAST(7, "∫ 1.97 \uf74c 1.98"))
+	// Output:
+	// &wl.Expression{
+	// · Case: 5,
+	// · Expression: &wl.Expression{
+	// · · Case: 55,
+	// · · Factor: &wl.Factor{
+	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
+	// · · · · Token: FLOAT, "1.97",
+	// · · · },
+	// · · },
+	// · },
+	// · Expression2: &wl.Expression{
+	// · · Case: 55,
+	// · · Factor: &wl.Factor{
+	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
+	// · · · · Token: FLOAT, "1.98",
+	// · · · },
+	// · · },
+	// · },
+	// · Token: INTEGRATE, "∫",
+	// · Token2: DIFFERENTIAL_D, "\uf74c",
+	// }
+}
+
+func ExampleExpression_case06() {
+	fmt.Println(exampleAST(8, "! 1.97"))
+	// Output:
+	// &wl.Expression{
+	// · Case: 6,
+	// · Expression: &wl.Expression{
+	// · · Case: 55,
+	// · · Factor: &wl.Factor{
+	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
@@ -116,15 +214,16 @@ func ExampleExpression_case02() {
 	// }
 }
 
-func ExampleExpression_case03() {
-	fmt.Println(exampleAST(5, "- 1.97"))
+func ExampleExpression_case07() {
+	fmt.Println(exampleAST(9, "- 1.97"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 3,
+	// · Case: 7,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
@@ -133,23 +232,25 @@ func ExampleExpression_case03() {
 	// }
 }
 
-func ExampleExpression_case04() {
-	fmt.Println(exampleAST(6, "1.97 && 1.98"))
+func ExampleExpression_case08() {
+	fmt.Println(exampleAST(10, "1.97 && 1.98"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 4,
+	// · Case: 8,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.98",
 	// · · · },
 	// · · },
@@ -158,15 +259,16 @@ func ExampleExpression_case04() {
 	// }
 }
 
-func ExampleExpression_case05() {
-	fmt.Println(exampleAST(7, "1.97 ++"))
+func ExampleExpression_case09() {
+	fmt.Println(exampleAST(11, "1.97 ++"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 5,
+	// · Case: 9,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
@@ -175,15 +277,16 @@ func ExampleExpression_case05() {
 	// }
 }
 
-func ExampleExpression_case06() {
-	fmt.Println(exampleAST(8, "1.97 --"))
+func ExampleExpression_case10() {
+	fmt.Println(exampleAST(12, "1.97 --"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 6,
+	// · Case: 10,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
@@ -192,23 +295,25 @@ func ExampleExpression_case06() {
 	// }
 }
 
-func ExampleExpression_case07() {
-	fmt.Println(exampleAST(9, "1.97 -> 1.98"))
+func ExampleExpression_case11() {
+	fmt.Println(exampleAST(13, "1.97 -> 1.98"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 7,
+	// · Case: 11,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.98",
 	// · · · },
 	// · · },
@@ -217,23 +322,25 @@ func ExampleExpression_case07() {
 	// }
 }
 
-func ExampleExpression_case08() {
-	fmt.Println(exampleAST(10, "1.97 /* 1.98"))
+func ExampleExpression_case12() {
+	fmt.Println(exampleAST(14, "1.97 /* 1.98"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 8,
+	// · Case: 12,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.98",
 	// · · · },
 	// · · },
@@ -242,23 +349,25 @@ func ExampleExpression_case08() {
 	// }
 }
 
-func ExampleExpression_case09() {
-	fmt.Println(exampleAST(11, "1.97 /. 1.98"))
+func ExampleExpression_case13() {
+	fmt.Println(exampleAST(15, "1.97 /. 1.98"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 9,
+	// · Case: 13,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.98",
 	// · · · },
 	// · · },
@@ -267,23 +376,25 @@ func ExampleExpression_case09() {
 	// }
 }
 
-func ExampleExpression_case10() {
-	fmt.Println(exampleAST(12, "1.97 // 1.98"))
+func ExampleExpression_case14() {
+	fmt.Println(exampleAST(16, "1.97 // 1.98"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 10,
+	// · Case: 14,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.98",
 	// · · · },
 	// · · },
@@ -292,23 +403,25 @@ func ExampleExpression_case10() {
 	// }
 }
 
-func ExampleExpression_case11() {
-	fmt.Println(exampleAST(13, "1.97 //. 1.98"))
+func ExampleExpression_case15() {
+	fmt.Println(exampleAST(17, "1.97 //. 1.98"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 11,
+	// · Case: 15,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.98",
 	// · · · },
 	// · · },
@@ -317,23 +430,25 @@ func ExampleExpression_case11() {
 	// }
 }
 
-func ExampleExpression_case12() {
-	fmt.Println(exampleAST(14, "1.97 //@ 1.98"))
+func ExampleExpression_case16() {
+	fmt.Println(exampleAST(18, "1.97 //@ 1.98"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 12,
+	// · Case: 16,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.98",
 	// · · · },
 	// · · },
@@ -342,23 +457,25 @@ func ExampleExpression_case12() {
 	// }
 }
 
-func ExampleExpression_case13() {
-	fmt.Println(exampleAST(15, "1.97 /; 1.98"))
+func ExampleExpression_case17() {
+	fmt.Println(exampleAST(19, "1.97 /; 1.98"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 13,
+	// · Case: 17,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.98",
 	// · · · },
 	// · · },
@@ -367,23 +484,25 @@ func ExampleExpression_case13() {
 	// }
 }
 
-func ExampleExpression_case14() {
-	fmt.Println(exampleAST(16, "1.97 /@ 1.98"))
+func ExampleExpression_case18() {
+	fmt.Println(exampleAST(20, "1.97 /@ 1.98"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 14,
+	// · Case: 18,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.98",
 	// · · · },
 	// · · },
@@ -392,23 +511,25 @@ func ExampleExpression_case14() {
 	// }
 }
 
-func ExampleExpression_case15() {
-	fmt.Println(exampleAST(17, "1.97 := 1.98"))
+func ExampleExpression_case19() {
+	fmt.Println(exampleAST(21, "1.97 := 1.98"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 15,
+	// · Case: 19,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.98",
 	// · · · },
 	// · · },
@@ -417,23 +538,25 @@ func ExampleExpression_case15() {
 	// }
 }
 
-func ExampleExpression_case16() {
-	fmt.Println(exampleAST(18, "1.97 :> 1.98"))
+func ExampleExpression_case20() {
+	fmt.Println(exampleAST(22, "1.97 :> 1.98"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 16,
+	// · Case: 20,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.98",
 	// · · · },
 	// · · },
@@ -442,23 +565,25 @@ func ExampleExpression_case16() {
 	// }
 }
 
-func ExampleExpression_case17() {
-	fmt.Println(exampleAST(19, "1.97 <= 1.98"))
+func ExampleExpression_case21() {
+	fmt.Println(exampleAST(23, "1.97 <= 1.98"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 17,
+	// · Case: 21,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.98",
 	// · · · },
 	// · · },
@@ -467,23 +592,25 @@ func ExampleExpression_case17() {
 	// }
 }
 
-func ExampleExpression_case18() {
-	fmt.Println(exampleAST(20, "1.97 <> 1.98"))
+func ExampleExpression_case22() {
+	fmt.Println(exampleAST(24, "1.97 <> 1.98"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 18,
+	// · Case: 22,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.98",
 	// · · · },
 	// · · },
@@ -492,23 +619,25 @@ func ExampleExpression_case18() {
 	// }
 }
 
-func ExampleExpression_case19() {
-	fmt.Println(exampleAST(21, "1.97 =!= 1.98"))
+func ExampleExpression_case23() {
+	fmt.Println(exampleAST(25, "1.97 =!= 1.98"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 19,
+	// · Case: 23,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.98",
 	// · · · },
 	// · · },
@@ -517,23 +646,25 @@ func ExampleExpression_case19() {
 	// }
 }
 
-func ExampleExpression_case20() {
-	fmt.Println(exampleAST(22, "1.97 == 1.98"))
+func ExampleExpression_case24() {
+	fmt.Println(exampleAST(26, "1.97 == 1.98"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 20,
+	// · Case: 24,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.98",
 	// · · · },
 	// · · },
@@ -542,23 +673,25 @@ func ExampleExpression_case20() {
 	// }
 }
 
-func ExampleExpression_case21() {
-	fmt.Println(exampleAST(23, "1.97 === 1.98"))
+func ExampleExpression_case25() {
+	fmt.Println(exampleAST(27, "1.97 === 1.98"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 21,
+	// · Case: 25,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.98",
 	// · · · },
 	// · · },
@@ -567,23 +700,25 @@ func ExampleExpression_case21() {
 	// }
 }
 
-func ExampleExpression_case22() {
-	fmt.Println(exampleAST(24, "1.97 >= 1.98"))
+func ExampleExpression_case26() {
+	fmt.Println(exampleAST(28, "1.97 >= 1.98"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 22,
+	// · Case: 26,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.98",
 	// · · · },
 	// · · },
@@ -592,23 +727,25 @@ func ExampleExpression_case22() {
 	// }
 }
 
-func ExampleExpression_case23() {
-	fmt.Println(exampleAST(25, "1.97 @* 1.98"))
+func ExampleExpression_case27() {
+	fmt.Println(exampleAST(29, "1.97 @* 1.98"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 23,
+	// · Case: 27,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.98",
 	// · · · },
 	// · · },
@@ -617,23 +754,25 @@ func ExampleExpression_case23() {
 	// }
 }
 
-func ExampleExpression_case24() {
-	fmt.Println(exampleAST(26, "1.97 @@ 1.98"))
+func ExampleExpression_case28() {
+	fmt.Println(exampleAST(30, "1.97 @@ 1.98"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 24,
+	// · Case: 28,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.98",
 	// · · · },
 	// · · },
@@ -642,23 +781,25 @@ func ExampleExpression_case24() {
 	// }
 }
 
-func ExampleExpression_case25() {
-	fmt.Println(exampleAST(27, "1.97 @@@ 1.98"))
+func ExampleExpression_case29() {
+	fmt.Println(exampleAST(31, "1.97 @@@ 1.98"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 25,
+	// · Case: 29,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.98",
 	// · · · },
 	// · · },
@@ -667,23 +808,25 @@ func ExampleExpression_case25() {
 	// }
 }
 
-func ExampleExpression_case26() {
-	fmt.Println(exampleAST(28, "1.97 \\& 1.98"))
+func ExampleExpression_case30() {
+	fmt.Println(exampleAST(32, "1.97 \\& 1.98"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 26,
+	// · Case: 30,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.98",
 	// · · · },
 	// · · },
@@ -692,23 +835,25 @@ func ExampleExpression_case26() {
 	// }
 }
 
-func ExampleExpression_case27() {
-	fmt.Println(exampleAST(29, "1.97 \\+ 1.98"))
+func ExampleExpression_case31() {
+	fmt.Println(exampleAST(33, "1.97 \\+ 1.98"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 27,
+	// · Case: 31,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.98",
 	// · · · },
 	// · · },
@@ -717,23 +862,62 @@ func ExampleExpression_case27() {
 	// }
 }
 
-func ExampleExpression_case28() {
-	fmt.Println(exampleAST(30, "1.97 \\_ 1.98"))
+func ExampleExpression_case32() {
+	fmt.Println(exampleAST(34, "1.97 \\^ 1.98 \\% 1.99"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 28,
+	// · Case: 32,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
+	// · · · · Token: FLOAT, "1.98",
+	// · · · },
+	// · · },
+	// · },
+	// · Expression3: &wl.Expression{
+	// · · Case: 55,
+	// · · Factor: &wl.Factor{
+	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
+	// · · · · Token: FLOAT, "1.99",
+	// · · · },
+	// · · },
+	// · },
+	// · Token: POWER_SUBSCRIPT1, "\\^",
+	// · Token2: POWER_SUBSCRIPT2, "\\%",
+	// }
+}
+
+func ExampleExpression_case33() {
+	fmt.Println(exampleAST(35, "1.97 \\_ 1.98"))
+	// Output:
+	// &wl.Expression{
+	// · Case: 33,
+	// · Expression: &wl.Expression{
+	// · · Case: 55,
+	// · · Factor: &wl.Factor{
+	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
+	// · · · · Token: FLOAT, "1.97",
+	// · · · },
+	// · · },
+	// · },
+	// · Expression2: &wl.Expression{
+	// · · Case: 55,
+	// · · Factor: &wl.Factor{
+	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.98",
 	// · · · },
 	// · · },
@@ -742,23 +926,25 @@ func ExampleExpression_case28() {
 	// }
 }
 
-func ExampleExpression_case29() {
-	fmt.Println(exampleAST(31, "1.97 || 1.98"))
+func ExampleExpression_case34() {
+	fmt.Println(exampleAST(36, "1.97 || 1.98"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 29,
+	// · Case: 34,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.98",
 	// · · · },
 	// · · },
@@ -767,70 +953,25 @@ func ExampleExpression_case29() {
 	// }
 }
 
-func ExampleExpression_case30() {
-	fmt.Println(exampleAST(32, ""))
-	// Output:
-}
-
-func ExampleExpression_case31() {
-	fmt.Println(exampleAST(33, "1.97 !"))
+func ExampleExpression_case35() {
+	fmt.Println(exampleAST(37, "1.97 * 1.98"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 31,
+	// · Case: 35,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
-	// · · · · Token: FLOAT, "1.97",
-	// · · · },
-	// · · },
-	// · },
-	// · Token: '!',
-	// }
-}
-
-func ExampleExpression_case32() {
-	fmt.Println(exampleAST(34, "1.97 ! 1.98"))
-	// Output:
-	// &wl.Expression{
-	// · Case: 32,
-	// · Expression: &wl.Expression{
-	// · · Case: 49,
-	// · · Factor: &wl.Factor{
-	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
-	// · · · · Token: FLOAT, "1.98",
-	// · · · },
-	// · · },
-	// · },
-	// · Token: '!',
-	// }
-}
-
-func ExampleExpression_case33() {
-	fmt.Println(exampleAST(35, "1.97 * 1.98"))
-	// Output:
-	// &wl.Expression{
-	// · Case: 33,
-	// · Expression: &wl.Expression{
-	// · · Case: 49,
-	// · · Factor: &wl.Factor{
-	// · · · Term: &wl.Term{
-	// · · · · Token: FLOAT, "1.97",
-	// · · · },
-	// · · },
-	// · },
-	// · Expression2: &wl.Expression{
-	// · · Case: 49,
-	// · · Factor: &wl.Factor{
-	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.98",
 	// · · · },
 	// · · },
@@ -839,23 +980,25 @@ func ExampleExpression_case33() {
 	// }
 }
 
-func ExampleExpression_case34() {
-	fmt.Println(exampleAST(36, "1.97 + 1.98"))
+func ExampleExpression_case36() {
+	fmt.Println(exampleAST(38, "1.97 + 1.98"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 34,
+	// · Case: 36,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.98",
 	// · · · },
 	// · · },
@@ -864,23 +1007,25 @@ func ExampleExpression_case34() {
 	// }
 }
 
-func ExampleExpression_case35() {
-	fmt.Println(exampleAST(37, "1.97 - 1.98"))
+func ExampleExpression_case37() {
+	fmt.Println(exampleAST(39, "1.97 - 1.98"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 35,
+	// · Case: 37,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.98",
 	// · · · },
 	// · · },
@@ -889,23 +1034,25 @@ func ExampleExpression_case35() {
 	// }
 }
 
-func ExampleExpression_case36() {
-	fmt.Println(exampleAST(38, "1.97 . 1.98"))
+func ExampleExpression_case38() {
+	fmt.Println(exampleAST(40, "1.97 . 1.98"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 36,
+	// · Case: 38,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.98",
 	// · · · },
 	// · · },
@@ -914,23 +1061,25 @@ func ExampleExpression_case36() {
 	// }
 }
 
-func ExampleExpression_case37() {
-	fmt.Println(exampleAST(39, "1.97 / 1.98"))
+func ExampleExpression_case39() {
+	fmt.Println(exampleAST(41, "1.97 / 1.98"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 37,
+	// · Case: 39,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.98",
 	// · · · },
 	// · · },
@@ -939,23 +1088,25 @@ func ExampleExpression_case37() {
 	// }
 }
 
-func ExampleExpression_case38() {
-	fmt.Println(exampleAST(40, "1.97 : 1.98"))
+func ExampleExpression_case40() {
+	fmt.Println(exampleAST(42, "1.97 : 1.98"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 38,
+	// · Case: 40,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.98",
 	// · · · },
 	// · · },
@@ -964,15 +1115,16 @@ func ExampleExpression_case38() {
 	// }
 }
 
-func ExampleExpression_case39() {
-	fmt.Println(exampleAST(41, "1.97 ;"))
+func ExampleExpression_case41() {
+	fmt.Println(exampleAST(43, "1.97 ;"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 39,
+	// · Case: 41,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
@@ -981,23 +1133,25 @@ func ExampleExpression_case39() {
 	// }
 }
 
-func ExampleExpression_case40() {
-	fmt.Println(exampleAST(42, "1.97 ; 1.98"))
+func ExampleExpression_case42() {
+	fmt.Println(exampleAST(44, "1.97 ; 1.98"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 40,
+	// · Case: 42,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.98",
 	// · · · },
 	// · · },
@@ -1006,23 +1160,25 @@ func ExampleExpression_case40() {
 	// }
 }
 
-func ExampleExpression_case41() {
-	fmt.Println(exampleAST(43, "1.97 < 1.98"))
+func ExampleExpression_case43() {
+	fmt.Println(exampleAST(45, "1.97 < 1.98"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 41,
+	// · Case: 43,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.98",
 	// · · · },
 	// · · },
@@ -1031,23 +1187,25 @@ func ExampleExpression_case41() {
 	// }
 }
 
-func ExampleExpression_case42() {
-	fmt.Println(exampleAST(44, "1.97 = 1.98"))
+func ExampleExpression_case44() {
+	fmt.Println(exampleAST(46, "1.97 = 1.98"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 42,
+	// · Case: 44,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.98",
 	// · · · },
 	// · · },
@@ -1056,23 +1214,25 @@ func ExampleExpression_case42() {
 	// }
 }
 
-func ExampleExpression_case43() {
-	fmt.Println(exampleAST(45, "1.97 > 1.98"))
+func ExampleExpression_case45() {
+	fmt.Println(exampleAST(47, "1.97 > 1.98"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 43,
+	// · Case: 45,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.98",
 	// · · · },
 	// · · },
@@ -1081,23 +1241,25 @@ func ExampleExpression_case43() {
 	// }
 }
 
-func ExampleExpression_case44() {
-	fmt.Println(exampleAST(46, "1.97 ? 1.98"))
+func ExampleExpression_case46() {
+	fmt.Println(exampleAST(48, "1.97 ? 1.98"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 44,
+	// · Case: 46,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.98",
 	// · · · },
 	// · · },
@@ -1106,23 +1268,25 @@ func ExampleExpression_case44() {
 	// }
 }
 
-func ExampleExpression_case45() {
-	fmt.Println(exampleAST(47, "1.97 @ 1.98"))
+func ExampleExpression_case47() {
+	fmt.Println(exampleAST(49, "1.97 @ 1.98"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 45,
+	// · Case: 47,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.98",
 	// · · · },
 	// · · },
@@ -1131,23 +1295,25 @@ func ExampleExpression_case45() {
 	// }
 }
 
-func ExampleExpression_case46() {
-	fmt.Println(exampleAST(48, "1.97 ^ 1.98"))
+func ExampleExpression_case48() {
+	fmt.Println(exampleAST(50, "1.97 ^ 1.98"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 46,
+	// · Case: 48,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.98",
 	// · · · },
 	// · · },
@@ -1156,23 +1322,25 @@ func ExampleExpression_case46() {
 	// }
 }
 
-func ExampleExpression_case47() {
-	fmt.Println(exampleAST(49, "1.97 | 1.98"))
+func ExampleExpression_case49() {
+	fmt.Println(exampleAST(51, "1.97 | 1.98"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 47,
+	// · Case: 49,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.98",
 	// · · · },
 	// · · },
@@ -1181,23 +1349,25 @@ func ExampleExpression_case47() {
 	// }
 }
 
-func ExampleExpression_case48() {
-	fmt.Println(exampleAST(50, "1.97 ~ 1.98"))
+func ExampleExpression_case50() {
+	fmt.Println(exampleAST(52, "1.97 ~ 1.98"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 48,
+	// · Case: 50,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.98",
 	// · · · },
 	// · · },
@@ -1206,52 +1376,123 @@ func ExampleExpression_case48() {
 	// }
 }
 
-func ExampleExpression_case49() {
-	fmt.Println(exampleAST(51, "1.97"))
+func ExampleExpression_case51() {
+	fmt.Println(exampleAST(53, "1.97 \uf3c8"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 49,
+	// · Case: 51,
+	// · Expression: &wl.Expression{
+	// · · Case: 55,
+	// · · Factor: &wl.Factor{
+	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
+	// · · · · Token: FLOAT, "1.97",
+	// · · · },
+	// · · },
+	// · },
+	// · Token: CONJUGATE, "\uf3c8",
+	// }
+}
+
+func ExampleExpression_case52() {
+	fmt.Println(exampleAST(54, "1.97 \uf3c9"))
+	// Output:
+	// &wl.Expression{
+	// · Case: 52,
+	// · Expression: &wl.Expression{
+	// · · Case: 55,
+	// · · Factor: &wl.Factor{
+	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
+	// · · · · Token: FLOAT, "1.97",
+	// · · · },
+	// · · },
+	// · },
+	// · Token: CONJUGATE_TRANSPOSE, "\uf3c9",
+	// }
+}
+
+func ExampleExpression_case53() {
+	fmt.Println(exampleAST(55, "1.97 \uf3ce"))
+	// Output:
+	// &wl.Expression{
+	// · Case: 53,
+	// · Expression: &wl.Expression{
+	// · · Case: 55,
+	// · · Factor: &wl.Factor{
+	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
+	// · · · · Token: FLOAT, "1.97",
+	// · · · },
+	// · · },
+	// · },
+	// · Token: HERMITIAN_CONJUGATE, "\uf3ce",
+	// }
+}
+
+func ExampleExpression_case54() {
+	fmt.Println(exampleAST(56, "1.97 \uf3c7"))
+	// Output:
+	// &wl.Expression{
+	// · Case: 54,
+	// · Expression: &wl.Expression{
+	// · · Case: 55,
+	// · · Factor: &wl.Factor{
+	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
+	// · · · · Token: FLOAT, "1.97",
+	// · · · },
+	// · · },
+	// · },
+	// · Token: TRANSPOSE, "\uf3c7",
+	// }
+}
+
+func ExampleExpression_case55() {
+	fmt.Println(exampleAST(57, "1.97"))
+	// Output:
+	// &wl.Expression{
+	// · Case: 55,
 	// · Factor: &wl.Factor{
 	// · · Term: &wl.Term{
+	// · · · Case: 4,
 	// · · · Token: FLOAT, "1.97",
 	// · · },
 	// · },
 	// }
 }
 
-func ExampleExpression_case50() {
-	fmt.Println(exampleAST(52, ""))
-	// Output:
-}
-
 func ExampleFactor() {
-	fmt.Println(exampleAST(69, "1.97"))
+	fmt.Println(exampleAST(77, "1.97"))
 	// Output:
 	// &wl.Factor{
 	// · Term: &wl.Term{
+	// · · Case: 4,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// }
 }
 
 func ExampleFactor_case1() {
-	fmt.Println(exampleAST(70, "1.97 1.98"))
+	fmt.Println(exampleAST(78, "1.97 1.98"))
 	// Output:
 	// &wl.Factor{
 	// · Case: 1,
 	// · Factor: &wl.Factor{
 	// · · Term: &wl.Term{
+	// · · · Case: 4,
 	// · · · Token: FLOAT, "1.98",
 	// · · },
 	// · },
 	// · Term: &wl.Term{
+	// · · Case: 4,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// }
 }
 
 func ExampleTag() {
-	fmt.Println(exampleAST(75, "a :: b"))
+	fmt.Println(exampleAST(83, "a :: b"))
 	// Output:
 	// &wl.Tag{
 	// · Token: IDENT, "b",
@@ -1259,7 +1500,7 @@ func ExampleTag() {
 }
 
 func ExampleTag_case1() {
-	fmt.Println(exampleAST(76, "a :: \"b\""))
+	fmt.Println(exampleAST(84, "a :: \"b\""))
 	// Output:
 	// &wl.Tag{
 	// · Case: 1,
@@ -1268,32 +1509,24 @@ func ExampleTag_case1() {
 }
 
 func ExampleTerm() {
-	fmt.Println(exampleAST(53, "1.97"))
+	fmt.Println(exampleAST(58, "<< \"a\""))
 	// Output:
 	// &wl.Term{
-	// · Token: FLOAT, "1.97",
-	// }
-}
-
-func ExampleTerm_case01() {
-	fmt.Println(exampleAST(54, "<< \"a\""))
-	// Output:
-	// &wl.Term{
-	// · Case: 1,
 	// · Token: GET, "<<",
 	// · Token2: STRING, "a",
 	// }
 }
 
-func ExampleTerm_case02() {
-	fmt.Println(exampleAST(55, "( 1.97 )"))
+func ExampleTerm_case01() {
+	fmt.Println(exampleAST(59, "( 1.97 )"))
 	// Output:
 	// &wl.Term{
-	// · Case: 2,
+	// · Case: 1,
 	// · Expression: &wl.Expression{
-	// · · Case: 49,
+	// · · Case: 55,
 	// · · Factor: &wl.Factor{
 	// · · · Term: &wl.Term{
+	// · · · · Case: 4,
 	// · · · · Token: FLOAT, "1.97",
 	// · · · },
 	// · · },
@@ -1303,26 +1536,27 @@ func ExampleTerm_case02() {
 	// }
 }
 
-func ExampleTerm_case03() {
-	fmt.Println(exampleAST(56, "{ }"))
+func ExampleTerm_case02() {
+	fmt.Println(exampleAST(60, "{ }"))
 	// Output:
 	// &wl.Term{
-	// · Case: 3,
+	// · Case: 2,
 	// · Token: '{',
 	// · Token2: '}',
 	// }
 }
 
-func ExampleTerm_case04() {
-	fmt.Println(exampleAST(57, "{ 1.97 }"))
+func ExampleTerm_case03() {
+	fmt.Println(exampleAST(61, "{ 1.97 }"))
 	// Output:
 	// &wl.Term{
-	// · Case: 4,
+	// · Case: 3,
 	// · ExprList: &wl.ExprList{
 	// · · Expression: &wl.Expression{
-	// · · · Case: 49,
+	// · · · Case: 55,
 	// · · · Factor: &wl.Factor{
 	// · · · · Term: &wl.Term{
+	// · · · · · Case: 4,
 	// · · · · · Token: FLOAT, "1.97",
 	// · · · · },
 	// · · · },
@@ -1333,8 +1567,17 @@ func ExampleTerm_case04() {
 	// }
 }
 
+func ExampleTerm_case04() {
+	fmt.Println(exampleAST(62, "1.97"))
+	// Output:
+	// &wl.Term{
+	// · Case: 4,
+	// · Token: FLOAT, "1.97",
+	// }
+}
+
 func ExampleTerm_case05() {
-	fmt.Println(exampleAST(58, "a"))
+	fmt.Println(exampleAST(63, "a"))
 	// Output:
 	// &wl.Term{
 	// · Case: 5,
@@ -1343,7 +1586,7 @@ func ExampleTerm_case05() {
 }
 
 func ExampleTerm_case06() {
-	fmt.Println(exampleAST(59, "a :: b"))
+	fmt.Println(exampleAST(64, "a :: b"))
 	// Output:
 	// &wl.Term{
 	// · Case: 6,
@@ -1356,7 +1599,7 @@ func ExampleTerm_case06() {
 }
 
 func ExampleTerm_case07() {
-	fmt.Println(exampleAST(60, "a :: b :: c"))
+	fmt.Println(exampleAST(65, "a :: b :: c"))
 	// Output:
 	// &wl.Term{
 	// · Case: 7,
@@ -1373,7 +1616,7 @@ func ExampleTerm_case07() {
 }
 
 func ExampleTerm_case08() {
-	fmt.Println(exampleAST(61, "97"))
+	fmt.Println(exampleAST(66, "97"))
 	// Output:
 	// &wl.Term{
 	// · Case: 8,
@@ -1382,7 +1625,7 @@ func ExampleTerm_case08() {
 }
 
 func ExampleTerm_case09() {
-	fmt.Println(exampleAST(62, "a_"))
+	fmt.Println(exampleAST(67, "a_"))
 	// Output:
 	// &wl.Term{
 	// · Case: 9,
@@ -1391,7 +1634,7 @@ func ExampleTerm_case09() {
 }
 
 func ExampleTerm_case10() {
-	fmt.Println(exampleAST(63, "#97"))
+	fmt.Println(exampleAST(68, "#97"))
 	// Output:
 	// &wl.Term{
 	// · Case: 10,
@@ -1400,7 +1643,7 @@ func ExampleTerm_case10() {
 }
 
 func ExampleTerm_case11() {
-	fmt.Println(exampleAST(64, "\"a\""))
+	fmt.Println(exampleAST(69, "\"a\""))
 	// Output:
 	// &wl.Term{
 	// · Case: 11,
@@ -1409,21 +1652,23 @@ func ExampleTerm_case11() {
 }
 
 func ExampleTerm_case12() {
-	fmt.Println(exampleAST(65, "1.97 [[ 1.98 ]]"))
+	fmt.Println(exampleAST(70, "1.97 [[ 1.98 ]]"))
 	// Output:
 	// &wl.Term{
 	// · Case: 12,
 	// · ExprList: &wl.ExprList{
 	// · · Expression: &wl.Expression{
-	// · · · Case: 49,
+	// · · · Case: 55,
 	// · · · Factor: &wl.Factor{
 	// · · · · Term: &wl.Term{
+	// · · · · · Case: 4,
 	// · · · · · Token: FLOAT, "1.98",
 	// · · · · },
 	// · · · },
 	// · · },
 	// · },
 	// · Term: &wl.Term{
+	// · · Case: 4,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Token: LPART, "[[",
@@ -1432,23 +1677,52 @@ func ExampleTerm_case12() {
 }
 
 func ExampleTerm_case13() {
-	fmt.Println(exampleAST(66, "1.97 &"))
+	fmt.Println(exampleAST(71, "1.97 !"))
 	// Output:
 	// &wl.Term{
 	// · Case: 13,
 	// · Term: &wl.Term{
+	// · · Case: 4,
+	// · · Token: FLOAT, "1.97",
+	// · },
+	// · Token: '!',
+	// }
+}
+
+func ExampleTerm_case14() {
+	fmt.Println(exampleAST(72, "1.97 ! !"))
+	// Output:
+	// &wl.Term{
+	// · Case: 14,
+	// · Term: &wl.Term{
+	// · · Case: 4,
+	// · · Token: FLOAT, "1.97",
+	// · },
+	// · Token: '!',
+	// · Token2: '!',
+	// }
+}
+
+func ExampleTerm_case15() {
+	fmt.Println(exampleAST(73, "1.97 &"))
+	// Output:
+	// &wl.Term{
+	// · Case: 15,
+	// · Term: &wl.Term{
+	// · · Case: 4,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Token: '&',
 	// }
 }
 
-func ExampleTerm_case14() {
-	fmt.Println(exampleAST(67, "1.97 [ ]"))
+func ExampleTerm_case16() {
+	fmt.Println(exampleAST(74, "1.97 [ ]"))
 	// Output:
 	// &wl.Term{
-	// · Case: 14,
+	// · Case: 16,
 	// · Term: &wl.Term{
+	// · · Case: 4,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Token: '[',
@@ -1456,26 +1730,41 @@ func ExampleTerm_case14() {
 	// }
 }
 
-func ExampleTerm_case15() {
-	fmt.Println(exampleAST(68, "1.97 [ 1.98 ]"))
+func ExampleTerm_case17() {
+	fmt.Println(exampleAST(75, "1.97 [ 1.98 ]"))
 	// Output:
 	// &wl.Term{
-	// · Case: 15,
+	// · Case: 17,
 	// · ExprList: &wl.ExprList{
 	// · · Expression: &wl.Expression{
-	// · · · Case: 49,
+	// · · · Case: 55,
 	// · · · Factor: &wl.Factor{
 	// · · · · Term: &wl.Term{
+	// · · · · · Case: 4,
 	// · · · · · Token: FLOAT, "1.98",
 	// · · · · },
 	// · · · },
 	// · · },
 	// · },
 	// · Term: &wl.Term{
+	// · · Case: 4,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Token: '[',
 	// · Token2: ']',
+	// }
+}
+
+func ExampleTerm_case18() {
+	fmt.Println(exampleAST(76, "1.97 '"))
+	// Output:
+	// &wl.Term{
+	// · Case: 18,
+	// · Term: &wl.Term{
+	// · · Case: 4,
+	// · · Token: FLOAT, "1.97",
+	// · },
+	// · Token: QUOTE, "'",
 	// }
 }
 

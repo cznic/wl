@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package WL provides a Wolfram Language parser (Work In Progress)
+// Package wl provides a Wolfram Language parser (Work In Progress)
 package wl
 
 import (

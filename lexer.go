@@ -20,6 +20,13 @@ const (
 	ccLetter
 	ccLetterLike
 	ccIgnore
+	ccConjugate
+	ccTranspose
+	ccConjugateTranspose
+	ccHermitianConjugate
+	ccSqrt
+	ccIntegrate
+	ccDifferentialD
 	ccOther
 )
 
@@ -31,39 +38,46 @@ var (
 	}
 
 	namedChars = map[string]rune{
-		"RawSpace":            ' ',
-		"RawExclamation":      '!',
-		"RawDoubleQuote":      '"',
-		"RawNumberSign":       '#',
-		"RawDollar":           '$',
-		"RawPercent":          '%',
+		"Conjugate":           '\uf3c8',
+		"ConjugateTranspose":  '\uf3c9',
+		"DifferentialD":       '\uf74c',
+		"HermitianConjugate":  '\uf3ce',
+		"Integrate":           '\u222b',
 		"RawAmpersand":        '&',
-		"RawQuote":            '\'',
-		"RawLeftParenthesis":  '(',
-		"RawRightParenthesis": ')',
-		"RawStar":             '*',
-		"RawPlus":             '+',
+		"RawAt":               '@',
+		"RawBackquote":        '`',
+		"RawBackslash":        '∖',
+		"RawColon":            ':',
 		"RawComma":            ',',
 		"RawDash":             '-',
+		"RawDollar":           '$',
 		"RawDot":              '.',
-		"RawSlash":            '/',
-		"RawColon":            ':',
-		"RawSemicolon":        ';',
-		"RawLess":             '<',
+		"RawDoubleQuote":      '"',
 		"RawEqual":            '=',
+		"RawExclamation":      '!',
 		"RawGreater":          '>',
-		"RawQuestion":         '?',
-		"RawAt":               '@',
-		"RawLeftBracket":      '[',
-		"RawBackslash":        '∖',
-		"RawRightBracket":     ']',
-		"RawWedge":            '^',
-		"RawUnderscore":       '_',
-		"RawBackquote":        '`',
 		"RawLeftBrace":        '{',
-		"RawVerticalBar":      '|',
+		"RawLeftBracket":      '[',
+		"RawLeftParenthesis":  '(',
+		"RawLess":             '<',
+		"RawNumberSign":       '#',
+		"RawPercent":          '%',
+		"RawPlus":             '+',
+		"RawQuestion":         '?',
+		"RawQuote":            '\'',
 		"RawRightBrace":       '}',
+		"RawRightBracket":     ']',
+		"RawRightParenthesis": ')',
+		"RawSemicolon":        ';',
+		"RawSlash":            '/',
+		"RawSpace":            ' ',
+		"RawStar":             '*',
 		"RawTilde":            '~',
+		"RawUnderscore":       '_',
+		"RawVerticalBar":      '|',
+		"RawWedge":            '^',
+		"Sqrt":                '\u221a',
+		"Transpose":           '\uf3c7',
 	}
 )
 
@@ -75,6 +89,20 @@ func runeClass(r rune) int {
 		return ccIgnore
 	case r < 0x80:
 		return int(r)
+	case r == '\uf3c7':
+		return ccTranspose
+	case r == '\uf3c8':
+		return ccConjugate
+	case r == '\uf3c9':
+		return ccConjugateTranspose
+	case r == '\uf3ce':
+		return ccHermitianConjugate
+	case r == '\u221a':
+		return ccSqrt
+	case r == '\u222b':
+		return ccIntegrate
+	case r == '\uf74c':
+		return ccDifferentialD
 	case unicode.IsDigit(r):
 		return ccDigit
 	case unicode.IsLetter(r):

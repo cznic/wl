@@ -27,11 +27,18 @@ func (lx *lexer) scan() (r int) {
 %}
 
 /* classes */
-EOF		\x80
-D		\x81
-L		\x82
-LL		\x83
-ignore		\x84
+EOF			\x80
+D			\x81
+L			\x82
+LL			\x83
+ignore			\x84
+Conjugate		\x85
+Transpose		\x86
+ConjugateTranspose	\x87
+HermitianConjugate	\x88
+Sqrt			\x89
+Integrate		\x8a
+DifferentialD		\x8b
 
 approx		{digits}"."{digits}|"."{digits}|{digits}"."
 base		{digits}^^
@@ -82,8 +89,8 @@ schar		[^\x22]|\n
 {ignore}
 	return IGNORE
 
-
 "&&"	return AND
+"'"	return QUOTE
 "++"	return INC
 "--"	return DEC
 "->"	return RULE
@@ -108,8 +115,11 @@ schar		[^\x22]|\n
 "@@"	return APPLY
 "@@@"	return APPLY_ALL
 "[["	return lx.push(LPART)
+"\%"	return POWER_SUBSCRIPT2
 "\&"	return OVERSCRIPT
 "\+"	return UNDERSCRIPT
+"\@"	return SQRT2
+"\^"	return POWER_SUBSCRIPT1
 "\_"	return SUBSCRIPT
 "||"	return OR
 
@@ -123,8 +133,16 @@ schar		[^\x22]|\n
 	lx.Unget(lex.NewChar(lx.First.Pos()+1, ']'))
 	return ']'
 
+
+{ConjugateTranspose}	return CONJUGATE_TRANSPOSE
+{Conjugate}		return CONJUGATE
+{DifferentialD}		return DIFFERENTIAL_D
+{HermitianConjugate}	return HERMITIAN_CONJUGATE
+{Integrate}		return INTEGRATE
+{Sqrt}			return SQRT
+{Transpose}		return TRANSPOSE
 {float}			return FLOAT
-{ident}(`{ident})*	return IDENT
+{ident}			return IDENT
 {int}			return INT
 {pattern}		return PATTERN
 {slot}			return SLOT

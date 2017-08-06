@@ -39,6 +39,9 @@ package wl
 	OR			"||"
 	OVERSCRIPT		"\\&"
 	POSTFIX			"//"
+	POWER_SUBSCRIPT1	"\\^"
+	POWER_SUBSCRIPT2	"\\%"
+	QUOTE			"'"
 	REPLACEALL		"/."
 	REPLACEREP		"//."
 	RIGHT_COMPOSITION	"/*"
@@ -47,10 +50,19 @@ package wl
 	RULEDELAYED		":>"
 	SAME			"==="
 	SET_DELAYED		":="
+	SQRT			"√"
+	SQRT2			"\\@"
 	STRINGJOIN		"<>"
 	SUBSCRIPT		"\\_"
 	UNDERSCRIPT		"\\+"
 	UNSAME			"=!="
+	INTEGRATE		"∫"
+
+	CONJUGATE			"\uf3c8"
+	CONJUGATE_TRANSPOSE		"\uf3c9"
+	DIFFERENTIAL_D			"\uf74c"
+	HERMITIAN_CONJUGATE		"\uf3ce"
+	TRANSPOSE			"\uf3c7"
 
 %type	<Node>
 	start		"valid input"
@@ -73,7 +85,6 @@ package wl
 %left RULEDELAYED
 %left RULE
 %left CONDITION
-%precedence NOPATTERN
 %left PATTERN
 %left '|'
 %left OR
@@ -92,9 +103,13 @@ package wl
 %left '/'
 %precedence UNARYMINUS
 %left '.'
-%right '^'
-%left STRINGJOIN
 
+%right	INTEGRATE DIFFERENTIAL_D
+%right	SQRT SQRT2
+%right 	'^' POWER_SUBSCRIPT1 POWER_SUBSCRIPT2	// Power, Power[Subscript]
+%left STRINGJOIN
+%nonassoc	QUOTE
+%nonassoc	CONJUGATE TRANSPOSE CONJUGATE_TRANSPOSE HERMITIAN_CONJUGATE
 %nonassoc	FACTORIAL
 %right	MAP MAP_ALL APPLY APPLY_ALL
 %left	'~'
@@ -119,6 +134,10 @@ start:
 Expression:
 	"++" Expression %prec PRE_INC
 |	"--" Expression %prec PRE_INC
+|	"\\@" Expression
+|	"\\@" Expression "\\%" Expression
+|	"√" Expression
+|	"∫" Expression DIFFERENTIAL_D Expression
 |	'!' Expression
 |	'-' Expression %prec UNARYMINUS
 |	Expression "&&" Expression
@@ -145,11 +164,9 @@ Expression:
 |	Expression "@@@" Expression
 |	Expression "\\&" Expression
 |	Expression "\\+" Expression
+|	Expression "\\^" Expression "\\%" Expression
 |	Expression "\\_" Expression
 |	Expression "||" Expression
-|	Expression '!' '!' %prec FACTORIAL
-|	Expression '!' %prec FACTORIAL
-|	Expression '!' Expression %prec FACTORIAL
 |	Expression '*' Expression
 |	Expression '+' Expression
 |	Expression '-' Expression
@@ -166,15 +183,18 @@ Expression:
 |	Expression '^' Expression
 |	Expression '|' Expression
 |	Expression '~' Expression
-|	Factor %prec NOPATTERN
-|	Factor ':' Expression %prec PATTERN /* TODO example fail */
+|	Expression CONJUGATE
+|	Expression CONJUGATE_TRANSPOSE
+|	Expression HERMITIAN_CONJUGATE
+|	Expression TRANSPOSE
+|	Factor
 
 Term:
-	FLOAT
-|	"<<" STRING
+	"<<" STRING
 |	'(' Expression ')'
 |	'{' '}'
 |	'{' ExprList CommaOpt '}'
+|	FLOAT
 |	IDENT
 |	IDENT "::" Tag
 |	IDENT "::" Tag "::" Tag
@@ -183,9 +203,12 @@ Term:
 |	SLOT
 |	STRING
 |	Term "[[" ExprList CommaOpt "]]"
+|	Term '!'
+|	Term '!' '!'
 |	Term '&'
 |	Term '[' ']'
 |	Term '[' ExprList CommaOpt ']'
+|	Term QUOTE
 
 Factor:
 	Term
