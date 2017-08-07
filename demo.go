@@ -30,6 +30,7 @@ func main() {
 		expr, err := in.ParseExpression(token.NewFileSet().AddFile(os.Stdin.Name(), -1, 1e6))
 		if err != nil {
 			fmt.Println(err)
+			continue
 		}
 
 		fmt.Println(expr)

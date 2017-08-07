@@ -27,6 +27,20 @@ const (
 	ccSqrt
 	ccIntegrate
 	ccDifferentialD
+	ccPartialD
+	ccDel
+	ccDiscreteShift
+	ccDiscreteRatio
+	ccDifferenceDelta
+	ccSquare
+	ccSmallCircle
+	ccCircleDot
+	ccCross
+	ccPlusMinus
+	ccMinusPlus
+	ccDivide
+	ccBackslash
+
 	ccOther
 )
 
@@ -38,11 +52,22 @@ var (
 	}
 
 	namedChars = map[string]rune{
+		"Backslash":           '\u2216',
+		"CircleDot":           '\u2299',
 		"Conjugate":           '\uf3c8',
 		"ConjugateTranspose":  '\uf3c9',
+		"Cross":               '\uf4a0',
+		"Del":                 '\u2207',
+		"DifferenceDelta":     '\u2206',
 		"DifferentialD":       '\uf74c',
+		"DiscreteRatio":       '\uf4a4',
+		"DiscreteShift":       '\uf4a3',
+		"Divide":              '\u00f7',
 		"HermitianConjugate":  '\uf3ce',
 		"Integrate":           '\u222b',
+		"MinusPlus":           '\u2213',
+		"PartialD":            '\u2202',
+		"PlusMinus":           '\u00b1',
 		"RawAmpersand":        '&',
 		"RawAt":               '@',
 		"RawBackquote":        '`',
@@ -76,7 +101,9 @@ var (
 		"RawUnderscore":       '_',
 		"RawVerticalBar":      '|',
 		"RawWedge":            '^',
+		"SmallCircle":         '\u2218',
 		"Sqrt":                '\u221a',
+		"Square":              '\uf520',
 		"Transpose":           '\uf3c7',
 	}
 )
@@ -103,6 +130,32 @@ func runeClass(r rune) int {
 		return ccIntegrate
 	case r == '\uf74c':
 		return ccDifferentialD
+	case r == '\u2202':
+		return ccPartialD
+	case r == '\u2207':
+		return ccDel
+	case r == '\uf4a3':
+		return ccDiscreteShift
+	case r == '\uf4a4':
+		return ccDiscreteRatio
+	case r == '\u2206':
+		return ccDifferenceDelta
+	case r == '\uf520':
+		return ccSquare
+	case r == '\u2218':
+		return ccSmallCircle
+	case r == '\u2299':
+		return ccCircleDot
+	case r == '\uf4a0':
+		return ccCross
+	case r == '\u00b1':
+		return ccPlusMinus
+	case r == '\u2213':
+		return ccMinusPlus
+	case r == '\u00f7':
+		return ccDivide
+	case r == '\u2216':
+		return ccBackslash
 	case unicode.IsDigit(r):
 		return ccDigit
 	case unicode.IsLetter(r):

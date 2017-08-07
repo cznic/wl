@@ -39,6 +39,19 @@ HermitianConjugate	\x88
 Sqrt			\x89
 Integrate		\x8a
 DifferentialD		\x8b
+PartialD		\x8c
+Del			\x8d
+DiscreteShift		\x8e
+DiscreteRatio		\x8f
+DifferenceDelta		\x90
+Square			\x91
+SmallCircle		\x92
+CircleDot		\x93
+Cross			\x94
+PlusMinus		\x95
+MinusPlus		\x96
+Divide			\x97
+Backslash		\x98
 
 approx		{digits}"."{digits}|"."{digits}|{digits}"."
 base		{digits}^^
@@ -91,6 +104,7 @@ schar		[^\x22]|\n
 
 "&&"	return AND
 "'"	return QUOTE
+"**"	return NON_COMMUTATIVE_MULTIPLY
 "++"	return INC
 "--"	return DEC
 "->"	return RULE
@@ -118,6 +132,7 @@ schar		[^\x22]|\n
 "\%"	return POWER_SUBSCRIPT2
 "\&"	return OVERSCRIPT
 "\+"	return UNDERSCRIPT
+"\/"	return '/'
 "\@"	return SQRT2
 "\^"	return POWER_SUBSCRIPT1
 "\_"	return SUBSCRIPT
@@ -133,19 +148,32 @@ schar		[^\x22]|\n
 	lx.Unget(lex.NewChar(lx.First.Pos()+1, ']'))
 	return ']'
 
-
+{Backslash}		return BACKSLASH
+{CircleDot}		return CIRCLE_DOT
 {ConjugateTranspose}	return CONJUGATE_TRANSPOSE
 {Conjugate}		return CONJUGATE
+{Cross}			return CROSS
+{Del}			return DEL
+{DifferenceDelta}	return DIFFERENCE_DELTA
 {DifferentialD}		return DIFFERENTIAL_D
+{DiscreteRatio}		return DISCRETE_RATIO
+{DiscreteShift}		return DISCRETE_SHIFT
+{Divide}		return '/'
 {HermitianConjugate}	return HERMITIAN_CONJUGATE
 {Integrate}		return INTEGRATE
+{MinusPlus}		return MINUS_PLUS
+{PartialD}		return PARTIAL_D
+{PlusMinus}		return PLUS_MINUS
+{SmallCircle}		return SMALL_CIRCLE
 {Sqrt}			return SQRT
+{Square}		return SQUARE
 {Transpose}		return TRANSPOSE
-{float}			return FLOAT
-{ident}			return IDENT
-{int}			return INT
-{pattern}		return PATTERN
-{slot}			return SLOT
+
+{float}		return FLOAT
+{ident}		return IDENT
+{int}		return INT
+{pattern}	return PATTERN
+{slot}		return SLOT
 
 %%
 	if c, ok := lx.Abort(); ok {
