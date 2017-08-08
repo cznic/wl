@@ -29,6 +29,7 @@ package wl
 	DEC				"--"
 	DIVIDE2				"\\/"
 	EQUAL				"=="
+	UNEQUAL				"!="
 	GEQ				">="
 	GET				"<<"
 	INC				"++"
@@ -111,6 +112,7 @@ package wl
 %left '<'
 %left GEQ
 %left '>'
+%left UNEQUAL
 %left EQUAL
 %left '+'
 %left '-'
@@ -223,6 +225,7 @@ Expression:
 |	PLUS_MINUS Expression
 |	MINUS_PLUS Expression
 |	Expression BACKSLASH Expression
+|	Expression "!=" Expression
 
 Term:
 	"<<" STRING

@@ -30,7 +30,7 @@ yystate0:
 	case 0: // start condition: INITIAL
 		goto yystart1
 	case 1: // start condition: S
-		goto yystart106
+		goto yystart108
 	}
 
 	goto yystate0 // silence unused label error
@@ -193,6 +193,8 @@ yyAction:
 		goto yyrule77
 	case 78:
 		goto yyrule78
+	case 79:
+		goto yyrule79
 	}
 	goto yystate1 // silence unused label error
 yystate1:
@@ -201,96 +203,98 @@ yystart1:
 	switch {
 	default:
 		goto yyabort
-	case c == '"':
+	case c == '!':
 		goto yystate3
+	case c == '"':
+		goto yystate5
 	case c == '#':
-		goto yystate4
+		goto yystate6
 	case c == '$' || c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z' || c == '\u0082' || c == '\u0083':
-		goto yystate11
+		goto yystate13
 	case c == '&':
-		goto yystate20
-	case c == '(':
-		goto yystate23
-	case c == '*':
-		goto yystate27
-	case c == '+':
-		goto yystate29
-	case c == '-':
-		goto yystate31
-	case c == '.':
-		goto yystate34
-	case c == '/':
-		goto yystate39
-	case c == ':':
-		goto yystate51
-	case c == '<':
-		goto yystate55
-	case c == '=':
-		goto yystate59
-	case c == '>':
-		goto yystate64
-	case c == '@':
-		goto yystate66
-	case c == '[':
-		goto yystate70
-	case c == '\'':
 		goto yystate22
-	case c == '\\':
+	case c == '(':
+		goto yystate25
+	case c == '*':
+		goto yystate29
+	case c == '+':
+		goto yystate31
+	case c == '-':
+		goto yystate33
+	case c == '.':
+		goto yystate36
+	case c == '/':
+		goto yystate41
+	case c == ':':
+		goto yystate53
+	case c == '<':
+		goto yystate57
+	case c == '=':
+		goto yystate61
+	case c == '>':
+		goto yystate66
+	case c == '@':
+		goto yystate68
+	case c == '[':
 		goto yystate72
+	case c == '\'':
+		goto yystate24
+	case c == '\\':
+		goto yystate74
 	case c == '\t' || c == '\r' || c == ' ':
 		goto yystate2
 	case c == '\u0084':
-		goto yystate85
-	case c == '\u0085':
-		goto yystate86
-	case c == '\u0086':
 		goto yystate87
-	case c == '\u0087':
+	case c == '\u0085':
 		goto yystate88
-	case c == '\u0088':
+	case c == '\u0086':
 		goto yystate89
-	case c == '\u0089':
+	case c == '\u0087':
 		goto yystate90
-	case c == '\u008a':
+	case c == '\u0088':
 		goto yystate91
-	case c == '\u008b':
+	case c == '\u0089':
 		goto yystate92
-	case c == '\u008c':
+	case c == '\u008a':
 		goto yystate93
-	case c == '\u008d':
+	case c == '\u008b':
 		goto yystate94
-	case c == '\u008e':
+	case c == '\u008c':
 		goto yystate95
-	case c == '\u008f':
+	case c == '\u008d':
 		goto yystate96
-	case c == '\u0090':
+	case c == '\u008e':
 		goto yystate97
-	case c == '\u0091':
+	case c == '\u008f':
 		goto yystate98
-	case c == '\u0092':
+	case c == '\u0090':
 		goto yystate99
-	case c == '\u0093':
+	case c == '\u0091':
 		goto yystate100
-	case c == '\u0094':
+	case c == '\u0092':
 		goto yystate101
-	case c == '\u0095':
+	case c == '\u0093':
 		goto yystate102
-	case c == '\u0096':
+	case c == '\u0094':
 		goto yystate103
-	case c == '\u0097':
+	case c == '\u0095':
 		goto yystate104
-	case c == '\u0098':
+	case c == '\u0096':
 		goto yystate105
+	case c == '\u0097':
+		goto yystate106
+	case c == '\u0098':
+		goto yystate107
 	case c == ']':
-		goto yystate80
-	case c == '_':
-		goto yystate12
-	case c == '`':
 		goto yystate82
+	case c == '_':
+		goto yystate14
+	case c == '`':
+		goto yystate84
 	case c == '|':
-		goto yystate83
+		goto yystate85
 	case c >= '0' && c <= '9':
-		goto yystate47
+		goto yystate49
 	}
 
 yystate2:
@@ -306,56 +310,47 @@ yystate2:
 
 yystate3:
 	c = lx.Next()
+	switch {
+	default:
+		goto yyabort
+	case c == '=':
+		goto yystate4
+	}
+
+yystate4:
+	c = lx.Next()
+	yyrule = 39
+	lx.Mark()
+	goto yyrule39
+
+yystate5:
+	c = lx.Next()
 	yyrule = 3
 	lx.Mark()
 	goto yyrule3
 
-yystate4:
-	c = lx.Next()
-	yyrule = 78
-	lx.Mark()
-	switch {
-	default:
-		goto yyrule78
-	case c == '$' || c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z' || c == '\u0082' || c == '\u0083':
-		goto yystate5
-	case c == '`':
-		goto yystate10
-	case c >= '0' && c <= '9':
-		goto yystate9
-	}
-
-yystate5:
-	c = lx.Next()
-	yyrule = 78
-	lx.Mark()
-	switch {
-	default:
-		goto yyrule78
-	case c == '$' || c >= '0' && c <= '9' || c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z' || c >= '\u0081' && c <= '\u0083':
-		goto yystate5
-	case c == '`':
-		goto yystate6
-	}
-
 yystate6:
 	c = lx.Next()
-	yyrule = 78
+	yyrule = 79
 	lx.Mark()
 	switch {
 	default:
-		goto yyrule78
+		goto yyrule79
 	case c == '$' || c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z' || c == '\u0082' || c == '\u0083':
 		goto yystate7
+	case c == '`':
+		goto yystate12
+	case c >= '0' && c <= '9':
+		goto yystate11
 	}
 
 yystate7:
 	c = lx.Next()
-	yyrule = 78
+	yyrule = 79
 	lx.Mark()
 	switch {
 	default:
-		goto yyrule78
+		goto yyrule79
 	case c == '$' || c >= '0' && c <= '9' || c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z' || c >= '\u0081' && c <= '\u0083':
 		goto yystate7
 	case c == '`':
@@ -364,335 +359,359 @@ yystate7:
 
 yystate8:
 	c = lx.Next()
-	yyrule = 78
+	yyrule = 79
 	lx.Mark()
-	goto yyrule78
+	switch {
+	default:
+		goto yyrule79
+	case c == '$' || c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z' || c == '\u0082' || c == '\u0083':
+		goto yystate9
+	}
 
 yystate9:
+	c = lx.Next()
+	yyrule = 79
+	lx.Mark()
+	switch {
+	default:
+		goto yyrule79
+	case c == '$' || c >= '0' && c <= '9' || c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z' || c >= '\u0081' && c <= '\u0083':
+		goto yystate9
+	case c == '`':
+		goto yystate10
+	}
+
+yystate10:
+	c = lx.Next()
+	yyrule = 79
+	lx.Mark()
+	goto yyrule79
+
+yystate11:
+	c = lx.Next()
+	yyrule = 79
+	lx.Mark()
+	switch {
+	default:
+		goto yyrule79
+	case c >= '0' && c <= '9':
+		goto yystate11
+	}
+
+yystate12:
+	c = lx.Next()
+	switch {
+	default:
+		goto yyabort
+	case c == '$' || c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z' || c == '\u0082' || c == '\u0083':
+		goto yystate9
+	}
+
+yystate13:
+	c = lx.Next()
+	yyrule = 76
+	lx.Mark()
+	switch {
+	default:
+		goto yyrule76
+	case c == '$' || c >= '0' && c <= '9' || c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z' || c >= '\u0081' && c <= '\u0083':
+		goto yystate13
+	case c == '_':
+		goto yystate14
+	case c == '`':
+		goto yystate19
+	}
+
+yystate14:
 	c = lx.Next()
 	yyrule = 78
 	lx.Mark()
 	switch {
 	default:
 		goto yyrule78
-	case c >= '0' && c <= '9':
-		goto yystate9
-	}
-
-yystate10:
-	c = lx.Next()
-	switch {
-	default:
-		goto yyabort
 	case c == '$' || c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z' || c == '\u0082' || c == '\u0083':
-		goto yystate7
-	}
-
-yystate11:
-	c = lx.Next()
-	yyrule = 75
-	lx.Mark()
-	switch {
-	default:
-		goto yyrule75
-	case c == '$' || c >= '0' && c <= '9' || c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z' || c >= '\u0081' && c <= '\u0083':
-		goto yystate11
+		goto yystate15
+	case c == '.':
+		goto yystate16
 	case c == '_':
-		goto yystate12
-	case c == '`':
 		goto yystate17
 	}
 
-yystate12:
-	c = lx.Next()
-	yyrule = 77
-	lx.Mark()
-	switch {
-	default:
-		goto yyrule77
-	case c == '$' || c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z' || c == '\u0082' || c == '\u0083':
-		goto yystate13
-	case c == '.':
-		goto yystate14
-	case c == '_':
-		goto yystate15
-	}
-
-yystate13:
-	c = lx.Next()
-	yyrule = 77
-	lx.Mark()
-	switch {
-	default:
-		goto yyrule77
-	case c == '$' || c >= '0' && c <= '9' || c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z' || c >= '\u0081' && c <= '\u0083':
-		goto yystate13
-	case c == '.':
-		goto yystate14
-	}
-
-yystate14:
-	c = lx.Next()
-	yyrule = 77
-	lx.Mark()
-	goto yyrule77
-
 yystate15:
 	c = lx.Next()
-	yyrule = 77
+	yyrule = 78
 	lx.Mark()
 	switch {
 	default:
-		goto yyrule77
-	case c == '$' || c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z' || c == '\u0082' || c == '\u0083':
-		goto yystate13
+		goto yyrule78
+	case c == '$' || c >= '0' && c <= '9' || c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z' || c >= '\u0081' && c <= '\u0083':
+		goto yystate15
 	case c == '.':
-		goto yystate14
-	case c == '_':
 		goto yystate16
 	}
 
 yystate16:
 	c = lx.Next()
-	yyrule = 77
+	yyrule = 78
 	lx.Mark()
-	switch {
-	default:
-		goto yyrule77
-	case c == '$' || c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z' || c == '\u0082' || c == '\u0083':
-		goto yystate13
-	case c == '.':
-		goto yystate14
-	}
+	goto yyrule78
 
 yystate17:
 	c = lx.Next()
-	yyrule = 75
+	yyrule = 78
 	lx.Mark()
 	switch {
 	default:
-		goto yyrule75
+		goto yyrule78
 	case c == '$' || c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z' || c == '\u0082' || c == '\u0083':
+		goto yystate15
+	case c == '.':
+		goto yystate16
+	case c == '_':
 		goto yystate18
 	}
 
 yystate18:
 	c = lx.Next()
-	yyrule = 75
+	yyrule = 78
 	lx.Mark()
 	switch {
 	default:
-		goto yyrule75
-	case c == '$' || c >= '0' && c <= '9' || c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z' || c >= '\u0081' && c <= '\u0083':
-		goto yystate18
-	case c == '`':
-		goto yystate19
+		goto yyrule78
+	case c == '$' || c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z' || c == '\u0082' || c == '\u0083':
+		goto yystate15
+	case c == '.':
+		goto yystate16
 	}
 
 yystate19:
 	c = lx.Next()
-	yyrule = 75
+	yyrule = 76
 	lx.Mark()
-	goto yyrule75
+	switch {
+	default:
+		goto yyrule76
+	case c == '$' || c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z' || c == '\u0082' || c == '\u0083':
+		goto yystate20
+	}
 
 yystate20:
 	c = lx.Next()
+	yyrule = 76
+	lx.Mark()
 	switch {
 	default:
-		goto yyabort
-	case c == '&':
+		goto yyrule76
+	case c == '$' || c >= '0' && c <= '9' || c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z' || c >= '\u0081' && c <= '\u0083':
+		goto yystate20
+	case c == '`':
 		goto yystate21
 	}
 
 yystate21:
 	c = lx.Next()
+	yyrule = 76
+	lx.Mark()
+	goto yyrule76
+
+yystate22:
+	c = lx.Next()
+	switch {
+	default:
+		goto yyabort
+	case c == '&':
+		goto yystate23
+	}
+
+yystate23:
+	c = lx.Next()
 	yyrule = 18
 	lx.Mark()
 	goto yyrule18
 
-yystate22:
+yystate24:
 	c = lx.Next()
 	yyrule = 19
 	lx.Mark()
 	goto yyrule19
-
-yystate23:
-	c = lx.Next()
-	switch {
-	default:
-		goto yyabort
-	case c == '*':
-		goto yystate24
-	}
-
-yystate24:
-	c = lx.Next()
-	switch {
-	default:
-		goto yyabort
-	case c == '*':
-		goto yystate25
-	case c >= '\x01' && c <= ')' || c >= '+' && c <= '\u007f' || c >= '\u0081' && c <= 'ÿ':
-		goto yystate24
-	}
 
 yystate25:
 	c = lx.Next()
 	switch {
 	default:
 		goto yyabort
-	case c == ')':
-		goto yystate26
 	case c == '*':
-		goto yystate25
-	case c >= '\x01' && c <= '(' || c >= '+' && c <= '\u007f' || c >= '\u0081' && c <= 'ÿ':
-		goto yystate24
+		goto yystate26
 	}
 
 yystate26:
 	c = lx.Next()
-	yyrule = 2
-	lx.Mark()
-	goto yyrule2
+	switch {
+	default:
+		goto yyabort
+	case c == '*':
+		goto yystate27
+	case c >= '\x01' && c <= ')' || c >= '+' && c <= '\u007f' || c >= '\u0081' && c <= 'ÿ':
+		goto yystate26
+	}
 
 yystate27:
 	c = lx.Next()
 	switch {
 	default:
 		goto yyabort
-	case c == '*':
+	case c == ')':
 		goto yystate28
+	case c == '*':
+		goto yystate27
+	case c >= '\x01' && c <= '(' || c >= '+' && c <= '\u007f' || c >= '\u0081' && c <= 'ÿ':
+		goto yystate26
 	}
 
 yystate28:
 	c = lx.Next()
-	yyrule = 20
+	yyrule = 2
 	lx.Mark()
-	goto yyrule20
+	goto yyrule2
 
 yystate29:
 	c = lx.Next()
 	switch {
 	default:
 		goto yyabort
-	case c == '+':
+	case c == '*':
 		goto yystate30
 	}
 
 yystate30:
 	c = lx.Next()
-	yyrule = 21
+	yyrule = 20
 	lx.Mark()
-	goto yyrule21
+	goto yyrule20
 
 yystate31:
 	c = lx.Next()
 	switch {
 	default:
 		goto yyabort
-	case c == '-':
+	case c == '+':
 		goto yystate32
-	case c == '>':
-		goto yystate33
 	}
 
 yystate32:
+	c = lx.Next()
+	yyrule = 21
+	lx.Mark()
+	goto yyrule21
+
+yystate33:
+	c = lx.Next()
+	switch {
+	default:
+		goto yyabort
+	case c == '-':
+		goto yystate34
+	case c == '>':
+		goto yystate35
+	}
+
+yystate34:
 	c = lx.Next()
 	yyrule = 22
 	lx.Mark()
 	goto yyrule22
 
-yystate33:
+yystate35:
 	c = lx.Next()
 	yyrule = 23
 	lx.Mark()
 	goto yyrule23
 
-yystate34:
+yystate36:
 	c = lx.Next()
 	switch {
 	default:
 		goto yyabort
-	case c >= '0' && c <= '9':
-		goto yystate35
-	}
-
-yystate35:
-	c = lx.Next()
-	yyrule = 74
-	lx.Mark()
-	switch {
-	default:
-		goto yyrule74
-	case c == '`':
-		goto yystate36
-	case c >= '0' && c <= '9':
-		goto yystate35
-	}
-
-yystate36:
-	c = lx.Next()
-	yyrule = 74
-	lx.Mark()
-	switch {
-	default:
-		goto yyrule74
-	case c == '`':
-		goto yystate38
 	case c >= '0' && c <= '9':
 		goto yystate37
 	}
 
 yystate37:
 	c = lx.Next()
-	yyrule = 74
+	yyrule = 75
 	lx.Mark()
 	switch {
 	default:
-		goto yyrule74
+		goto yyrule75
+	case c == '`':
+		goto yystate38
 	case c >= '0' && c <= '9':
 		goto yystate37
 	}
 
 yystate38:
 	c = lx.Next()
+	yyrule = 75
+	lx.Mark()
+	switch {
+	default:
+		goto yyrule75
+	case c == '`':
+		goto yystate40
+	case c >= '0' && c <= '9':
+		goto yystate39
+	}
+
+yystate39:
+	c = lx.Next()
+	yyrule = 75
+	lx.Mark()
+	switch {
+	default:
+		goto yyrule75
+	case c >= '0' && c <= '9':
+		goto yystate39
+	}
+
+yystate40:
+	c = lx.Next()
 	switch {
 	default:
 		goto yyabort
 	case c >= '0' && c <= '9':
-		goto yystate37
+		goto yystate39
 	}
 
-yystate39:
+yystate41:
 	c = lx.Next()
 	switch {
 	default:
 		goto yyabort
 	case c == '*':
-		goto yystate40
-	case c == '.':
-		goto yystate41
-	case c == '/':
 		goto yystate42
+	case c == '.':
+		goto yystate43
+	case c == '/':
+		goto yystate44
 	case c == ';':
-		goto yystate45
+		goto yystate47
 	case c == '@':
-		goto yystate46
+		goto yystate48
 	}
 
-yystate40:
+yystate42:
 	c = lx.Next()
 	yyrule = 24
 	lx.Mark()
 	goto yyrule24
 
-yystate41:
+yystate43:
 	c = lx.Next()
 	yyrule = 25
 	lx.Mark()
 	goto yyrule25
 
-yystate42:
+yystate44:
 	c = lx.Next()
 	yyrule = 26
 	lx.Mark()
@@ -700,81 +719,57 @@ yystate42:
 	default:
 		goto yyrule26
 	case c == '.':
-		goto yystate43
+		goto yystate45
 	case c == '@':
-		goto yystate44
+		goto yystate46
 	}
 
-yystate43:
+yystate45:
 	c = lx.Next()
 	yyrule = 27
 	lx.Mark()
 	goto yyrule27
 
-yystate44:
+yystate46:
 	c = lx.Next()
 	yyrule = 28
 	lx.Mark()
 	goto yyrule28
 
-yystate45:
+yystate47:
 	c = lx.Next()
 	yyrule = 29
 	lx.Mark()
 	goto yyrule29
 
-yystate46:
+yystate48:
 	c = lx.Next()
 	yyrule = 30
 	lx.Mark()
 	goto yyrule30
 
-yystate47:
+yystate49:
 	c = lx.Next()
-	yyrule = 76
+	yyrule = 77
 	lx.Mark()
 	switch {
 	default:
-		goto yyrule76
+		goto yyrule77
 	case c == '.':
-		goto yystate35
+		goto yystate37
 	case c == '^':
-		goto yystate48
-	case c >= '0' && c <= '9':
-		goto yystate47
-	}
-
-yystate48:
-	c = lx.Next()
-	switch {
-	default:
-		goto yyabort
-	case c == '^':
-		goto yystate49
-	}
-
-yystate49:
-	c = lx.Next()
-	switch {
-	default:
-		goto yyabort
-	case c == '.':
-		goto yystate34
-	case c >= '0' && c <= '9':
 		goto yystate50
+	case c >= '0' && c <= '9':
+		goto yystate49
 	}
 
 yystate50:
 	c = lx.Next()
-	yyrule = 76
-	lx.Mark()
 	switch {
 	default:
-		goto yyrule76
-	case c == '.':
-		goto yystate35
-	case c >= '0' && c <= '9':
-		goto yystate50
+		goto yyabort
+	case c == '^':
+		goto yystate51
 	}
 
 yystate51:
@@ -782,111 +777,120 @@ yystate51:
 	switch {
 	default:
 		goto yyabort
-	case c == ':':
+	case c == '.':
+		goto yystate36
+	case c >= '0' && c <= '9':
 		goto yystate52
-	case c == '=':
-		goto yystate53
-	case c == '>':
-		goto yystate54
 	}
 
 yystate52:
+	c = lx.Next()
+	yyrule = 77
+	lx.Mark()
+	switch {
+	default:
+		goto yyrule77
+	case c == '.':
+		goto yystate37
+	case c >= '0' && c <= '9':
+		goto yystate52
+	}
+
+yystate53:
+	c = lx.Next()
+	switch {
+	default:
+		goto yyabort
+	case c == ':':
+		goto yystate54
+	case c == '=':
+		goto yystate55
+	case c == '>':
+		goto yystate56
+	}
+
+yystate54:
 	c = lx.Next()
 	yyrule = 31
 	lx.Mark()
 	goto yyrule31
 
-yystate53:
+yystate55:
 	c = lx.Next()
 	yyrule = 32
 	lx.Mark()
 	goto yyrule32
 
-yystate54:
+yystate56:
 	c = lx.Next()
 	yyrule = 33
 	lx.Mark()
 	goto yyrule33
 
-yystate55:
+yystate57:
 	c = lx.Next()
 	switch {
 	default:
 		goto yyabort
 	case c == '<':
-		goto yystate56
-	case c == '=':
-		goto yystate57
-	case c == '>':
 		goto yystate58
+	case c == '=':
+		goto yystate59
+	case c == '>':
+		goto yystate60
 	}
 
-yystate56:
+yystate58:
 	c = lx.Next()
 	yyrule = 34
 	lx.Mark()
 	goto yyrule34
 
-yystate57:
+yystate59:
 	c = lx.Next()
 	yyrule = 35
 	lx.Mark()
 	goto yyrule35
 
-yystate58:
+yystate60:
 	c = lx.Next()
 	yyrule = 36
 	lx.Mark()
 	goto yyrule36
 
-yystate59:
+yystate61:
 	c = lx.Next()
 	switch {
 	default:
 		goto yyabort
 	case c == '!':
-		goto yystate60
-	case c == '=':
 		goto yystate62
+	case c == '=':
+		goto yystate64
 	}
 
-yystate60:
+yystate62:
 	c = lx.Next()
 	switch {
 	default:
 		goto yyabort
-	case c == '=':
-		goto yystate61
-	}
-
-yystate61:
-	c = lx.Next()
-	yyrule = 37
-	lx.Mark()
-	goto yyrule37
-
-yystate62:
-	c = lx.Next()
-	yyrule = 38
-	lx.Mark()
-	switch {
-	default:
-		goto yyrule38
 	case c == '=':
 		goto yystate63
 	}
 
 yystate63:
 	c = lx.Next()
-	yyrule = 39
+	yyrule = 37
 	lx.Mark()
-	goto yyrule39
+	goto yyrule37
 
 yystate64:
 	c = lx.Next()
+	yyrule = 38
+	lx.Mark()
 	switch {
 	default:
-		goto yyabort
+		goto yyrule38
 	case c == '=':
 		goto yystate65
 	}
@@ -902,10 +906,8 @@ yystate66:
 	switch {
 	default:
 		goto yyabort
-	case c == '*':
+	case c == '=':
 		goto yystate67
-	case c == '@':
-		goto yystate68
 	}
 
 yystate67:
@@ -916,27 +918,29 @@ yystate67:
 
 yystate68:
 	c = lx.Next()
-	yyrule = 42
-	lx.Mark()
 	switch {
 	default:
-		goto yyrule42
-	case c == '@':
+		goto yyabort
+	case c == '*':
 		goto yystate69
+	case c == '@':
+		goto yystate70
 	}
 
 yystate69:
 	c = lx.Next()
-	yyrule = 43
+	yyrule = 42
 	lx.Mark()
-	goto yyrule43
+	goto yyrule42
 
 yystate70:
 	c = lx.Next()
+	yyrule = 43
+	lx.Mark()
 	switch {
 	default:
-		goto yyabort
-	case c == '[':
+		goto yyrule43
+	case c == '@':
 		goto yystate71
 	}
 
@@ -951,20 +955,8 @@ yystate72:
 	switch {
 	default:
 		goto yyabort
-	case c == '%':
+	case c == '[':
 		goto yystate73
-	case c == '&':
-		goto yystate74
-	case c == '+':
-		goto yystate75
-	case c == '/':
-		goto yystate76
-	case c == '@':
-		goto yystate77
-	case c == '^':
-		goto yystate78
-	case c == '_':
-		goto yystate79
 	}
 
 yystate73:
@@ -975,114 +967,129 @@ yystate73:
 
 yystate74:
 	c = lx.Next()
+	switch {
+	default:
+		goto yyabort
+	case c == '%':
+		goto yystate75
+	case c == '&':
+		goto yystate76
+	case c == '+':
+		goto yystate77
+	case c == '/':
+		goto yystate78
+	case c == '@':
+		goto yystate79
+	case c == '^':
+		goto yystate80
+	case c == '_':
+		goto yystate81
+	}
+
+yystate75:
+	c = lx.Next()
 	yyrule = 46
 	lx.Mark()
 	goto yyrule46
 
-yystate75:
+yystate76:
 	c = lx.Next()
 	yyrule = 47
 	lx.Mark()
 	goto yyrule47
 
-yystate76:
+yystate77:
 	c = lx.Next()
 	yyrule = 48
 	lx.Mark()
 	goto yyrule48
 
-yystate77:
+yystate78:
 	c = lx.Next()
 	yyrule = 49
 	lx.Mark()
 	goto yyrule49
 
-yystate78:
+yystate79:
 	c = lx.Next()
 	yyrule = 50
 	lx.Mark()
 	goto yyrule50
 
-yystate79:
+yystate80:
 	c = lx.Next()
 	yyrule = 51
 	lx.Mark()
 	goto yyrule51
 
-yystate80:
-	c = lx.Next()
-	switch {
-	default:
-		goto yyabort
-	case c == ']':
-		goto yystate81
-	}
-
 yystate81:
 	c = lx.Next()
-	yyrule = 53
+	yyrule = 52
 	lx.Mark()
-	goto yyrule53
+	goto yyrule52
 
 yystate82:
 	c = lx.Next()
 	switch {
 	default:
 		goto yyabort
-	case c == '$' || c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z' || c == '\u0082' || c == '\u0083':
-		goto yystate18
+	case c == ']':
+		goto yystate83
 	}
 
 yystate83:
+	c = lx.Next()
+	yyrule = 54
+	lx.Mark()
+	goto yyrule54
+
+yystate84:
+	c = lx.Next()
+	switch {
+	default:
+		goto yyabort
+	case c == '$' || c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z' || c == '\u0082' || c == '\u0083':
+		goto yystate20
+	}
+
+yystate85:
 	c = lx.Next()
 	switch {
 	default:
 		goto yyabort
 	case c == '|':
-		goto yystate84
+		goto yystate86
 	}
 
-yystate84:
+yystate86:
 	c = lx.Next()
-	yyrule = 52
+	yyrule = 53
 	lx.Mark()
-	goto yyrule52
+	goto yyrule53
 
-yystate85:
+yystate87:
 	c = lx.Next()
 	yyrule = 17
 	lx.Mark()
 	goto yyrule17
 
-yystate86:
+yystate88:
+	c = lx.Next()
+	yyrule = 58
+	lx.Mark()
+	goto yyrule58
+
+yystate89:
+	c = lx.Next()
+	yyrule = 74
+	lx.Mark()
+	goto yyrule74
+
+yystate90:
 	c = lx.Next()
 	yyrule = 57
 	lx.Mark()
 	goto yyrule57
-
-yystate87:
-	c = lx.Next()
-	yyrule = 73
-	lx.Mark()
-	goto yyrule73
-
-yystate88:
-	c = lx.Next()
-	yyrule = 56
-	lx.Mark()
-	goto yyrule56
-
-yystate89:
-	c = lx.Next()
-	yyrule = 65
-	lx.Mark()
-	goto yyrule65
-
-yystate90:
-	c = lx.Next()
-	yyrule = 71
-	lx.Mark()
-	goto yyrule71
 
 yystate91:
 	c = lx.Next()
@@ -1092,124 +1099,136 @@ yystate91:
 
 yystate92:
 	c = lx.Next()
-	yyrule = 61
-	lx.Mark()
-	goto yyrule61
-
-yystate93:
-	c = lx.Next()
-	yyrule = 68
-	lx.Mark()
-	goto yyrule68
-
-yystate94:
-	c = lx.Next()
-	yyrule = 59
-	lx.Mark()
-	goto yyrule59
-
-yystate95:
-	c = lx.Next()
-	yyrule = 63
-	lx.Mark()
-	goto yyrule63
-
-yystate96:
-	c = lx.Next()
-	yyrule = 62
-	lx.Mark()
-	goto yyrule62
-
-yystate97:
-	c = lx.Next()
-	yyrule = 60
-	lx.Mark()
-	goto yyrule60
-
-yystate98:
-	c = lx.Next()
 	yyrule = 72
 	lx.Mark()
 	goto yyrule72
 
-yystate99:
-	c = lx.Next()
-	yyrule = 70
-	lx.Mark()
-	goto yyrule70
-
-yystate100:
-	c = lx.Next()
-	yyrule = 55
-	lx.Mark()
-	goto yyrule55
-
-yystate101:
-	c = lx.Next()
-	yyrule = 58
-	lx.Mark()
-	goto yyrule58
-
-yystate102:
-	c = lx.Next()
-	yyrule = 69
-	lx.Mark()
-	goto yyrule69
-
-yystate103:
+yystate93:
 	c = lx.Next()
 	yyrule = 67
 	lx.Mark()
 	goto yyrule67
 
-yystate104:
+yystate94:
+	c = lx.Next()
+	yyrule = 62
+	lx.Mark()
+	goto yyrule62
+
+yystate95:
+	c = lx.Next()
+	yyrule = 69
+	lx.Mark()
+	goto yyrule69
+
+yystate96:
+	c = lx.Next()
+	yyrule = 60
+	lx.Mark()
+	goto yyrule60
+
+yystate97:
 	c = lx.Next()
 	yyrule = 64
 	lx.Mark()
 	goto yyrule64
 
+yystate98:
+	c = lx.Next()
+	yyrule = 63
+	lx.Mark()
+	goto yyrule63
+
+yystate99:
+	c = lx.Next()
+	yyrule = 61
+	lx.Mark()
+	goto yyrule61
+
+yystate100:
+	c = lx.Next()
+	yyrule = 73
+	lx.Mark()
+	goto yyrule73
+
+yystate101:
+	c = lx.Next()
+	yyrule = 71
+	lx.Mark()
+	goto yyrule71
+
+yystate102:
+	c = lx.Next()
+	yyrule = 56
+	lx.Mark()
+	goto yyrule56
+
+yystate103:
+	c = lx.Next()
+	yyrule = 59
+	lx.Mark()
+	goto yyrule59
+
+yystate104:
+	c = lx.Next()
+	yyrule = 70
+	lx.Mark()
+	goto yyrule70
+
 yystate105:
 	c = lx.Next()
-	yyrule = 54
+	yyrule = 68
 	lx.Mark()
-	goto yyrule54
+	goto yyrule68
 
-	goto yystate106 // silence unused label error
 yystate106:
 	c = lx.Next()
-yystart106:
-	switch {
-	default:
-		goto yystate108 // c >= '\x01' && c <= '!' || c >= '#' && c <= '[' || c >= ']' && c <= '\u0083' || c >= '\u0085' && c <= 'ÿ'
-	case c == '"':
-		goto yystate109
-	case c == '\\':
-		goto yystate110
-	case c == '\u0084':
-		goto yystate120
-	case c == '\x00':
-		goto yystate107
-	}
+	yyrule = 65
+	lx.Mark()
+	goto yyrule65
 
 yystate107:
+	c = lx.Next()
+	yyrule = 55
+	lx.Mark()
+	goto yyrule55
+
+	goto yystate108 // silence unused label error
+yystate108:
+	c = lx.Next()
+yystart108:
+	switch {
+	default:
+		goto yystate110 // c >= '\x01' && c <= '!' || c >= '#' && c <= '[' || c >= ']' && c <= '\u0083' || c >= '\u0085' && c <= 'ÿ'
+	case c == '"':
+		goto yystate111
+	case c == '\\':
+		goto yystate112
+	case c == '\u0084':
+		goto yystate122
+	case c == '\x00':
+		goto yystate109
+	}
+
+yystate109:
 	c = lx.Next()
 	yyrule = 4
 	lx.Mark()
 	goto yyrule4
 
-yystate108:
+yystate110:
 	c = lx.Next()
 	yyrule = 15
 	lx.Mark()
 	goto yyrule15
 
-yystate109:
+yystate111:
 	c = lx.Next()
 	yyrule = 16
 	lx.Mark()
 	goto yyrule16
 
-yystate110:
+yystate112:
 	c = lx.Next()
 	yyrule = 15
 	lx.Mark()
@@ -1217,80 +1236,80 @@ yystate110:
 	default:
 		goto yyrule15
 	case c == ' ':
-		goto yystate112
-	case c == '"':
-		goto yystate113
-	case c == '\\':
 		goto yystate114
-	case c == '\n':
-		goto yystate111
-	case c == 'b':
+	case c == '"':
 		goto yystate115
-	case c == 'f':
+	case c == '\\':
 		goto yystate116
-	case c == 'n':
+	case c == '\n':
+		goto yystate113
+	case c == 'b':
 		goto yystate117
-	case c == 'r':
+	case c == 'f':
 		goto yystate118
-	case c == 't':
+	case c == 'n':
 		goto yystate119
+	case c == 'r':
+		goto yystate120
+	case c == 't':
+		goto yystate121
 	}
 
-yystate111:
+yystate113:
 	c = lx.Next()
 	yyrule = 13
 	lx.Mark()
 	goto yyrule13
 
-yystate112:
+yystate114:
 	c = lx.Next()
 	yyrule = 6
 	lx.Mark()
 	goto yyrule6
 
-yystate113:
+yystate115:
 	c = lx.Next()
 	yyrule = 7
 	lx.Mark()
 	goto yyrule7
 
-yystate114:
+yystate116:
 	c = lx.Next()
 	yyrule = 5
 	lx.Mark()
 	goto yyrule5
 
-yystate115:
+yystate117:
 	c = lx.Next()
 	yyrule = 8
 	lx.Mark()
 	goto yyrule8
 
-yystate116:
+yystate118:
 	c = lx.Next()
 	yyrule = 11
 	lx.Mark()
 	goto yyrule11
 
-yystate117:
+yystate119:
 	c = lx.Next()
 	yyrule = 10
 	lx.Mark()
 	goto yyrule10
 
-yystate118:
+yystate120:
 	c = lx.Next()
 	yyrule = 12
 	lx.Mark()
 	goto yyrule12
 
-yystate119:
+yystate121:
 	c = lx.Next()
 	yyrule = 9
 	lx.Mark()
 	goto yyrule9
 
-yystate120:
+yystate122:
 	c = lx.Next()
 	yyrule = 14
 	lx.Mark()
@@ -1459,63 +1478,67 @@ yyrule38: // "=="
 	{
 		return EQUAL
 	}
-yyrule39: // "==="
+yyrule39: // "!="
+	{
+		return UNEQUAL
+	}
+yyrule40: // "==="
 	{
 		return SAME
 	}
-yyrule40: // ">="
+yyrule41: // ">="
 	{
 		return GEQ
 	}
-yyrule41: // "@*"
+yyrule42: // "@*"
 	{
 		return COMPOSITION
 	}
-yyrule42: // "@@"
+yyrule43: // "@@"
 	{
 		return APPLY
 	}
-yyrule43: // "@@@"
+yyrule44: // "@@@"
 	{
 		return APPLY_ALL
 	}
-yyrule44: // "[["
+yyrule45: // "[["
 	{
 		return lx.push(LPART)
 	}
-yyrule45: // "\%"
+yyrule46: // "\%"
 	{
 		return POWER_SUBSCRIPT2
 	}
-yyrule46: // "\&"
+yyrule47: // "\&"
 	{
 		return OVERSCRIPT
 	}
-yyrule47: // "\+"
+yyrule48: // "\+"
 	{
 		return UNDERSCRIPT
 	}
-yyrule48: // "\/"
+yyrule49: // "\/"
 	{
 		return '/'
 	}
-yyrule49: // "\@"
+yyrule50: // "\@"
 	{
 		return SQRT2
 	}
-yyrule50: // "\^"
+yyrule51: // "\^"
 	{
 		return POWER_SUBSCRIPT1
 	}
-yyrule51: // "\_"
+yyrule52: // "\_"
 	{
 		return SUBSCRIPT
 	}
-yyrule52: // "||"
+yyrule53: // "||"
 	{
 		return OR
 	}
-yyrule53: // "]]"
+yyrule54: // "]]"
 	{
 		if lx.pop() == LPART {
 			return RPART
@@ -1526,103 +1549,103 @@ yyrule53: // "]]"
 		lx.Unget(lex.NewChar(lx.First.Pos()+1, ']'))
 		return ']'
 	}
-yyrule54: // {Backslash}
+yyrule55: // {Backslash}
 	{
 		return BACKSLASH
 	}
-yyrule55: // {CircleDot}
+yyrule56: // {CircleDot}
 	{
 		return CIRCLE_DOT
 	}
-yyrule56: // {ConjugateTranspose}
+yyrule57: // {ConjugateTranspose}
 	{
 		return CONJUGATE_TRANSPOSE
 	}
-yyrule57: // {Conjugate}
+yyrule58: // {Conjugate}
 	{
 		return CONJUGATE
 	}
-yyrule58: // {Cross}
+yyrule59: // {Cross}
 	{
 		return CROSS
 	}
-yyrule59: // {Del}
+yyrule60: // {Del}
 	{
 		return DEL
 	}
-yyrule60: // {DifferenceDelta}
+yyrule61: // {DifferenceDelta}
 	{
 		return DIFFERENCE_DELTA
 	}
-yyrule61: // {DifferentialD}
+yyrule62: // {DifferentialD}
 	{
 		return DIFFERENTIAL_D
 	}
-yyrule62: // {DiscreteRatio}
+yyrule63: // {DiscreteRatio}
 	{
 		return DISCRETE_RATIO
 	}
-yyrule63: // {DiscreteShift}
+yyrule64: // {DiscreteShift}
 	{
 		return DISCRETE_SHIFT
 	}
-yyrule64: // {Divide}
+yyrule65: // {Divide}
 	{
 		return '/'
 	}
-yyrule65: // {HermitianConjugate}
+yyrule66: // {HermitianConjugate}
 	{
 		return HERMITIAN_CONJUGATE
 	}
-yyrule66: // {Integrate}
+yyrule67: // {Integrate}
 	{
 		return INTEGRATE
 	}
-yyrule67: // {MinusPlus}
+yyrule68: // {MinusPlus}
 	{
 		return MINUS_PLUS
 	}
-yyrule68: // {PartialD}
+yyrule69: // {PartialD}
 	{
 		return PARTIAL_D
 	}
-yyrule69: // {PlusMinus}
+yyrule70: // {PlusMinus}
 	{
 		return PLUS_MINUS
 	}
-yyrule70: // {SmallCircle}
+yyrule71: // {SmallCircle}
 	{
 		return SMALL_CIRCLE
 	}
-yyrule71: // {Sqrt}
+yyrule72: // {Sqrt}
 	{
 		return SQRT
 	}
-yyrule72: // {Square}
+yyrule73: // {Square}
 	{
 		return SQUARE
 	}
-yyrule73: // {Transpose}
+yyrule74: // {Transpose}
 	{
 		return TRANSPOSE
 	}
-yyrule74: // {float}
+yyrule75: // {float}
 	{
 		return FLOAT
 	}
-yyrule75: // {ident}
+yyrule76: // {ident}
 	{
 		return IDENT
 	}
-yyrule76: // {int}
+yyrule77: // {int}
 	{
 		return INT
 	}
-yyrule77: // {pattern}
+yyrule78: // {pattern}
 	{
 		return PATTERN
 	}
-yyrule78: // {slot}
+yyrule79: // {slot}
 	{
 		return SLOT
 	}

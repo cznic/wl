@@ -123,6 +123,7 @@ schar		[^\x22]|\n
 "<>"	return STRINGJOIN
 "=!="	return UNSAME
 "=="	return EQUAL
+"!="	return UNEQUAL
 "==="	return SAME
 ">="	return GEQ
 "@*"	return COMPOSITION
