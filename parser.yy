@@ -112,8 +112,8 @@ package wl
 %left GEQ
 %left '>'
 %left EQUAL
-%left '-'
 %left '+'
+%left '-'
 %left '*'
 
 %left BACKSLASH
