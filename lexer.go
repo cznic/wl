@@ -40,6 +40,11 @@ const (
 	ccMinusPlus
 	ccDivide
 	ccBackslash
+	ccDiamond
+	ccWedge
+	ccVee
+	ccCircleTimes
+	ccCenterDot
 
 	ccOther
 )
@@ -53,11 +58,14 @@ var (
 
 	namedChars = map[string]rune{
 		"Backslash":           '\u2216',
+		"CenterDot":           '\u00b7',
 		"CircleDot":           '\u2299',
+		"CircleTimes":         '\u2297',
 		"Conjugate":           '\uf3c8',
 		"ConjugateTranspose":  '\uf3c9',
 		"Cross":               '\uf4a0',
 		"Del":                 '\u2207',
+		"Diamond":             '\u22c4',
 		"DifferenceDelta":     '\u2206',
 		"DifferentialD":       '\uf74c',
 		"DiscreteRatio":       '\uf4a4',
@@ -105,6 +113,8 @@ var (
 		"Sqrt":                '\u221a',
 		"Square":              '\uf520',
 		"Transpose":           '\uf3c7',
+		"Vee":                 '\u22c1',
+		"Wedge":               '\u22c0',
 	}
 )
 
@@ -156,6 +166,16 @@ func runeClass(r rune) int {
 		return ccDivide
 	case r == '\u2216':
 		return ccBackslash
+	case r == '\u22c4':
+		return ccDiamond
+	case r == '\u22c0':
+		return ccWedge
+	case r == '\u22c1':
+		return ccVee
+	case r == '\u2297':
+		return ccCircleTimes
+	case r == '\u00b7':
+		return ccCenterDot
 	case unicode.IsDigit(r):
 		return ccDigit
 	case unicode.IsLetter(r):

@@ -52,6 +52,11 @@ PlusMinus		\x95
 MinusPlus		\x96
 Divide			\x97
 Backslash		\x98
+Diamond			\x99
+Wedge			\x9a
+Vee			\x9b
+CircleTimes		\x9c
+CenterDot		\x9d
 
 approx		{digits}"."{digits}|"."{digits}|{digits}"."
 base		{digits}^^
@@ -150,11 +155,14 @@ schar		[^\x22]|\n
 	return ']'
 
 {Backslash}		return BACKSLASH
+{CenterDot}		return CENTER_DOT
 {CircleDot}		return CIRCLE_DOT
+{CircleTimes}		return CIRCLE_TIMES
 {ConjugateTranspose}	return CONJUGATE_TRANSPOSE
 {Conjugate}		return CONJUGATE
 {Cross}			return CROSS
 {Del}			return DEL
+{Diamond}		return DIAMOND
 {DifferenceDelta}	return DIFFERENCE_DELTA
 {DifferentialD}		return DIFFERENTIAL_D
 {DiscreteRatio}		return DISCRETE_RATIO
@@ -169,6 +177,8 @@ schar		[^\x22]|\n
 {Sqrt}			return SQRT
 {Square}		return SQUARE
 {Transpose}		return TRANSPOSE
+{Vee}			return VEE
+{Wedge}			return WEDGE
 
 {float}		return FLOAT
 {ident}		return IDENT

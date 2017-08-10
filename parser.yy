@@ -25,7 +25,9 @@ package wl
 	APPLY				"@@"
 	APPLY_ALL			"@@@"
 	BACKSLASH			"\\[Backslash]"
+	CENTER_DOT			"\\[CenterDot]"
 	CIRCLE_DOT			"\\[CircleDot]"
+	CIRCLE_TIMES			"\\[CircleTimes]"
 	COMPOSITION			"@*"
 	CONDITION			"/;"
 	CONJUGATE			"\\[Conjugate]"
@@ -33,6 +35,7 @@ package wl
 	CROSS				"\\[Cross]"
 	DEC				"--"
 	DEL				"\\[Del]"
+	DIAMOND				"\\[Diamond]"
 	DIFFERENCE_DELTA		"\\[DifferenceDelta]"
 	DIFFERENTIAL_D			"\\[DifferentialD]"
 	DISCRETE_RATIO			"\\[DiscreteRatio]"
@@ -78,7 +81,8 @@ package wl
 	UNDERSCRIPT			"\\+"
 	UNEQUAL				"!="
 	UNSAME				"=!="
-
+	VEE				"\\[Vee]"
+	WEDGE				"\\[Wedge]"
 
 %type	<Node>
 	start		"valid input"
@@ -118,36 +122,41 @@ package wl
 %left '-'
 %left '*'
 
-%left BACKSLASH
-%left '/'
-%precedence UNARY_MINUS UNARY_PLUS PLUS_MINUS MINUS_PLUS
-%left	'.'			// Dot
-%right	CROSS
-%left	NON_COMMUTATIVE_MULTIPLY
-%right	CIRCLE_DOT
-%right	SQUARE SMALL_CIRCLE
-%right	PARTIAL_D DEL DISCRETE_SHIFT DISCRETE_RATIO DIFFERENCE_DELTA
-%right	INTEGRATE DIFFERENTIAL_D
-%right	SQRT SQRT2
-%right 	'^' POWER_SUBSCRIPT1 POWER_SUBSCRIPT2	// Power, Power[Subscript]
-%left STRINGJOIN
+%left		CENTER_DOT
+%left		CIRCLE_TIMES
+%left		VEE
+%left		WEDGE
+%left		DIAMOND
+%left		BACKSLASH
+%left		'/'
+%precedence	UNARY_MINUS UNARY_PLUS PLUS_MINUS MINUS_PLUS
+%left		'.'			// Dot
+%right		CROSS
+%left		NON_COMMUTATIVE_MULTIPLY
+%right		CIRCLE_DOT
+%right		SQUARE SMALL_CIRCLE
+%right		PARTIAL_D DEL DISCRETE_SHIFT DISCRETE_RATIO DIFFERENCE_DELTA
+%right		INTEGRATE DIFFERENTIAL_D
+%right		SQRT SQRT2
+%right 		'^' POWER_SUBSCRIPT1 POWER_SUBSCRIPT2	// Power, Power[Subscript]
+%left		STRINGJOIN
 %nonassoc	QUOTE
 %nonassoc	CONJUGATE TRANSPOSE CONJUGATE_TRANSPOSE HERMITIAN_CONJUGATE
 %nonassoc	FACTORIAL
-%right	MAP MAP_ALL APPLY APPLY_ALL
-%left	'~'
-%right	'@'
-%left	COMPOSITION RIGHT_COMPOSITION
+%right		MAP MAP_ALL APPLY APPLY_ALL
+%left		'~'
+%right		'@'
+%left		COMPOSITION RIGHT_COMPOSITION
 %precedence	PRE_INC		// PreIncrement, PreDecrement
 %nonassoc	INC DEC		// Increment, Decrement
-%left	'[' ']' LPART RPART	// expr, Part
-%left	'?'	// PatternTest
-%right	SUBSCRIPT
-%right	OVERSCRIPT UNDERSCRIPT
+%left		'[' ']' LPART RPART	// expr, Part
+%left		'?'	// PatternTest
+%right		SUBSCRIPT
+%right		OVERSCRIPT UNDERSCRIPT
 %nonassoc	GET
 /*TODO forms containing # */
-%left	MESSAGE_NAME
-/* TODO Piecewise */
+%left		MESSAGE_NAME
+/*TODO Piecewise */
 
 %%
 
@@ -226,6 +235,11 @@ Expression:
 |	"\\[MinusPlus]" Expression
 |	Expression "\\[Backslash]" Expression
 |	Expression "!=" Expression
+|	Expression "\\[Diamond]" Expression
+|	Expression "\\[Wedge]" Expression
+|	Expression "\\[Vee]" Expression
+|	Expression "\\[CircleTimes]" Expression
+|	Expression "\\[CenterDot]" Expression
 
 Term:
 	"<<" STRING
