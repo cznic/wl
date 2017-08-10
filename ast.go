@@ -91,76 +91,76 @@ func (n *ExprList) Pos() token.Pos {
 //
 //	Expression:
 //	        "++" Expression
-//	|       "--" Expression                                 // Case 1
-//	|       "\\@" Expression                                // Case 2
-//	|       "\\@" Expression "\\%" Expression               // Case 3
-//	|       "√" Expression                                // Case 4
-//	|       "∫" Expression DIFFERENTIAL_D Expression      // Case 5
-//	|       '!' Expression                                  // Case 6
-//	|       '-' Expression                                  // Case 7
-//	|       Expression "&&" Expression                      // Case 8
-//	|       Expression "++"                                 // Case 9
-//	|       Expression "--"                                 // Case 10
-//	|       Expression "->" Expression                      // Case 11
-//	|       Expression "/*" Expression                      // Case 12
-//	|       Expression "/." Expression                      // Case 13
-//	|       Expression "//" Expression                      // Case 14
-//	|       Expression "//." Expression                     // Case 15
-//	|       Expression "//@" Expression                     // Case 16
-//	|       Expression "/;" Expression                      // Case 17
-//	|       Expression "/@" Expression                      // Case 18
-//	|       Expression ":=" Expression                      // Case 19
-//	|       Expression ":>" Expression                      // Case 20
-//	|       Expression "<=" Expression                      // Case 21
-//	|       Expression "<>" Expression                      // Case 22
-//	|       Expression "=!=" Expression                     // Case 23
-//	|       Expression "==" Expression                      // Case 24
-//	|       Expression "===" Expression                     // Case 25
-//	|       Expression ">=" Expression                      // Case 26
-//	|       Expression "@*" Expression                      // Case 27
-//	|       Expression "@@" Expression                      // Case 28
-//	|       Expression "@@@" Expression                     // Case 29
-//	|       Expression "\\&" Expression                     // Case 30
-//	|       Expression "\\+" Expression                     // Case 31
-//	|       Expression "\\^" Expression "\\%" Expression    // Case 32
-//	|       Expression "\\_" Expression                     // Case 33
-//	|       Expression "||" Expression                      // Case 34
-//	|       Expression '*' Expression                       // Case 35
-//	|       Expression '+' Expression                       // Case 36
-//	|       Expression '-' Expression                       // Case 37
-//	|       Expression '.' Expression                       // Case 38
-//	|       Expression '/' Expression                       // Case 39
-//	|       Expression ':' Expression                       // Case 40
-//	|       Expression ';'                                  // Case 41
-//	|       Expression ';' Expression                       // Case 42
-//	|       Expression '<' Expression                       // Case 43
-//	|       Expression '=' Expression                       // Case 44
-//	|       Expression '>' Expression                       // Case 45
-//	|       Expression '?' Expression                       // Case 46
-//	|       Expression '@' Expression                       // Case 47
-//	|       Expression '^' Expression                       // Case 48
-//	|       Expression '|' Expression                       // Case 49
-//	|       Expression '~' Expression                       // Case 50
-//	|       Expression CONJUGATE                            // Case 51
-//	|       Expression CONJUGATE_TRANSPOSE                  // Case 52
-//	|       Expression HERMITIAN_CONJUGATE                  // Case 53
-//	|       Expression TRANSPOSE                            // Case 54
-//	|       Factor                                          // Case 55
-//	|       Expression PARTIAL_D Expression                 // Case 56
-//	|       DEL Expression                                  // Case 57
-//	|       Expression DISCRETE_SHIFT Expression            // Case 58
-//	|       Expression DISCRETE_RATIO Expression            // Case 59
-//	|       Expression DIFFERENCE_DELTA Expression          // Case 60
-//	|       SQUARE Expression                               // Case 61
-//	|       Expression SMALL_CIRCLE Expression              // Case 62
-//	|       Expression CIRCLE_DOT Expression                // Case 63
-//	|       Expression NON_COMMUTATIVE_MULTIPLY Expression  // Case 64
-//	|       Expression CROSS Expression                     // Case 65
-//	|       '+' Expression                                  // Case 66
-//	|       PLUS_MINUS Expression                           // Case 67
-//	|       MINUS_PLUS Expression                           // Case 68
-//	|       Expression BACKSLASH Expression                 // Case 69
-//	|       Expression "!=" Expression                      // Case 70
+//	|       "--" Expression                                            // Case 1
+//	|       "\\@" Expression                                           // Case 2
+//	|       "\\@" Expression "\\%" Expression                          // Case 3
+//	|       "\\[Sqrt]" Expression                                      // Case 4
+//	|       "\\[Integrate]" Expression "\\[DifferentialD]" Expression  // Case 5
+//	|       '!' Expression                                             // Case 6
+//	|       '-' Expression                                             // Case 7
+//	|       Expression "&&" Expression                                 // Case 8
+//	|       Expression "++"                                            // Case 9
+//	|       Expression "--"                                            // Case 10
+//	|       Expression "->" Expression                                 // Case 11
+//	|       Expression "/*" Expression                                 // Case 12
+//	|       Expression "/." Expression                                 // Case 13
+//	|       Expression "//" Expression                                 // Case 14
+//	|       Expression "//." Expression                                // Case 15
+//	|       Expression "//@" Expression                                // Case 16
+//	|       Expression "/;" Expression                                 // Case 17
+//	|       Expression "/@" Expression                                 // Case 18
+//	|       Expression ":=" Expression                                 // Case 19
+//	|       Expression ":>" Expression                                 // Case 20
+//	|       Expression "<=" Expression                                 // Case 21
+//	|       Expression "<>" Expression                                 // Case 22
+//	|       Expression "=!=" Expression                                // Case 23
+//	|       Expression "==" Expression                                 // Case 24
+//	|       Expression "===" Expression                                // Case 25
+//	|       Expression ">=" Expression                                 // Case 26
+//	|       Expression "@*" Expression                                 // Case 27
+//	|       Expression "@@" Expression                                 // Case 28
+//	|       Expression "@@@" Expression                                // Case 29
+//	|       Expression "\\&" Expression                                // Case 30
+//	|       Expression "\\+" Expression                                // Case 31
+//	|       Expression "\\^" Expression "\\%" Expression               // Case 32
+//	|       Expression "\\_" Expression                                // Case 33
+//	|       Expression "||" Expression                                 // Case 34
+//	|       Expression '*' Expression                                  // Case 35
+//	|       Expression '+' Expression                                  // Case 36
+//	|       Expression '-' Expression                                  // Case 37
+//	|       Expression '.' Expression                                  // Case 38
+//	|       Expression '/' Expression                                  // Case 39
+//	|       Expression ':' Expression                                  // Case 40
+//	|       Expression ';'                                             // Case 41
+//	|       Expression ';' Expression                                  // Case 42
+//	|       Expression '<' Expression                                  // Case 43
+//	|       Expression '=' Expression                                  // Case 44
+//	|       Expression '>' Expression                                  // Case 45
+//	|       Expression '?' Expression                                  // Case 46
+//	|       Expression '@' Expression                                  // Case 47
+//	|       Expression '^' Expression                                  // Case 48
+//	|       Expression '|' Expression                                  // Case 49
+//	|       Expression '~' Expression                                  // Case 50
+//	|       Expression "\\[Conjugate]"                                 // Case 51
+//	|       Expression "\\[ConjugateTranspose]"                        // Case 52
+//	|       Expression "\\[HermitianConjugate]"                        // Case 53
+//	|       Expression "\\[Transpose]"                                 // Case 54
+//	|       Factor                                                     // Case 55
+//	|       Expression "\\[PartialD]" Expression                       // Case 56
+//	|       "\\[Del]" Expression                                       // Case 57
+//	|       Expression "\\[DiscreteShift]" Expression                  // Case 58
+//	|       Expression "\\[DiscreteRatio]" Expression                  // Case 59
+//	|       Expression "\\[DifferenceDelta]" Expression                // Case 60
+//	|       "\\[Square]" Expression                                    // Case 61
+//	|       Expression "\\[SmallCircle]" Expression                    // Case 62
+//	|       Expression "\\[CircleDot]" Expression                      // Case 63
+//	|       Expression "**" Expression                                 // Case 64
+//	|       Expression "\\[Cross]" Expression                          // Case 65
+//	|       '+' Expression                                             // Case 66
+//	|       "\\[PlusMinus]" Expression                                 // Case 67
+//	|       "\\[MinusPlus]" Expression                                 // Case 68
+//	|       Expression "\\[Backslash]" Expression                      // Case 69
+//	|       Expression "!=" Expression                                 // Case 70
 type Expression struct {
 	Case        int
 	Expression  *Expression

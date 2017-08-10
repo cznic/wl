@@ -24,24 +24,38 @@ package wl
 	AND				"&&"
 	APPLY				"@@"
 	APPLY_ALL			"@@@"
+	BACKSLASH			"\\[Backslash]"
+	CIRCLE_DOT			"\\[CircleDot]"
 	COMPOSITION			"@*"
 	CONDITION			"/;"
+	CONJUGATE			"\\[Conjugate]"
+	CONJUGATE_TRANSPOSE		"\\[ConjugateTranspose]"
+	CROSS				"\\[Cross]"
 	DEC				"--"
+	DEL				"\\[Del]"
+	DIFFERENCE_DELTA		"\\[DifferenceDelta]"
+	DIFFERENTIAL_D			"\\[DifferentialD]"
+	DISCRETE_RATIO			"\\[DiscreteRatio]"
+	DISCRETE_SHIFT			"\\[DiscreteShift]"
+	DIVIDE				"\\[Divide]"
 	DIVIDE2				"\\/"
 	EQUAL				"=="
-	UNEQUAL				"!="
 	GEQ				">="
 	GET				"<<"
+	HERMITIAN_CONJUGATE		"\\[HermitianConjugate]"
 	INC				"++"
-	INTEGRATE			"∫"
+	INTEGRATE			"\\[Integrate]"
 	LEQ				"<="
 	LPART				"[["
 	MAP				"/@"
 	MAP_ALL				"//@"
 	MESSAGE_NAME			"::"
+	MINUS_PLUS			"\\[MinusPlus]"
 	NON_COMMUTATIVE_MULTIPLY	"**"
 	OR				"||"
 	OVERSCRIPT			"\\&"
+	PARTIAL_D			"\\[PartialD]"
+	PLUS_MINUS			"\\[PlusMinus]"
 	POSTFIX				"//"
 	POWER_SUBSCRIPT1		"\\^"
 	POWER_SUBSCRIPT2		"\\%"
@@ -54,31 +68,17 @@ package wl
 	RULEDELAYED			":>"
 	SAME				"==="
 	SET_DELAYED			":="
-	SQRT				"√"
+	SMALL_CIRCLE			"\\[SmallCircle]"
+	SQRT				"\\[Sqrt]"
 	SQRT2				"\\@"
+	SQUARE				"\\[Square]"
 	STRINGJOIN			"<>"
 	SUBSCRIPT			"\\_"
+	TRANSPOSE			"\\[Transpose]"
 	UNDERSCRIPT			"\\+"
+	UNEQUAL				"!="
 	UNSAME				"=!="
 
-	BACKSLASH			"\u2216"
-	CIRCLE_DOT			"\u2299"
-	CONJUGATE			"\uf3c8"
-	CONJUGATE_TRANSPOSE		"\uf3c9"
-	CROSS				"\uf4a0"
-	DEL				"\u2207"
-	DIFFERENCE_DELTA		"\u2206"
-	DIFFERENTIAL_D			"\uf74c"
-	DISCRETE_RATIO			"\uf4a4"
-	DISCRETE_SHIFT			"\uf4a3"
-	DIVIDE				"\u00f7"
-	HERMITIAN_CONJUGATE		"\uf3ce"
-	MINUS_PLUS			"\u2213"
-	PARTIAL_D			"\u2202"
-	PLUS_MINUS			"\u00b1"
-	SMALL_CIRCLE			"\u2218"
-	SQUARE				"\uf520"
-	TRANSPOSE			"\uf3c7"
 
 %type	<Node>
 	start		"valid input"
@@ -159,8 +159,8 @@ Expression:
 |	"--" Expression %prec PRE_INC
 |	"\\@" Expression
 |	"\\@" Expression "\\%" Expression
-|	"√" Expression
-|	"∫" Expression DIFFERENTIAL_D Expression
+|	"\\[Sqrt]" Expression
+|	"\\[Integrate]" Expression "\\[DifferentialD]" Expression
 |	'!' Expression
 |	'-' Expression %prec UNARY_MINUS
 |	Expression "&&" Expression
@@ -206,25 +206,25 @@ Expression:
 |	Expression '^' Expression
 |	Expression '|' Expression
 |	Expression '~' Expression
-|	Expression CONJUGATE
-|	Expression CONJUGATE_TRANSPOSE
-|	Expression HERMITIAN_CONJUGATE
-|	Expression TRANSPOSE
+|	Expression "\\[Conjugate]"
+|	Expression "\\[ConjugateTranspose]"
+|	Expression "\\[HermitianConjugate]"
+|	Expression "\\[Transpose]"
 |	Factor
-|	Expression PARTIAL_D Expression
-|	DEL Expression
-|	Expression DISCRETE_SHIFT Expression
-|	Expression DISCRETE_RATIO Expression
-|	Expression DIFFERENCE_DELTA Expression
-|	SQUARE Expression
-|	Expression SMALL_CIRCLE Expression
-|	Expression CIRCLE_DOT Expression
-|	Expression NON_COMMUTATIVE_MULTIPLY Expression
-|	Expression CROSS Expression
+|	Expression "\\[PartialD]" Expression
+|	"\\[Del]" Expression
+|	Expression "\\[DiscreteShift]" Expression
+|	Expression "\\[DiscreteRatio]" Expression
+|	Expression "\\[DifferenceDelta]" Expression
+|	"\\[Square]" Expression
+|	Expression "\\[SmallCircle]" Expression
+|	Expression "\\[CircleDot]" Expression
+|	Expression "**" Expression
+|	Expression "\\[Cross]" Expression
 |	'+' Expression %prec UNARY_PLUS
-|	PLUS_MINUS Expression
-|	MINUS_PLUS Expression
-|	Expression BACKSLASH Expression
+|	"\\[PlusMinus]" Expression
+|	"\\[MinusPlus]" Expression
+|	Expression "\\[Backslash]" Expression
 |	Expression "!=" Expression
 
 Term:

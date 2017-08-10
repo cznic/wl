@@ -151,7 +151,7 @@ func ExampleExpression_case03() {
 }
 
 func ExampleExpression_case04() {
-	fmt.Println(exampleAST(6, "√ 1.97"))
+	fmt.Println(exampleAST(6, "\\[Sqrt] 1.97"))
 	// Output:
 	// &wl.Expression{
 	// · Case: 4,
@@ -169,7 +169,7 @@ func ExampleExpression_case04() {
 }
 
 func ExampleExpression_case05() {
-	fmt.Println(exampleAST(7, "∫ 1.97 \uf74c 1.98"))
+	fmt.Println(exampleAST(7, "\\[Integrate] 1.97 \\[DifferentialD] 1.98"))
 	// Output:
 	// &wl.Expression{
 	// · Case: 5,
@@ -1377,7 +1377,7 @@ func ExampleExpression_case50() {
 }
 
 func ExampleExpression_case51() {
-	fmt.Println(exampleAST(53, "1.97 \uf3c8"))
+	fmt.Println(exampleAST(53, "1.97 \\[Conjugate]"))
 	// Output:
 	// &wl.Expression{
 	// · Case: 51,
@@ -1395,7 +1395,7 @@ func ExampleExpression_case51() {
 }
 
 func ExampleExpression_case52() {
-	fmt.Println(exampleAST(54, "1.97 \uf3c9"))
+	fmt.Println(exampleAST(54, "1.97 \\[ConjugateTranspose]"))
 	// Output:
 	// &wl.Expression{
 	// · Case: 52,
@@ -1413,7 +1413,7 @@ func ExampleExpression_case52() {
 }
 
 func ExampleExpression_case53() {
-	fmt.Println(exampleAST(55, "1.97 \uf3ce"))
+	fmt.Println(exampleAST(55, "1.97 \\[HermitianConjugate]"))
 	// Output:
 	// &wl.Expression{
 	// · Case: 53,
@@ -1431,7 +1431,7 @@ func ExampleExpression_case53() {
 }
 
 func ExampleExpression_case54() {
-	fmt.Println(exampleAST(56, "1.97 \uf3c7"))
+	fmt.Println(exampleAST(56, "1.97 \\[Transpose]"))
 	// Output:
 	// &wl.Expression{
 	// · Case: 54,
@@ -1463,7 +1463,7 @@ func ExampleExpression_case55() {
 }
 
 func ExampleExpression_case56() {
-	fmt.Println(exampleAST(58, "1.97 ∂ 1.98"))
+	fmt.Println(exampleAST(58, "1.97 \\[PartialD] 1.98"))
 	// Output:
 	// &wl.Expression{
 	// · Case: 56,
@@ -1490,7 +1490,7 @@ func ExampleExpression_case56() {
 }
 
 func ExampleExpression_case57() {
-	fmt.Println(exampleAST(59, "∇ 1.97"))
+	fmt.Println(exampleAST(59, "\\[Del] 1.97"))
 	// Output:
 	// &wl.Expression{
 	// · Case: 57,
@@ -1508,7 +1508,7 @@ func ExampleExpression_case57() {
 }
 
 func ExampleExpression_case58() {
-	fmt.Println(exampleAST(60, "1.97 \uf4a3 1.98"))
+	fmt.Println(exampleAST(60, "1.97 \\[DiscreteShift] 1.98"))
 	// Output:
 	// &wl.Expression{
 	// · Case: 58,
@@ -1535,7 +1535,7 @@ func ExampleExpression_case58() {
 }
 
 func ExampleExpression_case59() {
-	fmt.Println(exampleAST(61, "1.97 \uf4a4 1.98"))
+	fmt.Println(exampleAST(61, "1.97 \\[DiscreteRatio] 1.98"))
 	// Output:
 	// &wl.Expression{
 	// · Case: 59,
@@ -1562,7 +1562,7 @@ func ExampleExpression_case59() {
 }
 
 func ExampleExpression_case60() {
-	fmt.Println(exampleAST(62, "1.97 ∆ 1.98"))
+	fmt.Println(exampleAST(62, "1.97 \\[DifferenceDelta] 1.98"))
 	// Output:
 	// &wl.Expression{
 	// · Case: 60,
@@ -1589,7 +1589,7 @@ func ExampleExpression_case60() {
 }
 
 func ExampleExpression_case61() {
-	fmt.Println(exampleAST(63, "\uf520 1.97"))
+	fmt.Println(exampleAST(63, "\\[Square] 1.97"))
 	// Output:
 	// &wl.Expression{
 	// · Case: 61,
@@ -1607,7 +1607,7 @@ func ExampleExpression_case61() {
 }
 
 func ExampleExpression_case62() {
-	fmt.Println(exampleAST(64, "1.97 ∘ 1.98"))
+	fmt.Println(exampleAST(64, "1.97 \\[SmallCircle] 1.98"))
 	// Output:
 	// &wl.Expression{
 	// · Case: 62,
@@ -1634,7 +1634,7 @@ func ExampleExpression_case62() {
 }
 
 func ExampleExpression_case63() {
-	fmt.Println(exampleAST(65, "1.97 ⊙ 1.98"))
+	fmt.Println(exampleAST(65, "1.97 \\[CircleDot] 1.98"))
 	// Output:
 	// &wl.Expression{
 	// · Case: 63,
@@ -1688,7 +1688,7 @@ func ExampleExpression_case64() {
 }
 
 func ExampleExpression_case65() {
-	fmt.Println(exampleAST(67, "1.97 \uf4a0 1.98"))
+	fmt.Println(exampleAST(67, "1.97 \\[Cross] 1.98"))
 	// Output:
 	// &wl.Expression{
 	// · Case: 65,
@@ -1733,7 +1733,7 @@ func ExampleExpression_case66() {
 }
 
 func ExampleExpression_case67() {
-	fmt.Println(exampleAST(69, "± 1.97"))
+	fmt.Println(exampleAST(69, "\\[PlusMinus] 1.97"))
 	// Output:
 	// &wl.Expression{
 	// · Case: 67,
@@ -1751,7 +1751,7 @@ func ExampleExpression_case67() {
 }
 
 func ExampleExpression_case68() {
-	fmt.Println(exampleAST(70, "∓ 1.97"))
+	fmt.Println(exampleAST(70, "\\[MinusPlus] 1.97"))
 	// Output:
 	// &wl.Expression{
 	// · Case: 68,
@@ -1769,7 +1769,7 @@ func ExampleExpression_case68() {
 }
 
 func ExampleExpression_case69() {
-	fmt.Println(exampleAST(71, "1.97 ∖ 1.98"))
+	fmt.Println(exampleAST(71, "1.97 \\[Backslash] 1.98"))
 	// Output:
 	// &wl.Expression{
 	// · Case: 69,
