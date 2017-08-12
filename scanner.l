@@ -57,6 +57,11 @@ Wedge			\x9a
 Vee			\x9b
 CircleTimes		\x9c
 CenterDot		\x9d
+Times			\x9e
+Star			\x9f
+Product			\xa0
+VerticalTilde		\xa1
+Coproduct		\xa2
 
 approx		{digits}"."{digits}|"."{digits}|{digits}"."
 base		{digits}^^
@@ -160,6 +165,7 @@ schar		[^\x22]|\n
 {CircleTimes}		return CIRCLE_TIMES
 {ConjugateTranspose}	return CONJUGATE_TRANSPOSE
 {Conjugate}		return CONJUGATE
+{Coproduct}		return COPRODUCT
 {Cross}			return CROSS
 {Del}			return DEL
 {Diamond}		return DIAMOND
@@ -173,11 +179,15 @@ schar		[^\x22]|\n
 {MinusPlus}		return MINUS_PLUS
 {PartialD}		return PARTIAL_D
 {PlusMinus}		return PLUS_MINUS
+{Product}		return PRODUCT
 {SmallCircle}		return SMALL_CIRCLE
 {Sqrt}			return SQRT
 {Square}		return SQUARE
+{Star}			return STAR
+{Times}			return '*'
 {Transpose}		return TRANSPOSE
 {Vee}			return VEE
+{VerticalTilde}		return VERTICAL_TILDE
 {Wedge}			return WEDGE
 
 {float}		return FLOAT

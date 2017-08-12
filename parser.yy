@@ -32,6 +32,7 @@ package wl
 	CONDITION			"/;"
 	CONJUGATE			"\\[Conjugate]"
 	CONJUGATE_TRANSPOSE		"\\[ConjugateTranspose]"
+	COPRODUCT			"\\[Coproduct]"
 	CROSS				"\\[Cross]"
 	DEC				"--"
 	DEL				"\\[Del]"
@@ -62,6 +63,7 @@ package wl
 	POSTFIX				"//"
 	POWER_SUBSCRIPT1		"\\^"
 	POWER_SUBSCRIPT2		"\\%"
+	PRODUCT				"\\[Product]"
 	QUOTE				"'"
 	REPLACEALL			"/."
 	REPLACEREP			"//."
@@ -75,6 +77,7 @@ package wl
 	SQRT				"\\[Sqrt]"
 	SQRT2				"\\@"
 	SQUARE				"\\[Square]"
+	STAR				"\\[Star]"
 	STRINGJOIN			"<>"
 	SUBSCRIPT			"\\_"
 	TRANSPOSE			"\\[Transpose]"
@@ -82,6 +85,7 @@ package wl
 	UNEQUAL				"!="
 	UNSAME				"=!="
 	VEE				"\\[Vee]"
+	VERTICAL_TILDE			"\\[VerticalTilde]"
 	WEDGE				"\\[Wedge]"
 
 %type	<Node>
@@ -120,8 +124,12 @@ package wl
 %left EQUAL
 %left '+'
 %left '-'
-%left '*'
 
+%left		COPRODUCT
+%left		VERTICAL_TILDE
+%right		PRODUCT
+%left		STAR
+%left		'*'
 %left		CENTER_DOT
 %left		CIRCLE_TIMES
 %left		VEE
@@ -240,6 +248,10 @@ Expression:
 |	Expression "\\[Vee]" Expression
 |	Expression "\\[CircleTimes]" Expression
 |	Expression "\\[CenterDot]" Expression
+|	Expression "\\[Star]" Expression
+|	Expression "\\[Product]" Expression
+|	Expression "\\[VerticalTilde]" Expression
+|	Expression "\\[Coproduct]" Expression
 
 Term:
 	"<<" STRING

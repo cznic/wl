@@ -45,6 +45,11 @@ const (
 	ccVee
 	ccCircleTimes
 	ccCenterDot
+	ccTimes
+	ccStar
+	ccProduct
+	ccVerticalTilde
+	ccCoproduct
 
 	ccOther
 )
@@ -63,6 +68,7 @@ var (
 		"CircleTimes":         '\u2297',
 		"Conjugate":           '\uf3c8',
 		"ConjugateTranspose":  '\uf3c9',
+		"Coproduct":           '\u2210',
 		"Cross":               '\uf4a0',
 		"Del":                 '\u2207',
 		"Diamond":             '\u22c4',
@@ -76,6 +82,7 @@ var (
 		"MinusPlus":           '\u2213',
 		"PartialD":            '\u2202',
 		"PlusMinus":           '\u00b1',
+		"Product":             '\u220f',
 		"RawAmpersand":        '&',
 		"RawAt":               '@',
 		"RawBackquote":        '`',
@@ -112,8 +119,10 @@ var (
 		"SmallCircle":         '\u2218',
 		"Sqrt":                '\u221a',
 		"Square":              '\uf520',
+		"Star":                '\u22c6',
 		"Transpose":           '\uf3c7',
 		"Vee":                 '\u22c1',
+		"VerticalTilde":       '\u2240',
 		"Wedge":               '\u22c0',
 	}
 )
@@ -176,6 +185,16 @@ func runeClass(r rune) int {
 		return ccCircleTimes
 	case r == '\u00b7':
 		return ccCenterDot
+	case r == '\u00d7':
+		return ccTimes
+	case r == '\u22c6':
+		return ccStar
+	case r == '\u220f':
+		return ccProduct
+	case r == '\u2240':
+		return ccVerticalTilde
+	case r == '\u2210':
+		return ccCoproduct
 	case unicode.IsDigit(r):
 		return ccDigit
 	case unicode.IsLetter(r):
