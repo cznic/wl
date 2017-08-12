@@ -25,8 +25,11 @@ package wl
 	APPLY				"@@"
 	APPLY_ALL			"@@@"
 	BACKSLASH			"\\[Backslash]"
+	CAP				"\\[Cap]"
 	CENTER_DOT			"\\[CenterDot]"
 	CIRCLE_DOT			"\\[CircleDot]"
+	CIRCLE_MINUS			"\\[CircleMinus]"
+	CIRCLE_PLUS			"\\[CirclePlus]"
 	CIRCLE_TIMES			"\\[CircleTimes]"
 	COMPOSITION			"@*"
 	CONDITION			"/;"
@@ -34,6 +37,7 @@ package wl
 	CONJUGATE_TRANSPOSE		"\\[ConjugateTranspose]"
 	COPRODUCT			"\\[Coproduct]"
 	CROSS				"\\[Cross]"
+	CUP				"\\[Cup]"
 	DEC				"--"
 	DEL				"\\[Del]"
 	DIAMOND				"\\[Diamond]"
@@ -49,6 +53,7 @@ package wl
 	HERMITIAN_CONJUGATE		"\\[HermitianConjugate]"
 	INC				"++"
 	INTEGRATE			"\\[Integrate]"
+	INTERSECTION			"\\[Intersection]"
 	LEQ				"<="
 	LPART				"[["
 	MAP				"/@"
@@ -80,9 +85,11 @@ package wl
 	STAR				"\\[Star]"
 	STRINGJOIN			"<>"
 	SUBSCRIPT			"\\_"
+	SUM				"\\[Sum]"
 	TRANSPOSE			"\\[Transpose]"
 	UNDERSCRIPT			"\\+"
 	UNEQUAL				"!="
+	UNION				"\\[Union]"
 	UNSAME				"=!="
 	VEE				"\\[Vee]"
 	VERTICAL_TILDE			"\\[VerticalTilde]"
@@ -122,9 +129,13 @@ package wl
 %left '>'
 %left UNEQUAL
 %left EQUAL
-%left '+'
-%left '-'
 
+%left		UNION
+%left		INTERSECTION
+%left		'+' '-' PLUS_MINUS MINUS_PLUS
+%right		SUM
+%left		CIRCLE_PLUS CIRCLE_MINUS
+%left		CAP CUP
 %left		COPRODUCT
 %left		VERTICAL_TILDE
 %right		PRODUCT
@@ -137,7 +148,7 @@ package wl
 %left		DIAMOND
 %left		BACKSLASH
 %left		'/'
-%precedence	UNARY_MINUS UNARY_PLUS PLUS_MINUS MINUS_PLUS
+%precedence	UNARY_MINUS UNARY_PLUS UNARY_PLUS_MINUS UNARY_MINUS_PLUS
 %left		'.'			// Dot
 %right		CROSS
 %left		NON_COMMUTATIVE_MULTIPLY
@@ -239,8 +250,8 @@ Expression:
 |	Expression "**" Expression
 |	Expression "\\[Cross]" Expression
 |	'+' Expression %prec UNARY_PLUS
-|	"\\[PlusMinus]" Expression
-|	"\\[MinusPlus]" Expression
+|	"\\[PlusMinus]" Expression %prec UNARY_PLUS_MINUS
+|	"\\[MinusPlus]" Expression %prec UNARY_MINUS_PLUS
 |	Expression "\\[Backslash]" Expression
 |	Expression "!=" Expression
 |	Expression "\\[Diamond]" Expression
@@ -249,9 +260,14 @@ Expression:
 |	Expression "\\[CircleTimes]" Expression
 |	Expression "\\[CenterDot]" Expression
 |	Expression "\\[Star]" Expression
-|	Expression "\\[Product]" Expression
 |	Expression "\\[VerticalTilde]" Expression
 |	Expression "\\[Coproduct]" Expression
+|	Expression "\\[Cap]" Expression
+|	Expression "\\[Cup]" Expression
+|	Expression "\\[CirclePlus]" Expression
+|	Expression "\\[CircleMinus]" Expression
+|	Expression "\\[Intersection]" Expression
+|	Expression "\\[Union]" Expression
 
 Term:
 	"<<" STRING

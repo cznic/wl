@@ -62,6 +62,13 @@ Star			\x9f
 Product			\xa0
 VerticalTilde		\xa1
 Coproduct		\xa2
+Cap			\xa3
+Cup			\xa4
+CirclePlus		\xa5
+CircleMinus		\xa6
+Sum			\xa7
+Intersection		\xa8
+Union			\xa9
 
 approx		{digits}"."{digits}|"."{digits}|{digits}"."
 base		{digits}^^
@@ -160,13 +167,17 @@ schar		[^\x22]|\n
 	return ']'
 
 {Backslash}		return BACKSLASH
+{Cap}			return CAP
 {CenterDot}		return CENTER_DOT
 {CircleDot}		return CIRCLE_DOT
+{CircleMinus}		return CIRCLE_MINUS
+{CirclePlus}		return CIRCLE_PLUS
 {CircleTimes}		return CIRCLE_TIMES
 {ConjugateTranspose}	return CONJUGATE_TRANSPOSE
 {Conjugate}		return CONJUGATE
 {Coproduct}		return COPRODUCT
 {Cross}			return CROSS
+{Cup}			return CUP
 {Del}			return DEL
 {Diamond}		return DIAMOND
 {DifferenceDelta}	return DIFFERENCE_DELTA
@@ -176,6 +187,7 @@ schar		[^\x22]|\n
 {Divide}		return '/'
 {HermitianConjugate}	return HERMITIAN_CONJUGATE
 {Integrate}		return INTEGRATE
+{Intersection}		return INTERSECTION
 {MinusPlus}		return MINUS_PLUS
 {PartialD}		return PARTIAL_D
 {PlusMinus}		return PLUS_MINUS
@@ -184,8 +196,10 @@ schar		[^\x22]|\n
 {Sqrt}			return SQRT
 {Square}		return SQUARE
 {Star}			return STAR
+{Sum}			return SUM
 {Times}			return '*'
 {Transpose}		return TRANSPOSE
+{Union}			return UNION
 {Vee}			return VEE
 {VerticalTilde}		return VERTICAL_TILDE
 {Wedge}			return WEDGE

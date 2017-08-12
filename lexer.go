@@ -50,6 +50,13 @@ const (
 	ccProduct
 	ccVerticalTilde
 	ccCoproduct
+	ccCap
+	ccCup
+	ccCirclePlus
+	ccCircleMinus
+	ccSum
+	ccIntersection
+	ccUnion
 
 	ccOther
 )
@@ -63,13 +70,17 @@ var (
 
 	namedChars = map[string]rune{
 		"Backslash":           '\u2216',
+		"Cap":                 '\u2322',
 		"CenterDot":           '\u00b7',
 		"CircleDot":           '\u2299',
+		"CircleMinus":         '\u2296',
+		"CirclePlus":          '\u2295',
 		"CircleTimes":         '\u2297',
 		"Conjugate":           '\uf3c8',
 		"ConjugateTranspose":  '\uf3c9',
 		"Coproduct":           '\u2210',
 		"Cross":               '\uf4a0',
+		"Cup":                 '\u2323',
 		"Del":                 '\u2207',
 		"Diamond":             '\u22c4',
 		"DifferenceDelta":     '\u2206',
@@ -79,6 +90,7 @@ var (
 		"Divide":              '\u00f7',
 		"HermitianConjugate":  '\uf3ce',
 		"Integrate":           '\u222b',
+		"Intersection":        '\u22c2',
 		"MinusPlus":           '\u2213',
 		"PartialD":            '\u2202',
 		"PlusMinus":           '\u00b1',
@@ -120,7 +132,9 @@ var (
 		"Sqrt":                '\u221a',
 		"Square":              '\uf520',
 		"Star":                '\u22c6',
+		"Sum":                 '\u2211',
 		"Transpose":           '\uf3c7',
+		"Union":               '\u22c3',
 		"Vee":                 '\u22c1',
 		"VerticalTilde":       '\u2240',
 		"Wedge":               '\u22c0',
@@ -195,6 +209,20 @@ func runeClass(r rune) int {
 		return ccVerticalTilde
 	case r == '\u2210':
 		return ccCoproduct
+	case r == '\u2322':
+		return ccCap
+	case r == '\u2323':
+		return ccCup
+	case r == '\u2295':
+		return ccCirclePlus
+	case r == '\u2296':
+		return ccCircleMinus
+	case r == '\u2211':
+		return ccSum
+	case r == '\u22c2':
+		return ccIntersection
+	case r == '\u22c3':
+		return ccUnion
 	case unicode.IsDigit(r):
 		return ccDigit
 	case unicode.IsLetter(r):

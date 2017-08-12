@@ -167,9 +167,14 @@ func (n *ExprList) Pos() token.Pos {
 //	|       Expression "\\[CircleTimes]" Expression                    // Case 74
 //	|       Expression "\\[CenterDot]" Expression                      // Case 75
 //	|       Expression "\\[Star]" Expression                           // Case 76
-//	|       Expression "\\[Product]" Expression                        // Case 77
-//	|       Expression "\\[VerticalTilde]" Expression                  // Case 78
-//	|       Expression "\\[Coproduct]" Expression                      // Case 79
+//	|       Expression "\\[VerticalTilde]" Expression                  // Case 77
+//	|       Expression "\\[Coproduct]" Expression                      // Case 78
+//	|       Expression "\\[Cap]" Expression                            // Case 79
+//	|       Expression "\\[Cup]" Expression                            // Case 80
+//	|       Expression "\\[CirclePlus]" Expression                     // Case 81
+//	|       Expression "\\[CircleMinus]" Expression                    // Case 82
+//	|       Expression "\\[Intersection]" Expression                   // Case 83
+//	|       Expression "\\[Union]" Expression                          // Case 84
 type Expression struct {
 	Case        int
 	Expression  *Expression
@@ -194,7 +199,7 @@ func (n *Expression) Pos() token.Pos {
 	}
 
 	switch n.Case {
-	case 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 56, 58, 59, 60, 62, 63, 64, 65, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79:
+	case 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 56, 58, 59, 60, 62, 63, 64, 65, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84:
 		return n.Expression.Pos()
 	case 55:
 		return n.Factor.Pos()
