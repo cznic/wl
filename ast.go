@@ -175,6 +175,18 @@ func (n *ExprList) Pos() token.Pos {
 //	|       Expression "\\[CircleMinus]" Expression                    // Case 82
 //	|       Expression "\\[Intersection]" Expression                   // Case 83
 //	|       Expression "\\[Union]" Expression                          // Case 84
+//	|       ";;"                                                       // Case 85
+//	|       ";;" Expression                                            // Case 86
+//	|       Expression ";;"                                            // Case 87
+//	|       Expression ";;" Expression                                 // Case 88
+//	|       Expression "\\[VerticalBar]" Expression                    // Case 89
+//	|       Expression "\\[NotVerticalBar]" Expression                 // Case 90
+//	|       Expression "\\[DoubleVerticalBar]" Expression              // Case 91
+//	|       Expression "\\[NotDoubleVerticalBar]" Expression           // Case 92
+//	|       Expression "\\[Element]" Expression                        // Case 93
+//	|       Expression "\\[NotElement]" Expression                     // Case 94
+//	|       Expression "\\[Subset]" Expression                         // Case 95
+//	|       Expression "\\[Superset]" Expression                       // Case 96
 type Expression struct {
 	Case        int
 	Expression  *Expression
@@ -199,11 +211,11 @@ func (n *Expression) Pos() token.Pos {
 	}
 
 	switch n.Case {
-	case 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 56, 58, 59, 60, 62, 63, 64, 65, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84:
+	case 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 56, 58, 59, 60, 62, 63, 64, 65, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96:
 		return n.Expression.Pos()
 	case 55:
 		return n.Factor.Pos()
-	case 0, 1, 2, 3, 4, 5, 6, 7, 57, 61, 66, 67, 68:
+	case 0, 1, 2, 3, 4, 5, 6, 7, 57, 61, 66, 67, 68, 85, 86:
 		return n.Token.Pos()
 	default:
 		panic("internal error")

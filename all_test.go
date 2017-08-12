@@ -160,7 +160,35 @@ func testParseCorpus(t *testing.T, interactive bool) {
 	t.Logf("%s: expressions: %v", testFile.Position(p.lex.First.Pos()), n)
 }
 
+func testParseOther(t *testing.T) {
+	for i, v := range []string{
+		"i;;j",
+		"i;;",
+		";;j",
+		";;",
+		"i;;j;;k",
+		"i;;;;k",
+		";;j;;k",
+		";;;;k",
+	} {
+		lx := newLexer(strings.NewReader(v))
+		l, err := lex.New(
+			token.NewFileSet().AddFile(fmt.Sprint(i), -1, len(v)),
+			lx,
+			lex.ErrorFunc(func(token.Pos, string) {}),
+		)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		if err := lx.parse(l, false); err != nil {
+			t.Errorf("#%v: %v", i, err)
+		}
+	}
+}
+
 func TestParser(t *testing.T) {
 	t.Run("corpus bulk", func(t *testing.T) { testParseCorpus(t, false) })
 	t.Run("corpus interactive", func(t *testing.T) { testParseCorpus(t, true) })
+	t.Run("other", func(t *testing.T) { testParseOther(t) })
 }

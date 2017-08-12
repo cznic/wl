@@ -47,6 +47,8 @@ package wl
 	DISCRETE_SHIFT			"\\[DiscreteShift]"
 	DIVIDE				"\\[Divide]"
 	DIVIDE2				"\\/"
+	DOUBLE_VERTICAL_BAR		"\\[DoubleVerticalBar]"
+	ELEMENT				"\\[Element]"
 	EQUAL				"=="
 	GEQ				">="
 	GET				"<<"
@@ -61,6 +63,9 @@ package wl
 	MESSAGE_NAME			"::"
 	MINUS_PLUS			"\\[MinusPlus]"
 	NON_COMMUTATIVE_MULTIPLY	"**"
+	NOT_DOUBLE_VERTICAL_BAR		"\\[NotDoubleVerticalBar]"
+	NOT_ELEMENT			"\\[NotElement]"
+	NOT_VERTICAL_BAR		"\\[NotVerticalBar]"
 	OR				"||"
 	OVERSCRIPT			"\\&"
 	PARTIAL_D			"\\[PartialD]"
@@ -79,19 +84,23 @@ package wl
 	SAME				"==="
 	SET_DELAYED			":="
 	SMALL_CIRCLE			"\\[SmallCircle]"
+	SPAN				";;"
 	SQRT				"\\[Sqrt]"
 	SQRT2				"\\@"
 	SQUARE				"\\[Square]"
 	STAR				"\\[Star]"
 	STRINGJOIN			"<>"
 	SUBSCRIPT			"\\_"
+	SUBSET				"\\[Subset]"
 	SUM				"\\[Sum]"
+	SUPERSET			"\\[Superset]"
 	TRANSPOSE			"\\[Transpose]"
 	UNDERSCRIPT			"\\+"
 	UNEQUAL				"!="
 	UNION				"\\[Union]"
 	UNSAME				"=!="
 	VEE				"\\[Vee]"
+	VERTICAL_BAR			"\\[VerticalBar]"
 	VERTICAL_TILDE			"\\[VerticalTilde]"
 	WEDGE				"\\[Wedge]"
 
@@ -121,15 +130,11 @@ package wl
 %left OR
 %left AND
 %right '!'			// Not
-%left UNSAME
-%left SAME
-%left LEQ
-%left '<'
-%left GEQ
-%left '>'
-%left UNEQUAL
-%left EQUAL
 
+%left		ELEMENT NOT_ELEMENT SUBSET SUPERSET
+%left		SAME UNSAME
+%left		EQUAL UNEQUAL '>' GEQ '<' LEQ VERTICAL_BAR NOT_VERTICAL_BAR DOUBLE_VERTICAL_BAR NOT_DOUBLE_VERTICAL_BAR
+%left		SPAN
 %left		UNION
 %left		INTERSECTION
 %left		'+' '-' PLUS_MINUS MINUS_PLUS
@@ -149,7 +154,7 @@ package wl
 %left		BACKSLASH
 %left		'/'
 %precedence	UNARY_MINUS UNARY_PLUS UNARY_PLUS_MINUS UNARY_MINUS_PLUS
-%left		'.'			// Dot
+%left		'.'					// Dot
 %right		CROSS
 %left		NON_COMMUTATIVE_MULTIPLY
 %right		CIRCLE_DOT
@@ -166,10 +171,10 @@ package wl
 %left		'~'
 %right		'@'
 %left		COMPOSITION RIGHT_COMPOSITION
-%precedence	PRE_INC		// PreIncrement, PreDecrement
-%nonassoc	INC DEC		// Increment, Decrement
-%left		'[' ']' LPART RPART	// expr, Part
-%left		'?'	// PatternTest
+%precedence	PRE_INC					// PreIncrement, PreDecrement
+%nonassoc	INC DEC					// Increment, Decrement
+%left		'[' ']' LPART RPART			// expr, Part
+%left		'?'					// PatternTest
 %right		SUBSCRIPT
 %right		OVERSCRIPT UNDERSCRIPT
 %nonassoc	GET
@@ -268,6 +273,18 @@ Expression:
 |	Expression "\\[CircleMinus]" Expression
 |	Expression "\\[Intersection]" Expression
 |	Expression "\\[Union]" Expression
+|	";;"
+|	";;" Expression
+|	Expression ";;"
+|	Expression ";;" Expression
+|	Expression "\\[VerticalBar]" Expression
+|	Expression "\\[NotVerticalBar]" Expression
+|	Expression "\\[DoubleVerticalBar]" Expression
+|	Expression "\\[NotDoubleVerticalBar]" Expression
+|	Expression "\\[Element]" Expression
+|	Expression "\\[NotElement]" Expression
+|	Expression "\\[Subset]" Expression
+|	Expression "\\[Superset]" Expression
 
 Term:
 	"<<" STRING

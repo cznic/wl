@@ -69,6 +69,15 @@ CircleMinus		\xa6
 Sum			\xa7
 Intersection		\xa8
 Union			\xa9
+Equal			\xaa
+VerticalBar		\xab
+NotVerticalBar		\xac
+DoubleVerticalBar	\xad
+NotDoubleVerticalBar	\xae
+Element			\xaf
+NotElement		\xb0
+Subset			\xb1
+Superset		\xb2
 
 approx		{digits}"."{digits}|"."{digits}|{digits}"."
 base		{digits}^^
@@ -119,6 +128,7 @@ schar		[^\x22]|\n
 {ignore}
 	return IGNORE
 
+"!="	return UNEQUAL
 "&&"	return AND
 "'"	return QUOTE
 "**"	return NON_COMMUTATIVE_MULTIPLY
@@ -135,12 +145,12 @@ schar		[^\x22]|\n
 "::"	return MESSAGE_NAME
 ":="	return SET_DELAYED
 ":>"	return RULEDELAYED
+";;"	return SPAN
 "<<"	return GET
 "<="	return LEQ
 "<>"	return STRINGJOIN
 "=!="	return UNSAME
 "=="	return EQUAL
-"!="	return UNEQUAL
 "==="	return SAME
 ">="	return GEQ
 "@*"	return COMPOSITION
@@ -185,10 +195,16 @@ schar		[^\x22]|\n
 {DiscreteRatio}		return DISCRETE_RATIO
 {DiscreteShift}		return DISCRETE_SHIFT
 {Divide}		return '/'
+{DoubleVerticalBar}	return DOUBLE_VERTICAL_BAR
+{Element}		return ELEMENT
+{Equal}			return EQUAL
 {HermitianConjugate}	return HERMITIAN_CONJUGATE
 {Integrate}		return INTEGRATE
 {Intersection}		return INTERSECTION
 {MinusPlus}		return MINUS_PLUS
+{NotDoubleVerticalBar}	return NOT_DOUBLE_VERTICAL_BAR
+{NotElement}		return NOT_ELEMENT
+{NotVerticalBar}	return NOT_VERTICAL_BAR
 {PartialD}		return PARTIAL_D
 {PlusMinus}		return PLUS_MINUS
 {Product}		return PRODUCT
@@ -196,11 +212,14 @@ schar		[^\x22]|\n
 {Sqrt}			return SQRT
 {Square}		return SQUARE
 {Star}			return STAR
+{Subset}		return SUBSET
 {Sum}			return SUM
+{Superset}		return SUPERSET
 {Times}			return '*'
 {Transpose}		return TRANSPOSE
 {Union}			return UNION
 {Vee}			return VEE
+{VerticalBar}		return VERTICAL_BAR
 {VerticalTilde}		return VERTICAL_TILDE
 {Wedge}			return WEDGE
 

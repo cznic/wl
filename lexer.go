@@ -57,6 +57,15 @@ const (
 	ccSum
 	ccIntersection
 	ccUnion
+	ccEqual
+	ccVerticalBar
+	ccNotVerticalBar
+	ccDoubleVerticalBar
+	ccNotDoubleVerticalBar
+	ccElement
+	ccNotElement
+	ccSubset
+	ccSuperset
 
 	ccOther
 )
@@ -69,75 +78,85 @@ var (
 	}
 
 	namedChars = map[string]rune{
-		"Backslash":           '\u2216',
-		"Cap":                 '\u2322',
-		"CenterDot":           '\u00b7',
-		"CircleDot":           '\u2299',
-		"CircleMinus":         '\u2296',
-		"CirclePlus":          '\u2295',
-		"CircleTimes":         '\u2297',
-		"Conjugate":           '\uf3c8',
-		"ConjugateTranspose":  '\uf3c9',
-		"Coproduct":           '\u2210',
-		"Cross":               '\uf4a0',
-		"Cup":                 '\u2323',
-		"Del":                 '\u2207',
-		"Diamond":             '\u22c4',
-		"DifferenceDelta":     '\u2206',
-		"DifferentialD":       '\uf74c',
-		"DiscreteRatio":       '\uf4a4',
-		"DiscreteShift":       '\uf4a3',
-		"Divide":              '\u00f7',
-		"HermitianConjugate":  '\uf3ce',
-		"Integrate":           '\u222b',
-		"Intersection":        '\u22c2',
-		"MinusPlus":           '\u2213',
-		"PartialD":            '\u2202',
-		"PlusMinus":           '\u00b1',
-		"Product":             '\u220f',
-		"RawAmpersand":        '&',
-		"RawAt":               '@',
-		"RawBackquote":        '`',
-		"RawBackslash":        '∖',
-		"RawColon":            ':',
-		"RawComma":            ',',
-		"RawDash":             '-',
-		"RawDollar":           '$',
-		"RawDot":              '.',
-		"RawDoubleQuote":      '"',
-		"RawEqual":            '=',
-		"RawExclamation":      '!',
-		"RawGreater":          '>',
-		"RawLeftBrace":        '{',
-		"RawLeftBracket":      '[',
-		"RawLeftParenthesis":  '(',
-		"RawLess":             '<',
-		"RawNumberSign":       '#',
-		"RawPercent":          '%',
-		"RawPlus":             '+',
-		"RawQuestion":         '?',
-		"RawQuote":            '\'',
-		"RawRightBrace":       '}',
-		"RawRightBracket":     ']',
-		"RawRightParenthesis": ')',
-		"RawSemicolon":        ';',
-		"RawSlash":            '/',
-		"RawSpace":            ' ',
-		"RawStar":             '*',
-		"RawTilde":            '~',
-		"RawUnderscore":       '_',
-		"RawVerticalBar":      '|',
-		"RawWedge":            '^',
-		"SmallCircle":         '\u2218',
-		"Sqrt":                '\u221a',
-		"Square":              '\uf520',
-		"Star":                '\u22c6',
-		"Sum":                 '\u2211',
-		"Transpose":           '\uf3c7',
-		"Union":               '\u22c3',
-		"Vee":                 '\u22c1',
-		"VerticalTilde":       '\u2240',
-		"Wedge":               '\u22c0',
+		"Backslash":            '\u2216',
+		"Cap":                  '\u2322',
+		"CenterDot":            '\u00b7',
+		"CircleDot":            '\u2299',
+		"CircleMinus":          '\u2296',
+		"CirclePlus":           '\u2295',
+		"CircleTimes":          '\u2297',
+		"Conjugate":            '\uf3c8',
+		"ConjugateTranspose":   '\uf3c9',
+		"Coproduct":            '\u2210',
+		"Cross":                '\uf4a0',
+		"Cup":                  '\u2323',
+		"Del":                  '\u2207',
+		"Diamond":              '\u22c4',
+		"DifferenceDelta":      '\u2206',
+		"DifferentialD":        '\uf74c',
+		"DiscreteRatio":        '\uf4a4',
+		"DiscreteShift":        '\uf4a3',
+		"Divide":               '\u00f7',
+		"DoubleVerticalBar":    '\u2225',
+		"Element":              '\u2208',
+		"NotElement":           '\u2209',
+		"Equal":                '\uf431',
+		"HermitianConjugate":   '\uf3ce',
+		"Integrate":            '\u222b',
+		"Intersection":         '\u22c2',
+		"LongEqual":            '\uf7d9',
+		"MinusPlus":            '\u2213',
+		"NotDoubleVerticalBar": '\u2226',
+		"NotVerticalBar":       '\uf3d1',
+		"PartialD":             '\u2202',
+		"PlusMinus":            '\u00b1',
+		"Product":              '\u220f',
+		"RawAmpersand":         '&',
+		"RawAt":                '@',
+		"RawBackquote":         '`',
+		"RawBackslash":         '∖',
+		"RawColon":             ':',
+		"RawComma":             ',',
+		"RawDash":              '-',
+		"RawDollar":            '$',
+		"RawDot":               '.',
+		"RawDoubleQuote":       '"',
+		"RawEqual":             '=',
+		"RawExclamation":       '!',
+		"RawGreater":           '>',
+		"RawLeftBrace":         '{',
+		"RawLeftBracket":       '[',
+		"RawLeftParenthesis":   '(',
+		"RawLess":              '<',
+		"RawNumberSign":        '#',
+		"RawPercent":           '%',
+		"RawPlus":              '+',
+		"RawQuestion":          '?',
+		"RawQuote":             '\'',
+		"RawRightBrace":        '}',
+		"RawRightBracket":      ']',
+		"RawRightParenthesis":  ')',
+		"RawSemicolon":         ';',
+		"RawSlash":             '/',
+		"RawSpace":             ' ',
+		"RawStar":              '*',
+		"RawTilde":             '~',
+		"RawUnderscore":        '_',
+		"RawVerticalBar":       '|',
+		"RawWedge":             '^',
+		"SmallCircle":          '\u2218',
+		"Sqrt":                 '\u221a',
+		"Square":               '\uf520',
+		"Star":                 '\u22c6',
+		"Subset":               '\u2282',
+		"Sum":                  '\u2211',
+		"Superset":             '\u2283',
+		"Transpose":            '\uf3c7',
+		"Union":                '\u22c3',
+		"Vee":                  '\u22c1',
+		"VerticalBar":          '\uf3d0',
+		"VerticalTilde":        '\u2240',
+		"Wedge":                '\u22c0',
 	}
 )
 
@@ -223,6 +242,24 @@ func runeClass(r rune) int {
 		return ccIntersection
 	case r == '\u22c3':
 		return ccUnion
+	case r == '\uf431', r == '\uf7d9':
+		return ccEqual
+	case r == '\uf3d0':
+		return ccVerticalBar
+	case r == '\uf3d1':
+		return ccNotVerticalBar
+	case r == '\u2225':
+		return ccDoubleVerticalBar
+	case r == '\u2226':
+		return ccNotDoubleVerticalBar
+	case r == '\u2208':
+		return ccElement
+	case r == '\u2209':
+		return ccNotElement
+	case r == '\u2282':
+		return ccSubset
+	case r == '\u2283':
+		return ccSuperset
 	case unicode.IsDigit(r):
 		return ccDigit
 	case unicode.IsLetter(r):
