@@ -21,8 +21,6 @@ import (
 )
 
 func (lx *lexer) scan() (r int) {
-	// fmt.Printf("%T.scan\n", lx)
-	// defer func() { fmt.Printf("\t%T.scan: %U %s\n", lx, r, yySymName(r)) }()
 	c := lx.Enter()
 %}
 
@@ -96,6 +94,11 @@ LeftTee			\xc1
 DoubleLeftTee		\xc2
 UpTee			\xc3
 DownTee			\xc4
+SuchThat		\xc5
+VerticalSeparator	\xc6
+Therefore		\xc7
+Because			\xc8
+Function		\xc9
 
 approx		{digits}"."{digits}|"."{digits}|{digits}"."
 base		{digits}^^
@@ -108,13 +111,14 @@ float		{base}?{approx}(`|`{digits}|``{digits})?
 ident		{symbol}|`{symbol}|{symbol}`{symbol}|{symbol}`|{symbol}`{symbol}`|`{symbol}`
 int		{base}?{digits}
 mantissa	{digiticks}"."{digiticks}|"."{digiticks}|{digiticks}"."
+out		%+|%{digits}
 pattern		{symbol}?{blank}{symbol}?\.?
+schar		[^\x22]|\n
 sci		({approx}|{mantissa})"*^"{digits}
-slot		#({digits}|{ident})?
+slot		#+|#({digits}|{ident})?
 symbol		{symbolFirst}{symbolNext}*
 symbolFirst	[a-zA-Z$]|{L}|{LL}
 symbolNext	{symbolFirst}|[0-9]|{D}
-schar		[^\x22]|\n
 
 %%
 	c = lx.Rule0()
@@ -150,15 +154,22 @@ schar		[^\x22]|\n
 "&&"	return AND
 "'"	return QUOTE
 "**"	return NON_COMMUTATIVE_MULTIPLY
+"*="	return TIMES_BY
 "++"	return INC
+"+="	return ADD_TO
 "--"	return DEC
+"-="	return SUBTRACT_FROM
 "->"	return RULE
+".."	return REPEATED
+"..."	return REPEATED_NULL
 "/*"	return RIGHT_COMPOSITION
 "/."	return REPLACEALL
 "//"	return POSTFIX
 "//."	return REPLACEREP
 "//@"	return MAP_ALL
+"/:"	return TAG_SET
 "/;"	return CONDITION
+"/="	return DIVIDE_BY
 "/@"	return MAP
 "::"	return MESSAGE_NAME
 ":="	return SET_DELAYED
@@ -171,6 +182,8 @@ schar		[^\x22]|\n
 "=="	return EQUAL
 "==="	return SAME
 ">="	return GEQ
+">>"	return PUT
+">>>"	return PUT_APPEND
 "@*"	return COMPOSITION
 "@@"	return APPLY
 "@@@"	return APPLY_ALL
@@ -182,7 +195,11 @@ schar		[^\x22]|\n
 "\@"	return SQRT2
 "\^"	return POWER_SUBSCRIPT1
 "\_"	return SUBSCRIPT
+"\`"	return FORM_BOX
+"^:="	return UP_SET_DELAYED
+"^="	return UP_SET
 "||"	return OR
+"~~"	return STRING_EXPRESSION
 
 "]]"	if lx.pop() == LPART {
 		return RPART
@@ -196,6 +213,7 @@ schar		[^\x22]|\n
 
 {And}			return AND
 {Backslash}		return BACKSLASH
+{Because}		return BECAUSE
 {Cap}			return CAP
 {CenterDot}		return CENTER_DOT
 {CircleDot}		return CIRCLE_DOT
@@ -223,6 +241,7 @@ schar		[^\x22]|\n
 {Equivalent}		return EQUIVALENT
 {Exists}		return EXISTS
 {ForAll}		return FOR_ALL
+{Function}		return FUNCTION
 {HermitianConjugate}	return HERMITIAN_CONJUGATE
 {Implies}		return IMPLIES
 {Integrate}		return INTEGRATE
@@ -246,14 +265,17 @@ schar		[^\x22]|\n
 {Square}		return SQUARE
 {Star}			return STAR
 {Subset}		return SUBSET
+{SuchThat}		return SUCH_THAT
 {Sum}			return SUM
 {Superset}		return SUPERSET
+{Therefore}		return THEREFORE
 {Times}			return '*'
 {Transpose}		return TRANSPOSE
 {Union}			return UNION
 {UpTee}			return UP_TEE
 {Vee}			return VEE
 {VerticalBar}		return VERTICAL_BAR
+{VerticalSeparator}	return VERTICAL_SEPARATOR
 {VerticalTilde}		return VERTICAL_TILDE
 {Wedge}			return WEDGE
 {Xnor}			return XNOR
@@ -262,6 +284,7 @@ schar		[^\x22]|\n
 {float}		return FLOAT
 {ident}		return IDENT
 {int}		return INT
+{out}		return OUT
 {pattern}	return PATTERN
 {slot}		return SLOT
 

@@ -14,6 +14,7 @@ package wl
 
 %token
 	/*yy:token "#%d"    */	SLOT		"slot"
+	/*yy:token "%%%d"   */	OUT		"out"
 	/*yy:token "%c"     */	IDENT		"identifier"
 	/*yy:token "%c_"    */	PATTERN		"pattern"
 	/*yy:token "%d"     */	INT		"integer"
@@ -21,10 +22,12 @@ package wl
 	/*yy:token "\"%c\"" */	STRING		"string"
 
 %token
+	ADD_TO				"+="
 	AND				"&&"
 	APPLY				"@@"
 	APPLY_ALL			"@@@"
 	BACKSLASH			"\\[Backslash]"
+	BECAUSE				"\\[Because]"
 	CAP				"\\[Cap]"
 	CENTER_DOT			"\\[CenterDot]"
 	CIRCLE_DOT			"\\[CircleDot]"
@@ -47,6 +50,7 @@ package wl
 	DISCRETE_SHIFT			"\\[DiscreteShift]"
 	DIVIDE				"\\[Divide]"
 	DIVIDE2				"\\/"
+	DIVIDE_BY			"/="
 	DOUBLE_LEFT_TEE			"\\[DoubleLeftTee]"
 	DOUBLE_RIGHT_TEE		"\\[DoubleRightTee]"
 	DOUBLE_VERTICAL_BAR		"\\[DoubleVerticalBar]"
@@ -54,10 +58,13 @@ package wl
 	ELEMENT				"\\[Element]"
 	EQUAL				"=="
 	EQUIVALENT			"\\[Equivalent]"
+	FORM_BOX			"\\`"
 	FOR_ALL				"\\[ForAll]"
+	FUNCTION			"\\[Function]"
 	GEQ				">="
 	GET				"<<"
 	HERMITIAN_CONJUGATE		"\\[HermitianConjugate]"
+	IGNORE				// internal use only
 	IMPLIES				"\\[Implies]"
 	INC				"++"
 	INTEGRATE			"\\[Integrate]"
@@ -83,7 +90,11 @@ package wl
 	POWER_SUBSCRIPT1		"\\^"
 	POWER_SUBSCRIPT2		"\\%"
 	PRODUCT				"\\[Product]"
+	PUT				">>"
+	PUT_APPEND			">>>"
 	QUOTE				"'"
+	REPEATED			".."
+	REPEATED_NULL			"..."
 	REPLACEALL			"/."
 	REPLACEREP			"//."
 	RIGHT_COMPOSITION		"/*"
@@ -100,47 +111,61 @@ package wl
 	SQUARE				"\\[Square]"
 	STAR				"\\[Star]"
 	STRINGJOIN			"<>"
+	STRING_EXPRESSION		"~~"
 	SUBSCRIPT			"\\_"
 	SUBSET				"\\[Subset]"
+	SUBTRACT_FROM			"-="
+	SUCH_THAT			"\\[SuchThat]"
 	SUM				"\\[Sum]"
 	SUPERSET			"\\[Superset]"
+	TAG_SET				"/:"
+	THEREFORE			"\\[Therefore]"
+	TIMES_BY			"*="
 	TRANSPOSE			"\\[Transpose]"
 	UNDERSCRIPT			"\\+"
 	UNEQUAL				"!="
 	UNION				"\\[Union]"
 	UNSAME				"=!="
+	UP_SET				"^="
+	UP_SET_DELAYED			"^:="
 	UP_TEE				"\\[UpTee]"
 	VEE				"\\[Vee]"
 	VERTICAL_BAR			"\\[VerticalBar]"
+	VERTICAL_SEPARATOR		"\\[VerticalSeparator]"
 	VERTICAL_TILDE			"\\[VerticalTilde]"
 	WEDGE				"\\[Wedge]"
 	XNOR				"\\[Xnor]"
 	XOR				"\\[Xor]"
 
 %type	<Node>
-	start		"valid input"
 	CommaOpt	"optional comma"
 	ExprList	"expression list"
 	Expression	"expression"
 	Factor		"factor"
+	FileName	"file name"
 	Tag		"tag"
 	Term		"term"
+	start		"valid input"
 
-%token IGNORE
-
-%left ';'
-%left '=' SET_DELAYED
-%left POSTFIX
-%left ':'
-%precedence '&'
-%left REPLACEREP
-%left REPLACEALL
-%left RULEDELAYED
-%left RULE
-%left CONDITION
-%left PATTERN
-%left '|'
-
+%left		FORM_BOX
+%left		';'					// CompoundExpression
+%right		PUT PUT_APPEND
+%right		'=' SET_DELAYED UP_SET UP_SET_DELAYED TAG_SET FUNCTION
+%left		BECAUSE
+%right		THEREFORE
+%left		VERTICAL_SEPARATOR
+%left		POSTFIX
+%left		':'					// Colon
+%precedence	'&'					// Function
+%right		ADD_TO SUBTRACT_FROM TIMES_BY DIVIDE_BY
+%left		REPLACEALL REPLACEREP
+%left		RULE RULEDELAYED
+%left		CONDITION
+%left		STRING_EXPRESSION
+%left		PATTERN
+%left		'|'					// Alternatives
+%nonassoc	REPEATED REPEATED_NULL
+%right		SUCH_THAT
 %left		LEFT_TEE DOUBLE_LEFT_TEE UP_TEE DOWN_TEE
 %right		RIGHT_TEE DOUBLE_RIGHT_TEE
 %right		IMPLIES
@@ -197,9 +222,7 @@ package wl
 %right		SUBSCRIPT
 %right		OVERSCRIPT UNDERSCRIPT
 %nonassoc	GET
-/*TODO forms containing # */
 %left		MESSAGE_NAME
-/*TODO Piecewise */
 
 %%
 
@@ -316,9 +339,40 @@ Expression:
 |	Expression "\\[DoubleLeftTee]" Expression
 |	Expression "\\[UpTee]" Expression
 |	Expression "\\[DownTee]" Expression
+|	Expression "\\[SuchThat]" Expression
+|	Expression ".."
+|	Expression "..."
+|	Expression "~~" Expression
+|	Expression "+=" Expression
+|	Expression "-=" Expression
+|	Expression "*=" Expression
+|	Expression "/=" Expression
+|	Expression "\\[VerticalSeparator]" Expression
+|	Expression "\\[Therefore]" Expression
+|	Expression "\\[Because]" Expression
+|	Expression "^=" Expression
+|	Expression "^:=" Expression
+//yy:example "a/:b=c"
+|	Expression "/:" Expression
+	{
+		switch lhs.Expression2.Case {
+		case
+			19, // Expression ":=" Expression                                 // Case 19
+			44: // Expression '=' Expression                                  // Case 44
+
+			// ok
+		default:
+			lx.errPos(lhs.Expression2.Pos(), "expected 'Expression = Expression' or 'Expression := Expression'")
+		}
+	}
+|	Expression '=' '.'
+|	Expression "\\[Function]" Expression
+|	Expression ">>" FileName
+|	Expression ">>>" FileName
+|	Expression "\\`" STRING
 
 Term:
-	"<<" STRING
+	"<<" FileName
 |	'(' Expression ')'
 |	'{' '}'
 |	'{' ExprList CommaOpt '}'
@@ -337,6 +391,7 @@ Term:
 |	Term '[' ']'
 |	Term '[' ExprList CommaOpt ']'
 |	Term QUOTE
+|	OUT
 
 Factor:
 	Term
@@ -349,6 +404,10 @@ ExprList:
 CommaOpt:
 	/* empty */ {}
 |	','
+
+FileName:
+	IDENT
+|	STRING
 
 Tag:
 	IDENT

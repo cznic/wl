@@ -199,12 +199,32 @@ func (n *ExprList) Pos() token.Pos {
 //	|       Expression "\\[DoubleLeftTee]" Expression                  // Case 106
 //	|       Expression "\\[UpTee]" Expression                          // Case 107
 //	|       Expression "\\[DownTee]" Expression                        // Case 108
+//	|       Expression "\\[SuchThat]" Expression                       // Case 109
+//	|       Expression ".."                                            // Case 110
+//	|       Expression "..."                                           // Case 111
+//	|       Expression "~~" Expression                                 // Case 112
+//	|       Expression "+=" Expression                                 // Case 113
+//	|       Expression "-=" Expression                                 // Case 114
+//	|       Expression "*=" Expression                                 // Case 115
+//	|       Expression "/=" Expression                                 // Case 116
+//	|       Expression "\\[VerticalSeparator]" Expression              // Case 117
+//	|       Expression "\\[Therefore]" Expression                      // Case 118
+//	|       Expression "\\[Because]" Expression                        // Case 119
+//	|       Expression "^=" Expression                                 // Case 120
+//	|       Expression "^:=" Expression                                // Case 121
+//	|       Expression "/:" Expression                                 // Case 122
+//	|       Expression '=' '.'                                         // Case 123
+//	|       Expression "\\[Function]" Expression                       // Case 124
+//	|       Expression ">>" FileName                                   // Case 125
+//	|       Expression ">>>" FileName                                  // Case 126
+//	|       Expression "\\`" STRING                                    // Case 127
 type Expression struct {
 	Case        int
 	Expression  *Expression
 	Expression2 *Expression
 	Expression3 *Expression
 	Factor      *Factor
+	FileName    *FileName
 	Token       Token
 	Token2      Token
 }
@@ -223,7 +243,7 @@ func (n *Expression) Pos() token.Pos {
 	}
 
 	switch n.Case {
-	case 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 56, 58, 59, 60, 62, 63, 64, 65, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108:
+	case 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 56, 58, 59, 60, 62, 63, 64, 65, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127:
 		return n.Expression.Pos()
 	case 55:
 		return n.Factor.Pos()
@@ -261,6 +281,32 @@ func (n *Factor) Pos() token.Pos {
 	return n.Term.Pos()
 }
 
+// FileName represents data reduced by productions:
+//
+//	FileName:
+//	        IDENT
+//	|       STRING  // Case 1
+type FileName struct {
+	Case  int
+	Token Token
+}
+
+func (n *FileName) fragment() interface{} { return n }
+
+// String implements fmt.Stringer.
+func (n *FileName) String() string {
+	return prettyString(n)
+}
+
+// Pos reports the position of the first component of n or zero if it's empty.
+func (n *FileName) Pos() token.Pos {
+	if n == nil {
+		return 0
+	}
+
+	return n.Token.Pos()
+}
+
 // Tag represents data reduced by productions:
 //
 //	Tag:
@@ -290,7 +336,7 @@ func (n *Tag) Pos() token.Pos {
 // Term represents data reduced by productions:
 //
 //	Term:
-//	        "<<" STRING
+//	        "<<" FileName
 //	|       '(' Expression ')'                // Case 1
 //	|       '{' '}'                           // Case 2
 //	|       '{' ExprList CommaOpt '}'         // Case 3
@@ -309,11 +355,13 @@ func (n *Tag) Pos() token.Pos {
 //	|       Term '[' ']'                      // Case 16
 //	|       Term '[' ExprList CommaOpt ']'    // Case 17
 //	|       Term QUOTE                        // Case 18
+//	|       OUT                               // Case 19
 type Term struct {
 	Case       int
 	CommaOpt   *CommaOpt
 	ExprList   *ExprList
 	Expression *Expression
+	FileName   *FileName
 	Tag        *Tag
 	Tag2       *Tag
 	Term       *Term
@@ -338,7 +386,7 @@ func (n *Term) Pos() token.Pos {
 	switch n.Case {
 	case 12, 13, 14, 15, 16, 17, 18:
 		return n.Term.Pos()
-	case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11:
+	case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 19:
 		return n.Token.Pos()
 	default:
 		panic("internal error")

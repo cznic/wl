@@ -84,6 +84,11 @@ const (
 	ccDoubleLeftTee
 	ccUpTee
 	ccDownTee
+	ccSuchThat
+	ccVerticalSeparator
+	ccTherefore
+	ccBecause
+	ccFunction
 
 	ccOther
 )
@@ -98,6 +103,7 @@ var (
 	namedChars = map[string]rune{
 		"And":                '\u2227',
 		"Backslash":          '\u2216',
+		"Because":            '\u2235',
 		"Cap":                '\u2322',
 		"CenterDot":          '\u00b7',
 		"CircleDot":          '\u2299',
@@ -125,6 +131,7 @@ var (
 		"Equivalent":         '\u29e6',
 		"Exists":             '\u2203',
 		"ForAll":             '\u2200',
+		"Function":           '\uf4a1',
 		"HermitianConjugate": '\uf3ce',
 		"Implies":            '\uf523',
 		"Integrate":          '\u222b',
@@ -182,13 +189,16 @@ var (
 		"Square":               '\uf520',
 		"Star":                 '\u22c6',
 		"Subset":               '\u2282',
+		"SuchThat":             '\u220d',
 		"Sum":                  '\u2211',
 		"Superset":             '\u2283',
+		"Therefore":            '\u2234',
 		"Transpose":            '\uf3c7',
 		"Union":                '\u22c3',
 		"UpTee":                '\u22a5',
 		"Vee":                  '\u22c1',
 		"VerticalBar":          '\uf3d0',
+		"VerticalSeparator":    '\uf432',
 		"VerticalTilde":        '\u2240',
 		"Wedge":                '\u22c0',
 		"Xnor":                 '\uf4a2',
@@ -209,6 +219,7 @@ var (
 		'\u2207': ccDel,
 		'\u2208': ccElement,
 		'\u2209': ccNotElement,
+		'\u220d': ccSuchThat,
 		'\u220f': ccProduct,
 		'\u2210': ccCoproduct,
 		'\u2211': ccSum,
@@ -221,6 +232,8 @@ var (
 		'\u2227': ccAnd,
 		'\u2228': ccOr,
 		'\u222b': ccIntegrate,
+		'\u2234': ccTherefore,
+		'\u2235': ccBecause,
 		'\u2240': ccVerticalTilde,
 		'\u2282': ccSubset,
 		'\u2283': ccSuperset,
@@ -253,7 +266,9 @@ var (
 		'\uf3d0': ccVerticalBar,
 		'\uf3d1': ccNotVerticalBar,
 		'\uf431': ccEqual,
+		'\uf432': ccVerticalSeparator,
 		'\uf4a0': ccCross,
+		'\uf4a1': ccFunction,
 		'\uf4a2': ccXnor,
 		'\uf4a3': ccDiscreteShift,
 		'\uf4a4': ccDiscreteRatio,
@@ -334,8 +349,6 @@ func (lx *lexer) unget(r rune) {
 }
 
 func (lx *lexer) next() (r int) {
-	// fmt.Printf("%T.next\n", lx)
-	// defer func() { fmt.Printf("\t%T.next: %U\n", lx, r) }()
 	if len(lx.un) != 0 {
 		r = int(lx.un[len(lx.un)-1])
 		lx.un = lx.un[:len(lx.un)-1]
@@ -344,9 +357,7 @@ func (lx *lexer) next() (r int) {
 	}
 
 	lx.in = append(lx.in, lx.c)
-	// fmt.Printf("%T.r.ReadRune\n", lx)
 	lx.c, lx.sz, lx.rerr = lx.r.ReadRune()
-	// fmt.Printf("\t%T.r.ReadRune: %U\n", lx, lx.c)
 	if lx.rerr != nil {
 		lx.c = -1
 		return -1
@@ -402,16 +413,12 @@ func (lx *lexer) Error(msg string) {
 
 // Implements yyLexer.
 func (lx *lexer) Lex(lval *yySymType) (r int) {
-	// fmt.Printf("%T.Lex\n", lx)
-	// defer func() { fmt.Printf("\t%T.Lex: %U %s\n", lx, r, yySymName(r)) }()
 	if lx.err != nil {
-		// fmt.Printf("\t%T.Lex err %q", lx, lx.err)
 		return -1
 	}
 more:
 	r = lx.scan()
 	if r == IGNORE {
-		// fmt.Printf("\t%T.Lex ignore", lx)
 		goto more
 	}
 

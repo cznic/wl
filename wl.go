@@ -5,6 +5,11 @@
 // Package wl provides a Wolfram Language parser (Work In Progress)
 //
 //  [0]: http://www.wolfram.com/language
+//
+// Changelog
+//
+// 2017-08-14: The parser now seems to be reasonably complete for experimental
+// use.
 package wl
 
 import (

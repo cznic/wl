@@ -12,8 +12,6 @@ import (
 )
 
 func (lx *lexer) ReadRune() (r rune, sz int, err error) {
-	// fmt.Printf("%T.ReadRune, lx.c %U\n", lx, lx.c)
-	// defer func() { fmt.Printf("\t%T.ReadRune: %U %v %v\n", lx, r, sz, err) }()
 	if lx.c < 0 {
 		lx.next()
 	}
@@ -221,7 +219,6 @@ yyrule4: // \\\:{h}{h}{h}{h}
 	goto yyabort // silence unused label error
 
 yyabort: // no lexem recognized
-	//fmt.Printf("lx.mark %v c %U lx.c %U\n", lx.mark, c, lx.c)
 	if lx.mark >= 0 {
 		if len(lx.in) > lx.mark {
 			lx.unget(rune(c))
