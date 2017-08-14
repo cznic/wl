@@ -1,8 +1,6 @@
 # wl
 
-Package WL provides a Wolfram Language[0] parser. (Work In Progress)
-
-  [0]: http://www.wolfram.com/language
+Package WL provides a [Wolfram Language](http://www.wolfram.com/language) parser. (Work In Progress)
 
 Installation
 

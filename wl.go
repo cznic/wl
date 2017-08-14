@@ -3,6 +3,8 @@
 // license that can be found in the LICENSE file.
 
 // Package wl provides a Wolfram Language parser (Work In Progress)
+//
+//  [0]: http://www.wolfram.com/language
 package wl
 
 import (
