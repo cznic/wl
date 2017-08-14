@@ -78,6 +78,24 @@ Element			\xaf
 NotElement		\xb0
 Subset			\xb1
 Superset		\xb2
+ForAll			\xb3
+Exists			\xb4
+NotExists		\xb5
+Not			\xb6
+And			\xb7
+Nand			\xb8
+Xor			\xb9
+Xnor			\xba
+Or			\xbb
+Nor			\xbc
+Equivalent		\xbd
+Implies			\xbe
+RightTee		\xbf
+DoubleRightTee		\xc0
+LeftTee			\xc1
+DoubleLeftTee		\xc2
+UpTee			\xc3
+DownTee			\xc4
 
 approx		{digits}"."{digits}|"."{digits}|{digits}"."
 base		{digits}^^
@@ -176,6 +194,7 @@ schar		[^\x22]|\n
 	lx.Unget(lex.NewChar(lx.First.Pos()+1, ']'))
 	return ']'
 
+{And}			return AND
 {Backslash}		return BACKSLASH
 {Cap}			return CAP
 {CenterDot}		return CENTER_DOT
@@ -195,19 +214,33 @@ schar		[^\x22]|\n
 {DiscreteRatio}		return DISCRETE_RATIO
 {DiscreteShift}		return DISCRETE_SHIFT
 {Divide}		return '/'
+{DoubleLeftTee}		return DOUBLE_LEFT_TEE
+{DoubleRightTee}	return DOUBLE_RIGHT_TEE
 {DoubleVerticalBar}	return DOUBLE_VERTICAL_BAR
+{DownTee}		return DOWN_TEE
 {Element}		return ELEMENT
 {Equal}			return EQUAL
+{Equivalent}		return EQUIVALENT
+{Exists}		return EXISTS
+{ForAll}		return FOR_ALL
 {HermitianConjugate}	return HERMITIAN_CONJUGATE
+{Implies}		return IMPLIES
 {Integrate}		return INTEGRATE
 {Intersection}		return INTERSECTION
+{LeftTee}		return LEFT_TEE
 {MinusPlus}		return MINUS_PLUS
+{Nand}			return NAND
+{Nor}			return NOR
 {NotDoubleVerticalBar}	return NOT_DOUBLE_VERTICAL_BAR
 {NotElement}		return NOT_ELEMENT
+{NotExists}		return NOT_EXISTS
 {NotVerticalBar}	return NOT_VERTICAL_BAR
+{Not}			return '!'
+{Or}			return OR
 {PartialD}		return PARTIAL_D
 {PlusMinus}		return PLUS_MINUS
 {Product}		return PRODUCT
+{RightTee}		return RIGHT_TEE
 {SmallCircle}		return SMALL_CIRCLE
 {Sqrt}			return SQRT
 {Square}		return SQUARE
@@ -218,10 +251,13 @@ schar		[^\x22]|\n
 {Times}			return '*'
 {Transpose}		return TRANSPOSE
 {Union}			return UNION
+{UpTee}			return UP_TEE
 {Vee}			return VEE
 {VerticalBar}		return VERTICAL_BAR
 {VerticalTilde}		return VERTICAL_TILDE
 {Wedge}			return WEDGE
+{Xnor}			return XNOR
+{Xor}			return XOR
 
 {float}		return FLOAT
 {ident}		return IDENT

@@ -47,22 +47,31 @@ package wl
 	DISCRETE_SHIFT			"\\[DiscreteShift]"
 	DIVIDE				"\\[Divide]"
 	DIVIDE2				"\\/"
+	DOUBLE_LEFT_TEE			"\\[DoubleLeftTee]"
+	DOUBLE_RIGHT_TEE		"\\[DoubleRightTee]"
 	DOUBLE_VERTICAL_BAR		"\\[DoubleVerticalBar]"
+	DOWN_TEE			"\\[DownTee]"
 	ELEMENT				"\\[Element]"
 	EQUAL				"=="
+	EQUIVALENT			"\\[Equivalent]"
+	FOR_ALL				"\\[ForAll]"
 	GEQ				">="
 	GET				"<<"
 	HERMITIAN_CONJUGATE		"\\[HermitianConjugate]"
+	IMPLIES				"\\[Implies]"
 	INC				"++"
 	INTEGRATE			"\\[Integrate]"
 	INTERSECTION			"\\[Intersection]"
+	LEFT_TEE			"\\[LeftTee]"
 	LEQ				"<="
 	LPART				"[["
 	MAP				"/@"
 	MAP_ALL				"//@"
 	MESSAGE_NAME			"::"
 	MINUS_PLUS			"\\[MinusPlus]"
+	NAND				"\\[Nand]"
 	NON_COMMUTATIVE_MULTIPLY	"**"
+	NOR				"\\[Nor]"
 	NOT_DOUBLE_VERTICAL_BAR		"\\[NotDoubleVerticalBar]"
 	NOT_ELEMENT			"\\[NotElement]"
 	NOT_VERTICAL_BAR		"\\[NotVerticalBar]"
@@ -78,6 +87,7 @@ package wl
 	REPLACEALL			"/."
 	REPLACEREP			"//."
 	RIGHT_COMPOSITION		"/*"
+	RIGHT_TEE			"\\[RightTee]"
 	RPART				"]]"
 	RULE				"->"
 	RULEDELAYED			":>"
@@ -99,10 +109,13 @@ package wl
 	UNEQUAL				"!="
 	UNION				"\\[Union]"
 	UNSAME				"=!="
+	UP_TEE				"\\[UpTee]"
 	VEE				"\\[Vee]"
 	VERTICAL_BAR			"\\[VerticalBar]"
 	VERTICAL_TILDE			"\\[VerticalTilde]"
 	WEDGE				"\\[Wedge]"
+	XNOR				"\\[Xnor]"
+	XOR				"\\[Xor]"
 
 %type	<Node>
 	start		"valid input"
@@ -127,10 +140,16 @@ package wl
 %left CONDITION
 %left PATTERN
 %left '|'
-%left OR
-%left AND
-%right '!'			// Not
 
+%left		LEFT_TEE DOUBLE_LEFT_TEE UP_TEE DOWN_TEE
+%right		RIGHT_TEE DOUBLE_RIGHT_TEE
+%right		IMPLIES
+%left		EQUIVALENT
+%left		OR NOR
+%left		XOR XNOR
+%left		AND NAND
+%right		'!'					// Not
+%left		FOR_ALL EXISTS NOT_EXISTS
 %left		ELEMENT NOT_ELEMENT SUBSET SUPERSET
 %left		SAME UNSAME
 %left		EQUAL UNEQUAL '>' GEQ '<' LEQ VERTICAL_BAR NOT_VERTICAL_BAR DOUBLE_VERTICAL_BAR NOT_DOUBLE_VERTICAL_BAR
@@ -285,6 +304,18 @@ Expression:
 |	Expression "\\[NotElement]" Expression
 |	Expression "\\[Subset]" Expression
 |	Expression "\\[Superset]" Expression
+|	Expression "\\[Nand]" Expression
+|	Expression "\\[Xor]" Expression
+|	Expression "\\[Xnor]" Expression
+|	Expression "\\[Nor]" Expression
+|	Expression "\\[Equivalent]" Expression
+|	Expression "\\[Implies]" Expression
+|	Expression "\\[RightTee]" Expression
+|	Expression "\\[DoubleRightTee]" Expression
+|	Expression "\\[LeftTee]" Expression
+|	Expression "\\[DoubleLeftTee]" Expression
+|	Expression "\\[UpTee]" Expression
+|	Expression "\\[DownTee]" Expression
 
 Term:
 	"<<" STRING

@@ -66,6 +66,24 @@ const (
 	ccNotElement
 	ccSubset
 	ccSuperset
+	ccForAll
+	ccExists
+	ccNotExists
+	ccNot
+	ccAnd
+	ccNand
+	ccXor
+	ccXnor
+	ccOr
+	ccNor
+	ccEquivalent
+	ccImplies
+	ccRightTee
+	ccDoubleRightTee
+	ccLeftTee
+	ccDoubleLeftTee
+	ccUpTee
+	ccDownTee
 
 	ccOther
 )
@@ -78,36 +96,50 @@ var (
 	}
 
 	namedChars = map[string]rune{
-		"Backslash":            '\u2216',
-		"Cap":                  '\u2322',
-		"CenterDot":            '\u00b7',
-		"CircleDot":            '\u2299',
-		"CircleMinus":          '\u2296',
-		"CirclePlus":           '\u2295',
-		"CircleTimes":          '\u2297',
-		"Conjugate":            '\uf3c8',
-		"ConjugateTranspose":   '\uf3c9',
-		"Coproduct":            '\u2210',
-		"Cross":                '\uf4a0',
-		"Cup":                  '\u2323',
-		"Del":                  '\u2207',
-		"Diamond":              '\u22c4',
-		"DifferenceDelta":      '\u2206',
-		"DifferentialD":        '\uf74c',
-		"DiscreteRatio":        '\uf4a4',
-		"DiscreteShift":        '\uf4a3',
-		"Divide":               '\u00f7',
-		"DoubleVerticalBar":    '\u2225',
-		"Element":              '\u2208',
-		"NotElement":           '\u2209',
-		"Equal":                '\uf431',
-		"HermitianConjugate":   '\uf3ce',
-		"Integrate":            '\u222b',
-		"Intersection":         '\u22c2',
-		"LongEqual":            '\uf7d9',
-		"MinusPlus":            '\u2213',
+		"And":                '\u2227',
+		"Backslash":          '\u2216',
+		"Cap":                '\u2322',
+		"CenterDot":          '\u00b7',
+		"CircleDot":          '\u2299',
+		"CircleMinus":        '\u2296',
+		"CirclePlus":         '\u2295',
+		"CircleTimes":        '\u2297',
+		"Conjugate":          '\uf3c8',
+		"ConjugateTranspose": '\uf3c9',
+		"Coproduct":          '\u2210',
+		"Cross":              '\uf4a0',
+		"Cup":                '\u2323',
+		"Del":                '\u2207',
+		"Diamond":            '\u22c4',
+		"DifferenceDelta":    '\u2206',
+		"DifferentialD":      '\uf74c',
+		"DiscreteRatio":      '\uf4a4',
+		"DiscreteShift":      '\uf4a3',
+		"Divide":             '\u00f7',
+		"DoubleLeftTee":      '\u2ae4',
+		"DoubleRightTee":     '\u22a8',
+		"DoubleVerticalBar":  '\u2225',
+		"DownTee":            '\u22a4',
+		"Element":            '\u2208',
+		"Equal":              '\uf431',
+		"Equivalent":         '\u29e6',
+		"Exists":             '\u2203',
+		"ForAll":             '\u2200',
+		"HermitianConjugate": '\uf3ce',
+		"Implies":            '\uf523',
+		"Integrate":          '\u222b',
+		"Intersection":       '\u22c2',
+		"LeftTee":            '\u22a3',
+		"LongEqual":          '\uf7d9',
+		"MinusPlus":          '\u2213',
+		"Nand":               '\u22bc',
+		"Nor":                '\u22bd',
+		"Not":                '\u00ac',
 		"NotDoubleVerticalBar": '\u2226',
+		"NotElement":           '\u2209',
+		"NotExists":            '\u2204',
 		"NotVerticalBar":       '\uf3d1',
+		"Or":                   '\u2228',
 		"PartialD":             '\u2202',
 		"PlusMinus":            '\u00b1',
 		"Product":              '\u220f',
@@ -144,6 +176,7 @@ var (
 		"RawUnderscore":        '_',
 		"RawVerticalBar":       '|',
 		"RawWedge":             '^',
+		"RightTee":             '\u22a2',
 		"SmallCircle":          '\u2218',
 		"Sqrt":                 '\u221a',
 		"Square":               '\uf520',
@@ -153,14 +186,89 @@ var (
 		"Superset":             '\u2283',
 		"Transpose":            '\uf3c7',
 		"Union":                '\u22c3',
+		"UpTee":                '\u22a5',
 		"Vee":                  '\u22c1',
 		"VerticalBar":          '\uf3d0',
 		"VerticalTilde":        '\u2240',
 		"Wedge":                '\u22c0',
+		"Xnor":                 '\uf4a2',
+		"Xor":                  '\u22bb',
+	}
+
+	classes = map[rune]int{
+		'\u00ac': ccNot,
+		'\u00b1': ccPlusMinus,
+		'\u00b7': ccCenterDot,
+		'\u00d7': ccTimes,
+		'\u00f7': ccDivide,
+		'\u2200': ccForAll,
+		'\u2202': ccPartialD,
+		'\u2203': ccExists,
+		'\u2204': ccNotExists,
+		'\u2206': ccDifferenceDelta,
+		'\u2207': ccDel,
+		'\u2208': ccElement,
+		'\u2209': ccNotElement,
+		'\u220f': ccProduct,
+		'\u2210': ccCoproduct,
+		'\u2211': ccSum,
+		'\u2213': ccMinusPlus,
+		'\u2216': ccBackslash,
+		'\u2218': ccSmallCircle,
+		'\u221a': ccSqrt,
+		'\u2225': ccDoubleVerticalBar,
+		'\u2226': ccNotDoubleVerticalBar,
+		'\u2227': ccAnd,
+		'\u2228': ccOr,
+		'\u222b': ccIntegrate,
+		'\u2240': ccVerticalTilde,
+		'\u2282': ccSubset,
+		'\u2283': ccSuperset,
+		'\u2295': ccCirclePlus,
+		'\u2296': ccCircleMinus,
+		'\u2297': ccCircleTimes,
+		'\u2299': ccCircleDot,
+		'\u22a2': ccRightTee,
+		'\u22a3': ccLeftTee,
+		'\u22a4': ccDownTee,
+		'\u22a5': ccUpTee,
+		'\u22a8': ccDoubleRightTee,
+		'\u22bc': ccNand,
+		'\u22bd': ccNor,
+		'\u22bb': ccXor,
+		'\u22c0': ccWedge,
+		'\u22c1': ccVee,
+		'\u22c2': ccIntersection,
+		'\u22c3': ccUnion,
+		'\u22c4': ccDiamond,
+		'\u22c6': ccStar,
+		'\u2322': ccCap,
+		'\u2323': ccCup,
+		'\u29e6': ccEquivalent,
+		'\u2ae4': ccDoubleLeftTee,
+		'\uf3c7': ccTranspose,
+		'\uf3c8': ccConjugate,
+		'\uf3c9': ccConjugateTranspose,
+		'\uf3ce': ccHermitianConjugate,
+		'\uf3d0': ccVerticalBar,
+		'\uf3d1': ccNotVerticalBar,
+		'\uf431': ccEqual,
+		'\uf4a0': ccCross,
+		'\uf4a2': ccXnor,
+		'\uf4a3': ccDiscreteShift,
+		'\uf4a4': ccDiscreteRatio,
+		'\uf520': ccSquare,
+		'\uf523': ccImplies,
+		'\uf74c': ccDifferentialD,
+		'\uf7d9': ccEqual,
 	}
 )
 
 func runeClass(r rune) int {
+	if cc, ok := classes[r]; ok {
+		return cc
+	}
+
 	switch {
 	case r == lex.RuneEOF:
 		return ccEOF
@@ -168,98 +276,6 @@ func runeClass(r rune) int {
 		return ccIgnore
 	case r < 0x80:
 		return int(r)
-	case r == '\uf3c7':
-		return ccTranspose
-	case r == '\uf3c8':
-		return ccConjugate
-	case r == '\uf3c9':
-		return ccConjugateTranspose
-	case r == '\uf3ce':
-		return ccHermitianConjugate
-	case r == '\u221a':
-		return ccSqrt
-	case r == '\u222b':
-		return ccIntegrate
-	case r == '\uf74c':
-		return ccDifferentialD
-	case r == '\u2202':
-		return ccPartialD
-	case r == '\u2207':
-		return ccDel
-	case r == '\uf4a3':
-		return ccDiscreteShift
-	case r == '\uf4a4':
-		return ccDiscreteRatio
-	case r == '\u2206':
-		return ccDifferenceDelta
-	case r == '\uf520':
-		return ccSquare
-	case r == '\u2218':
-		return ccSmallCircle
-	case r == '\u2299':
-		return ccCircleDot
-	case r == '\uf4a0':
-		return ccCross
-	case r == '\u00b1':
-		return ccPlusMinus
-	case r == '\u2213':
-		return ccMinusPlus
-	case r == '\u00f7':
-		return ccDivide
-	case r == '\u2216':
-		return ccBackslash
-	case r == '\u22c4':
-		return ccDiamond
-	case r == '\u22c0':
-		return ccWedge
-	case r == '\u22c1':
-		return ccVee
-	case r == '\u2297':
-		return ccCircleTimes
-	case r == '\u00b7':
-		return ccCenterDot
-	case r == '\u00d7':
-		return ccTimes
-	case r == '\u22c6':
-		return ccStar
-	case r == '\u220f':
-		return ccProduct
-	case r == '\u2240':
-		return ccVerticalTilde
-	case r == '\u2210':
-		return ccCoproduct
-	case r == '\u2322':
-		return ccCap
-	case r == '\u2323':
-		return ccCup
-	case r == '\u2295':
-		return ccCirclePlus
-	case r == '\u2296':
-		return ccCircleMinus
-	case r == '\u2211':
-		return ccSum
-	case r == '\u22c2':
-		return ccIntersection
-	case r == '\u22c3':
-		return ccUnion
-	case r == '\uf431', r == '\uf7d9':
-		return ccEqual
-	case r == '\uf3d0':
-		return ccVerticalBar
-	case r == '\uf3d1':
-		return ccNotVerticalBar
-	case r == '\u2225':
-		return ccDoubleVerticalBar
-	case r == '\u2226':
-		return ccNotDoubleVerticalBar
-	case r == '\u2208':
-		return ccElement
-	case r == '\u2209':
-		return ccNotElement
-	case r == '\u2282':
-		return ccSubset
-	case r == '\u2283':
-		return ccSuperset
 	case unicode.IsDigit(r):
 		return ccDigit
 	case unicode.IsLetter(r):
