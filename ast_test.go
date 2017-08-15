@@ -3311,12 +3311,12 @@ func ExampleFactor_case1() {
 	// · Factor: &wl.Factor{
 	// · · Term: &wl.Term{
 	// · · · Case: 4,
-	// · · · Token: FLOAT, "1.98",
+	// · · · Token: FLOAT, "1.97",
 	// · · },
 	// · },
 	// · Term: &wl.Term{
 	// · · Case: 4,
-	// · · Token: FLOAT, "1.97",
+	// · · Token: FLOAT, "1.98",
 	// · },
 	// }
 }

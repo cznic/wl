@@ -395,7 +395,7 @@ Term:
 
 Factor:
 	Term
-|	Term Factor
+|	Factor Term
 
 ExprList:
 	Expression

@@ -258,7 +258,7 @@ func (n *Expression) Pos() token.Pos {
 //
 //	Factor:
 //	        Term
-//	|       Term Factor  // Case 1
+//	|       Factor Term  // Case 1
 type Factor struct {
 	Case   int
 	Factor *Factor
@@ -278,7 +278,14 @@ func (n *Factor) Pos() token.Pos {
 		return 0
 	}
 
-	return n.Term.Pos()
+	switch n.Case {
+	case 1:
+		return n.Factor.Pos()
+	case 0:
+		return n.Term.Pos()
+	default:
+		panic("internal error")
+	}
 }
 
 // FileName represents data reduced by productions:
