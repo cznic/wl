@@ -229,452 +229,230 @@ func TestParser(t *testing.T) {
 
 // https://github.com/cznic/wl/issues/4
 func TestIssue4(t *testing.T) {
-	for i, v := range []struct{ src, ast string }{
+	for i, v := range []struct {
+		src []string
+		ast string
+	}{
 		{
-			"x*y",
+			[]string{"x*y", "x y"},
 			`
 &wl.Expression{
-· Case: 35,
+· Case: 118,
 · Expression: &wl.Expression{
-· · Case: 55,
-· · Factor: &wl.Factor{
-· · · Term: &wl.Term{
-· · · · Case: 5,
-· · · · Token: IDENT, "x",
-· · · },
-· · },
+· · Case: 139,
+· · Token: IDENT, "x",
 · },
 · Expression2: &wl.Expression{
-· · Case: 55,
-· · Factor: &wl.Factor{
-· · · Term: &wl.Term{
-· · · · Case: 5,
-· · · · Token: IDENT, "y",
-· · · },
-· · },
+· · Case: 139,
+· · Token: IDENT, "y",
 · },
 · Token: '*',
 }
 `,
 		},
 		{
-			"x y",
+			[]string{"x*y*z", "x y z"},
 			`
 &wl.Expression{
-· Case: 55,
-· Factor: &wl.Factor{
-· · Case: 1,
-· · Factor: &wl.Factor{
-· · · Term: &wl.Term{
-· · · · Case: 5,
-· · · · Token: IDENT, "x",
-· · · },
-· · },
-· · Term: &wl.Term{
-· · · Case: 5,
-· · · Token: IDENT, "y",
-· · },
-· },
-}
-`,
-		},
-		{
-			"x*y*z",
-			`
-&wl.Expression{
-· Case: 35,
+· Case: 118,
 · Expression: &wl.Expression{
-· · Case: 35,
+· · Case: 118,
 · · Expression: &wl.Expression{
-· · · Case: 55,
-· · · Factor: &wl.Factor{
-· · · · Term: &wl.Term{
-· · · · · Case: 5,
-· · · · · Token: IDENT, "x",
-· · · · },
-· · · },
+· · · Case: 139,
+· · · Token: IDENT, "x",
 · · },
 · · Expression2: &wl.Expression{
-· · · Case: 55,
-· · · Factor: &wl.Factor{
-· · · · Term: &wl.Term{
-· · · · · Case: 5,
-· · · · · Token: IDENT, "y",
-· · · · },
-· · · },
+· · · Case: 139,
+· · · Token: IDENT, "y",
 · · },
 · · Token: '*',
 · },
 · Expression2: &wl.Expression{
-· · Case: 55,
-· · Factor: &wl.Factor{
-· · · Term: &wl.Term{
-· · · · Case: 5,
-· · · · Token: IDENT, "z",
-· · · },
-· · },
+· · Case: 139,
+· · Token: IDENT, "z",
 · },
 · Token: '*',
 }
 `,
 		},
 		{
-			"x y z",
+			[]string{"2*x", "2x"},
 			`
 &wl.Expression{
-· Case: 55,
-· Factor: &wl.Factor{
-· · Case: 1,
-· · Factor: &wl.Factor{
-· · · Case: 1,
-· · · Factor: &wl.Factor{
-· · · · Term: &wl.Term{
-· · · · · Case: 5,
-· · · · · Token: IDENT, "x",
-· · · · },
-· · · },
-· · · Term: &wl.Term{
-· · · · Case: 5,
-· · · · Token: IDENT, "y",
-· · · },
-· · },
-· · Term: &wl.Term{
-· · · Case: 5,
-· · · Token: IDENT, "z",
-· · },
-· },
-}
-`,
-		},
-		{
-			"2*x",
-			`
-&wl.Expression{
-· Case: 35,
+· Case: 118,
 · Expression: &wl.Expression{
-· · Case: 55,
-· · Factor: &wl.Factor{
-· · · Term: &wl.Term{
-· · · · Case: 8,
-· · · · Token: INT, "2",
-· · · },
-· · },
+· · Case: 142,
+· · Token: INT, "2",
 · },
 · Expression2: &wl.Expression{
-· · Case: 55,
-· · Factor: &wl.Factor{
-· · · Term: &wl.Term{
-· · · · Case: 5,
-· · · · Token: IDENT, "x",
-· · · },
-· · },
+· · Case: 139,
+· · Token: IDENT, "x",
 · },
 · Token: '*',
 }
 `,
 		},
 		{
-			"2x",
+			[]string{"2*(x)", "2(x)"},
 			`
 &wl.Expression{
-· Case: 55,
-· Factor: &wl.Factor{
-· · Case: 1,
-· · Factor: &wl.Factor{
-· · · Term: &wl.Term{
-· · · · Case: 8,
-· · · · Token: INT, "2",
-· · · },
-· · },
-· · Term: &wl.Term{
-· · · Case: 5,
+· Case: 118,
+· Expression: &wl.Expression{
+· · Case: 142,
+· · Token: INT, "2",
+· },
+· Expression2: &wl.Expression{
+· · Case: 14,
+· · Expression: &wl.Expression{
+· · · Case: 139,
 · · · Token: IDENT, "x",
 · · },
-· },
-}
-`,
-		},
-		{
-			"2*(x+1)",
-			`
-&wl.Expression{
-· Case: 35,
-· Expression: &wl.Expression{
-· · Case: 55,
-· · Factor: &wl.Factor{
-· · · Term: &wl.Term{
-· · · · Case: 8,
-· · · · Token: INT, "2",
-· · · },
-· · },
-· },
-· Expression2: &wl.Expression{
-· · Case: 55,
-· · Factor: &wl.Factor{
-· · · Term: &wl.Term{
-· · · · Case: 1,
-· · · · Expression: &wl.Expression{
-· · · · · Case: 36,
-· · · · · Expression: &wl.Expression{
-· · · · · · Case: 55,
-· · · · · · Factor: &wl.Factor{
-· · · · · · · Term: &wl.Term{
-· · · · · · · · Case: 5,
-· · · · · · · · Token: IDENT, "x",
-· · · · · · · },
-· · · · · · },
-· · · · · },
-· · · · · Expression2: &wl.Expression{
-· · · · · · Case: 55,
-· · · · · · Factor: &wl.Factor{
-· · · · · · · Term: &wl.Term{
-· · · · · · · · Case: 8,
-· · · · · · · · Token: INT, "1",
-· · · · · · · },
-· · · · · · },
-· · · · · },
-· · · · · Token: '+',
-· · · · },
-· · · · Token: '(',
-· · · · Token2: ')',
-· · · },
-· · },
+· · Token: '(',
+· · Token2: ')',
 · },
 · Token: '*',
 }
 `,
 		},
 		{
-			"2(x+1)",
+			[]string{"(x)*(y)", "(x)(y)"},
 			`
 &wl.Expression{
-· Case: 55,
-· Factor: &wl.Factor{
-· · Case: 1,
-· · Factor: &wl.Factor{
-· · · Term: &wl.Term{
-· · · · Case: 8,
-· · · · Token: INT, "2",
-· · · },
-· · },
-· · Term: &wl.Term{
-· · · Case: 1,
-· · · Expression: &wl.Expression{
-· · · · Case: 36,
-· · · · Expression: &wl.Expression{
-· · · · · Case: 55,
-· · · · · Factor: &wl.Factor{
-· · · · · · Term: &wl.Term{
-· · · · · · · Case: 5,
-· · · · · · · Token: IDENT, "x",
-· · · · · · },
-· · · · · },
-· · · · },
-· · · · Expression2: &wl.Expression{
-· · · · · Case: 55,
-· · · · · Factor: &wl.Factor{
-· · · · · · Term: &wl.Term{
-· · · · · · · Case: 8,
-· · · · · · · Token: INT, "1",
-· · · · · · },
-· · · · · },
-· · · · },
-· · · · Token: '+',
-· · · },
-· · · Token: '(',
-· · · Token2: ')',
-· · },
-· },
-}
-`,
-		},
-		{
-			"(a)*(b)",
-			`
-&wl.Expression{
-· Case: 35,
+· Case: 118,
 · Expression: &wl.Expression{
-· · Case: 55,
-· · Factor: &wl.Factor{
-· · · Term: &wl.Term{
-· · · · Case: 1,
-· · · · Expression: &wl.Expression{
-· · · · · Case: 55,
-· · · · · Factor: &wl.Factor{
-· · · · · · Term: &wl.Term{
-· · · · · · · Case: 5,
-· · · · · · · Token: IDENT, "a",
-· · · · · · },
-· · · · · },
-· · · · },
-· · · · Token: '(',
-· · · · Token2: ')',
-· · · },
+· · Case: 14,
+· · Expression: &wl.Expression{
+· · · Case: 139,
+· · · Token: IDENT, "x",
 · · },
+· · Token: '(',
+· · Token2: ')',
 · },
 · Expression2: &wl.Expression{
-· · Case: 55,
-· · Factor: &wl.Factor{
-· · · Term: &wl.Term{
-· · · · Case: 1,
-· · · · Expression: &wl.Expression{
-· · · · · Case: 55,
-· · · · · Factor: &wl.Factor{
-· · · · · · Term: &wl.Term{
-· · · · · · · Case: 5,
-· · · · · · · Token: IDENT, "b",
-· · · · · · },
-· · · · · },
-· · · · },
-· · · · Token: '(',
-· · · · Token2: ')',
-· · · },
-· · },
-· },
-· Token: '*',
-}
-`,
-		},
-		{
-			"(a)(b)",
-			`
-&wl.Expression{
-· Case: 55,
-· Factor: &wl.Factor{
-· · Case: 1,
-· · Factor: &wl.Factor{
-· · · Term: &wl.Term{
-· · · · Case: 1,
-· · · · Expression: &wl.Expression{
-· · · · · Case: 55,
-· · · · · Factor: &wl.Factor{
-· · · · · · Term: &wl.Term{
-· · · · · · · Case: 5,
-· · · · · · · Token: IDENT, "a",
-· · · · · · },
-· · · · · },
-· · · · },
-· · · · Token: '(',
-· · · · Token2: ')',
-· · · },
-· · },
-· · Term: &wl.Term{
-· · · Case: 1,
-· · · Expression: &wl.Expression{
-· · · · Case: 55,
-· · · · Factor: &wl.Factor{
-· · · · · Term: &wl.Term{
-· · · · · · Case: 5,
-· · · · · · Token: IDENT, "b",
-· · · · · },
-· · · · },
-· · · },
-· · · Token: '(',
-· · · Token2: ')',
-· · },
-· },
-}
-`,
-		},
-		{
-			"x!*y",
-			`
-&wl.Expression{
-· Case: 35,
-· Expression: &wl.Expression{
-· · Case: 55,
-· · Factor: &wl.Factor{
-· · · Term: &wl.Term{
-· · · · Case: 13,
-· · · · Term: &wl.Term{
-· · · · · Case: 5,
-· · · · · Token: IDENT, "x",
-· · · · },
-· · · · Token: '!',
-· · · },
-· · },
-· },
-· Expression2: &wl.Expression{
-· · Case: 55,
-· · Factor: &wl.Factor{
-· · · Term: &wl.Term{
-· · · · Case: 5,
-· · · · Token: IDENT, "y",
-· · · },
-· · },
-· },
-· Token: '*',
-}
-`,
-		},
-		{
-			"x!y",
-			`
-&wl.Expression{
-· Case: 55,
-· Factor: &wl.Factor{
-· · Case: 1,
-· · Factor: &wl.Factor{
-· · · Term: &wl.Term{
-· · · · Case: 13,
-· · · · Term: &wl.Term{
-· · · · · Case: 5,
-· · · · · Token: IDENT, "x",
-· · · · },
-· · · · Token: '!',
-· · · },
-· · },
-· · Term: &wl.Term{
-· · · Case: 5,
+· · Case: 14,
+· · Expression: &wl.Expression{
+· · · Case: 139,
 · · · Token: IDENT, "y",
 · · },
+· · Token: '(',
+· · Token2: ')',
 · },
+· Token: '*',
 }
 `,
 		},
 		{
-			"x^2y",
+			[]string{"x!*y", "x!y"},
 			`
 &wl.Expression{
-· Case: 55,
-· Factor: &wl.Factor{
-· · Case: 1,
-· · Factor: &wl.Factor{
-· · · Term: &wl.Term{
-· · · · Case: 20,
-· · · · Term: &wl.Term{
-· · · · · Case: 5,
-· · · · · Token: IDENT, "x",
-· · · · },
-· · · · Term2: &wl.Term{
-· · · · · Case: 8,
-· · · · · Token: INT, "2",
-· · · · },
-· · · · Token: '^',
-· · · },
+· Case: 118,
+· Expression: &wl.Expression{
+· · Case: 115,
+· · Expression: &wl.Expression{
+· · · Case: 139,
+· · · Token: IDENT, "x",
 · · },
-· · Term: &wl.Term{
-· · · Case: 5,
-· · · Token: IDENT, "y",
-· · },
+· · Token: '!',
 · },
+· Expression2: &wl.Expression{
+· · Case: 139,
+· · Token: IDENT, "y",
+· },
+· Token: '*',
+}
+`,
+		},
+		{
+			[]string{"x^2*y", "x^2y"},
+			`
+&wl.Expression{
+· Case: 118,
+· Expression: &wl.Expression{
+· · Case: 134,
+· · Expression: &wl.Expression{
+· · · Case: 139,
+· · · Token: IDENT, "x",
+· · },
+· · Expression2: &wl.Expression{
+· · · Case: 142,
+· · · Token: INT, "2",
+· · },
+· · Token: '^',
+· },
+· Expression2: &wl.Expression{
+· · Case: 139,
+· · Token: IDENT, "y",
+· },
+· Token: '*',
+}
+`,
+		},
+		{
+			[]string{"x/2*y", "x/2y"},
+			`
+&wl.Expression{
+· Case: 118,
+· Expression: &wl.Expression{
+· · Case: 122,
+· · Expression: &wl.Expression{
+· · · Case: 139,
+· · · Token: IDENT, "x",
+· · },
+· · Expression2: &wl.Expression{
+· · · Case: 142,
+· · · Token: INT, "2",
+· · },
+· · Token: '/',
+· },
+· Expression2: &wl.Expression{
+· · Case: 139,
+· · Token: IDENT, "y",
+· },
+· Token: '*',
+}
+`,
+		},
+		{
+			[]string{"4*a^2", "4a^2"},
+			`
+&wl.Expression{
+· Case: 118,
+· Expression: &wl.Expression{
+· · Case: 142,
+· · Token: INT, "4",
+· },
+· Expression2: &wl.Expression{
+· · Case: 134,
+· · Expression: &wl.Expression{
+· · · Case: 139,
+· · · Token: IDENT, "a",
+· · },
+· · Expression2: &wl.Expression{
+· · · Case: 142,
+· · · Token: INT, "2",
+· · },
+· · Token: '^',
+· },
+· Token: '*',
 }
 `,
 		},
 	} {
-		in, err := NewInput(strings.NewReader(v.src), false)
-		if err != nil {
-			t.Fatal(i, v.src)
-		}
+		for _, src := range v.src {
+			in, err := NewInput(strings.NewReader(src), false)
+			if err != nil {
+				t.Fatal(i, src)
+			}
 
-		expr, err := in.ParseExpression(token.NewFileSet().AddFile("", -1, len(v.src)))
-		if err != nil {
-			t.Errorf("#%v: %v: %v", i, v.src, err)
-			continue
-		}
+			expr, err := in.ParseExpression(token.NewFileSet().AddFile("", -1, len(src)))
+			if err != nil {
+				t.Errorf("#%v: %v: %v", i, src, err)
+				continue
+			}
 
-		if g, e := fmt.Sprint(expr), strings.TrimSpace(v.ast); g != e {
-			t.Errorf("#%v: %v\ngot\n%v\nexp\n%v", i, v.src, g, e)
+			if g, e := fmt.Sprint(expr), strings.TrimSpace(v.ast); g != e {
+				t.Errorf("#%v: %v\ngot\n%v\nexp\n%v", i, src, g, e)
+			}
 		}
 	}
 }

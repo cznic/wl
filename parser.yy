@@ -141,10 +141,8 @@ package wl
 	CommaOpt	"optional comma"
 	ExprList	"expression list"
 	Expression	"expression"
-	Factor		"factor"
 	FileName	"file name"
 	Tag		"tag"
-	Term		"term"
 	start		"valid input"
 
 %left		FORM_BOX
@@ -232,126 +230,39 @@ start:
 Expression:
 	"++" Expression %prec PRE_INC
 |	"--" Expression %prec PRE_INC
+|	";;"
+|	";;" Expression
+|	"<<" FileName
 |	"\\@" Expression
 |	"\\@" Expression "\\%" Expression
-|	"\\[Sqrt]" Expression
+|	"\\[Del]" Expression
 |	"\\[Integrate]" Expression "\\[DifferentialD]" Expression
+|	"\\[MinusPlus]" Expression %prec UNARY_MINUS_PLUS
+|	"\\[PlusMinus]" Expression %prec UNARY_PLUS_MINUS
+|	"\\[Sqrt]" Expression
+|	"\\[Square]" Expression
 |	'!' Expression
+|	'(' Expression ')'
+|	'+' Expression %prec UNARY_PLUS
 |	'-' Expression %prec UNARY_MINUS
+|	'{' '}'
+|	'{' ExprList CommaOpt '}'
+|	Expression "!=" Expression
 |	Expression "&&" Expression
+|	Expression "**" Expression
+|	Expression "*=" Expression
 |	Expression "++"
+|	Expression "+=" Expression
 |	Expression "--"
+|	Expression "-=" Expression
 |	Expression "->" Expression
+|	Expression ".."
+|	Expression "..."
 |	Expression "/*" Expression
 |	Expression "/." Expression
 |	Expression "//" Expression
 |	Expression "//." Expression
 |	Expression "//@" Expression
-|	Expression "/;" Expression
-|	Expression "/@" Expression
-|	Expression ":=" Expression
-|	Expression ":>" Expression
-|	Expression "<=" Expression
-|	Expression "<>" Expression
-|	Expression "=!=" Expression
-|	Expression "==" Expression
-|	Expression "===" Expression
-|	Expression ">=" Expression
-|	Expression "@*" Expression
-|	Expression "@@" Expression
-|	Expression "@@@" Expression
-|	Expression "\\&" Expression
-|	Expression "\\+" Expression
-|	Expression "\\^" Expression "\\%" Expression
-|	Expression "\\_" Expression
-|	Expression "||" Expression
-|	Expression '*' Expression
-|	Expression '+' Expression
-|	Expression '-' Expression
-|	Expression '.' Expression
-|	Expression '/' Expression
-|	Expression ':' Expression
-|	Expression ';'
-|	Expression ';' Expression
-|	Expression '<' Expression
-|	Expression '=' Expression
-|	Expression '>' Expression
-|	Expression '?' Expression
-|	Expression '@' Expression
-|	Expression '^' Expression
-|	Expression '|' Expression
-|	Expression '~' Expression
-|	Expression "\\[Conjugate]"
-|	Expression "\\[ConjugateTranspose]"
-|	Expression "\\[HermitianConjugate]"
-|	Expression "\\[Transpose]"
-|	Factor
-|	Expression "\\[PartialD]" Expression
-|	"\\[Del]" Expression
-|	Expression "\\[DiscreteShift]" Expression
-|	Expression "\\[DiscreteRatio]" Expression
-|	Expression "\\[DifferenceDelta]" Expression
-|	"\\[Square]" Expression
-|	Expression "\\[SmallCircle]" Expression
-|	Expression "\\[CircleDot]" Expression
-|	Expression "**" Expression
-|	Expression "\\[Cross]" Expression
-|	'+' Expression %prec UNARY_PLUS
-|	"\\[PlusMinus]" Expression %prec UNARY_PLUS_MINUS
-|	"\\[MinusPlus]" Expression %prec UNARY_MINUS_PLUS
-|	Expression "\\[Backslash]" Expression
-|	Expression "!=" Expression
-|	Expression "\\[Diamond]" Expression
-|	Expression "\\[Wedge]" Expression
-|	Expression "\\[Vee]" Expression
-|	Expression "\\[CircleTimes]" Expression
-|	Expression "\\[CenterDot]" Expression
-|	Expression "\\[Star]" Expression
-|	Expression "\\[VerticalTilde]" Expression
-|	Expression "\\[Coproduct]" Expression
-|	Expression "\\[Cap]" Expression
-|	Expression "\\[Cup]" Expression
-|	Expression "\\[CirclePlus]" Expression
-|	Expression "\\[CircleMinus]" Expression
-|	Expression "\\[Intersection]" Expression
-|	Expression "\\[Union]" Expression
-|	";;"
-|	";;" Expression
-|	Expression ";;"
-|	Expression ";;" Expression
-|	Expression "\\[VerticalBar]" Expression
-|	Expression "\\[NotVerticalBar]" Expression
-|	Expression "\\[DoubleVerticalBar]" Expression
-|	Expression "\\[NotDoubleVerticalBar]" Expression
-|	Expression "\\[Element]" Expression
-|	Expression "\\[NotElement]" Expression
-|	Expression "\\[Subset]" Expression
-|	Expression "\\[Superset]" Expression
-|	Expression "\\[Nand]" Expression
-|	Expression "\\[Xor]" Expression
-|	Expression "\\[Xnor]" Expression
-|	Expression "\\[Nor]" Expression
-|	Expression "\\[Equivalent]" Expression
-|	Expression "\\[Implies]" Expression
-|	Expression "\\[RightTee]" Expression
-|	Expression "\\[DoubleRightTee]" Expression
-|	Expression "\\[LeftTee]" Expression
-|	Expression "\\[DoubleLeftTee]" Expression
-|	Expression "\\[UpTee]" Expression
-|	Expression "\\[DownTee]" Expression
-|	Expression "\\[SuchThat]" Expression
-|	Expression ".."
-|	Expression "..."
-|	Expression "~~" Expression
-|	Expression "+=" Expression
-|	Expression "-=" Expression
-|	Expression "*=" Expression
-|	Expression "/=" Expression
-|	Expression "\\[VerticalSeparator]" Expression
-|	Expression "\\[Therefore]" Expression
-|	Expression "\\[Because]" Expression
-|	Expression "^=" Expression
-|	Expression "^:=" Expression
 //yy:example "a/:b=c"
 |	Expression "/:" Expression
 	{
@@ -365,37 +276,117 @@ Expression:
 			lx.errPos(lhs.Expression2.Pos(), "expected 'Expression = Expression' or 'Expression := Expression'")
 		}
 	}
-|	Expression '=' '.'
-|	Expression "\\[Function]" Expression
+|	Expression "/;" Expression
+|	Expression "/=" Expression
+|	Expression "/@" Expression
+|	Expression ":=" Expression
+|	Expression ":>" Expression
+|	Expression ";;"
+|	Expression ";;" Expression
+|	Expression "<=" Expression
+|	Expression "<>" Expression
+|	Expression "=!=" Expression
+|	Expression "==" Expression
+|	Expression "===" Expression
+|	Expression ">=" Expression
 |	Expression ">>" FileName
 |	Expression ">>>" FileName
+|	Expression "@*" Expression
+|	Expression "@@" Expression
+|	Expression "@@@" Expression
+|	Expression "[[" ExprList CommaOpt "]]"
+|	Expression "\\&" Expression
+|	Expression "\\+" Expression
+|	Expression "\\[Backslash]" Expression
+|	Expression "\\[Because]" Expression
+|	Expression "\\[Cap]" Expression
+|	Expression "\\[CenterDot]" Expression
+|	Expression "\\[CircleDot]" Expression
+|	Expression "\\[CircleMinus]" Expression
+|	Expression "\\[CirclePlus]" Expression
+|	Expression "\\[CircleTimes]" Expression
+|	Expression "\\[ConjugateTranspose]"
+|	Expression "\\[Conjugate]"
+|	Expression "\\[Coproduct]" Expression
+|	Expression "\\[Cross]" Expression
+|	Expression "\\[Cup]" Expression
+|	Expression "\\[Diamond]" Expression
+|	Expression "\\[DifferenceDelta]" Expression
+|	Expression "\\[DiscreteRatio]" Expression
+|	Expression "\\[DiscreteShift]" Expression
+|	Expression "\\[DoubleLeftTee]" Expression
+|	Expression "\\[DoubleRightTee]" Expression
+|	Expression "\\[DoubleVerticalBar]" Expression
+|	Expression "\\[DownTee]" Expression
+|	Expression "\\[Element]" Expression
+|	Expression "\\[Equivalent]" Expression
+|	Expression "\\[Function]" Expression
+|	Expression "\\[HermitianConjugate]"
+|	Expression "\\[Implies]" Expression
+|	Expression "\\[Intersection]" Expression
+|	Expression "\\[LeftTee]" Expression
+|	Expression "\\[Nand]" Expression
+|	Expression "\\[Nor]" Expression
+|	Expression "\\[NotDoubleVerticalBar]" Expression
+|	Expression "\\[NotElement]" Expression
+|	Expression "\\[NotVerticalBar]" Expression
+|	Expression "\\[PartialD]" Expression
+|	Expression "\\[RightTee]" Expression
+|	Expression "\\[SmallCircle]" Expression
+|	Expression "\\[Star]" Expression
+|	Expression "\\[Subset]" Expression
+|	Expression "\\[SuchThat]" Expression
+|	Expression "\\[Superset]" Expression
+|	Expression "\\[Therefore]" Expression
+|	Expression "\\[Transpose]"
+|	Expression "\\[Union]" Expression
+|	Expression "\\[UpTee]" Expression
+|	Expression "\\[Vee]" Expression
+|	Expression "\\[VerticalBar]" Expression
+|	Expression "\\[VerticalSeparator]" Expression
+|	Expression "\\[VerticalTilde]" Expression
+|	Expression "\\[Wedge]" Expression
+|	Expression "\\[Xnor]" Expression
+|	Expression "\\[Xor]" Expression
+|	Expression "\\^" Expression "\\%" Expression
+|	Expression "\\_" Expression
 |	Expression "\\`" STRING
-
-Term:
-	"<<" FileName
-|	'(' Expression ')'
-|	'{' '}'
-|	'{' ExprList CommaOpt '}'
+|	Expression "^:=" Expression
+|	Expression "^=" Expression
+|	Expression "||" Expression
+|	Expression "~~" Expression
+|	Expression '!'
+|	Expression '!' '!'
+|	Expression '&'
+|	Expression '*' Expression
+|	Expression '+' Expression
+|	Expression '-' Expression
+|	Expression '.' Expression
+|	Expression '/' Expression
+|	Expression ':' Expression
+|	Expression ';'
+|	Expression ';' Expression
+|	Expression '<' Expression
+|	Expression '=' '.'
+|	Expression '=' Expression
+|	Expression '>' Expression
+|	Expression '?' Expression
+|	Expression '@' Expression
+|	Expression '[' ']'
+|	Expression '[' ExprList CommaOpt ']'
+|	Expression '^' Expression
+|	Expression '|' Expression
+|	Expression '~' Expression
+|	Expression QUOTE
 |	FLOAT
 |	IDENT
 |	IDENT "::" Tag
 |	IDENT "::" Tag "::" Tag
 |	INT
+|	OUT
 |	PATTERN
 |	SLOT
 |	STRING
-|	Term "[[" ExprList CommaOpt "]]"
-|	Term '!'
-|	Term '!' '!'
-|	Term '&'
-|	Term '[' ']'
-|	Term '[' ExprList CommaOpt ']'
-|	Term QUOTE
-|	OUT
-
-Factor:
-	Term
-|	Factor Term
 
 ExprList:
 	Expression
