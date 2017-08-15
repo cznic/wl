@@ -270,7 +270,7 @@ Expression:
 |	Expression '-' Expression
 |	Expression '.' Expression
 |	Expression '/' Expression
-|	Expression ':' Expression
+|	PATTERN ':' Term
 |	Expression ';'
 |	Expression ';' Expression
 |	Expression '<' Expression
@@ -370,6 +370,7 @@ Expression:
 |	Expression ">>" FileName
 |	Expression ">>>" FileName
 |	Expression "\\`" STRING
+|	IDENT ':' Expression
 
 Term:
 	"<<" FileName
