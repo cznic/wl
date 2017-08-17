@@ -319,6 +319,7 @@ type lexer struct {
 	str         []byte
 	sz          int
 	un          []rune
+	ungetTok    Token
 }
 
 func newLexer(r io.RuneReader) *lexer {
@@ -326,6 +327,7 @@ func newLexer(r io.RuneReader) *lexer {
 		c:           -1,
 		exampleRule: -1,
 		r:           r,
+		ungetTok:    Token{Rune: -1},
 	}
 }
 
@@ -342,6 +344,7 @@ func (lx *lexer) init(l *lex.Lexer, interactive bool) {
 	lx.stack = lx.stack[:0]
 	lx.str = lx.str[:0]
 	lx.un = lx.un[:0]
+	lx.ungetTok.Rune = -1
 }
 
 func (lx *lexer) unget(r rune) {
@@ -388,9 +391,6 @@ func (lx *lexer) pop() (r int) {
 	return r
 }
 
-// func (lx *lexer) unget(r rune) int {
-// }
-
 func (lx *lexer) sdump() string {
 	var a []string
 	for _, v := range lx.stack {
@@ -416,6 +416,13 @@ func (lx *lexer) Lex(lval *yySymType) (r int) {
 	if lx.err != nil {
 		return -1
 	}
+
+	if tok := lx.ungetTok; tok.Rune >= 0 {
+		lval.Token = tok
+		lx.ungetTok.Rune = -1
+		return int(tok.Rune)
+	}
+
 more:
 	r = lx.scan()
 	if r == IGNORE {
@@ -434,6 +441,17 @@ more:
 		goto more
 	}
 
+	var ok, mul bool
+out:
+	for _, sym := range yyFollow[lval.yys] {
+		switch sym {
+		case r:
+			ok = true
+			break out
+		case '*':
+			mul = r >= 0
+		}
+	}
 	tok := Token{Rune: rune(r), pos: lx.First.Pos()}
 	if r > 0x7f {
 		switch r {
@@ -442,6 +460,12 @@ more:
 		default:
 			tok.Val = string(lx.TokenBytes(nil))
 		}
+	}
+	if !ok && mul {
+		lx.ungetTok = tok
+		r = '*'
+		tok.Rune = rune(r)
+		tok.Val = ""
 	}
 	lval.Token = tok
 	return r

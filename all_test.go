@@ -226,3 +226,233 @@ func TestParser(t *testing.T) {
 	t.Run("corpus interactive", func(t *testing.T) { testParseCorpus(t, true) })
 	t.Run("other", func(t *testing.T) { testParseOther(t) })
 }
+
+// https://github.com/cznic/wl/issues/4
+func TestIssue4(t *testing.T) {
+	for i, v := range []struct {
+		src []string
+		ast string
+	}{
+		{
+			[]string{"x*y", "x y"},
+			`
+&wl.Expression{
+· Case: 118,
+· Expression: &wl.Expression{
+· · Case: 139,
+· · Token: IDENT, "x",
+· },
+· Expression2: &wl.Expression{
+· · Case: 139,
+· · Token: IDENT, "y",
+· },
+· Token: '*',
+}
+`,
+		},
+		{
+			[]string{"x*y*z", "x y z"},
+			`
+&wl.Expression{
+· Case: 118,
+· Expression: &wl.Expression{
+· · Case: 118,
+· · Expression: &wl.Expression{
+· · · Case: 139,
+· · · Token: IDENT, "x",
+· · },
+· · Expression2: &wl.Expression{
+· · · Case: 139,
+· · · Token: IDENT, "y",
+· · },
+· · Token: '*',
+· },
+· Expression2: &wl.Expression{
+· · Case: 139,
+· · Token: IDENT, "z",
+· },
+· Token: '*',
+}
+`,
+		},
+		{
+			[]string{"2*x", "2x"},
+			`
+&wl.Expression{
+· Case: 118,
+· Expression: &wl.Expression{
+· · Case: 142,
+· · Token: INT, "2",
+· },
+· Expression2: &wl.Expression{
+· · Case: 139,
+· · Token: IDENT, "x",
+· },
+· Token: '*',
+}
+`,
+		},
+		{
+			[]string{"2*(x)", "2(x)"},
+			`
+&wl.Expression{
+· Case: 118,
+· Expression: &wl.Expression{
+· · Case: 142,
+· · Token: INT, "2",
+· },
+· Expression2: &wl.Expression{
+· · Case: 14,
+· · Expression: &wl.Expression{
+· · · Case: 139,
+· · · Token: IDENT, "x",
+· · },
+· · Token: '(',
+· · Token2: ')',
+· },
+· Token: '*',
+}
+`,
+		},
+		{
+			[]string{"(x)*(y)", "(x)(y)"},
+			`
+&wl.Expression{
+· Case: 118,
+· Expression: &wl.Expression{
+· · Case: 14,
+· · Expression: &wl.Expression{
+· · · Case: 139,
+· · · Token: IDENT, "x",
+· · },
+· · Token: '(',
+· · Token2: ')',
+· },
+· Expression2: &wl.Expression{
+· · Case: 14,
+· · Expression: &wl.Expression{
+· · · Case: 139,
+· · · Token: IDENT, "y",
+· · },
+· · Token: '(',
+· · Token2: ')',
+· },
+· Token: '*',
+}
+`,
+		},
+		{
+			[]string{"x!*y", "x!y"},
+			`
+&wl.Expression{
+· Case: 118,
+· Expression: &wl.Expression{
+· · Case: 115,
+· · Expression: &wl.Expression{
+· · · Case: 139,
+· · · Token: IDENT, "x",
+· · },
+· · Token: '!',
+· },
+· Expression2: &wl.Expression{
+· · Case: 139,
+· · Token: IDENT, "y",
+· },
+· Token: '*',
+}
+`,
+		},
+		{
+			[]string{"x^2*y", "x^2y"},
+			`
+&wl.Expression{
+· Case: 118,
+· Expression: &wl.Expression{
+· · Case: 134,
+· · Expression: &wl.Expression{
+· · · Case: 139,
+· · · Token: IDENT, "x",
+· · },
+· · Expression2: &wl.Expression{
+· · · Case: 142,
+· · · Token: INT, "2",
+· · },
+· · Token: '^',
+· },
+· Expression2: &wl.Expression{
+· · Case: 139,
+· · Token: IDENT, "y",
+· },
+· Token: '*',
+}
+`,
+		},
+		{
+			[]string{"x/2*y", "x/2y"},
+			`
+&wl.Expression{
+· Case: 118,
+· Expression: &wl.Expression{
+· · Case: 122,
+· · Expression: &wl.Expression{
+· · · Case: 139,
+· · · Token: IDENT, "x",
+· · },
+· · Expression2: &wl.Expression{
+· · · Case: 142,
+· · · Token: INT, "2",
+· · },
+· · Token: '/',
+· },
+· Expression2: &wl.Expression{
+· · Case: 139,
+· · Token: IDENT, "y",
+· },
+· Token: '*',
+}
+`,
+		},
+		{
+			[]string{"4*a^2", "4a^2"},
+			`
+&wl.Expression{
+· Case: 118,
+· Expression: &wl.Expression{
+· · Case: 142,
+· · Token: INT, "4",
+· },
+· Expression2: &wl.Expression{
+· · Case: 134,
+· · Expression: &wl.Expression{
+· · · Case: 139,
+· · · Token: IDENT, "a",
+· · },
+· · Expression2: &wl.Expression{
+· · · Case: 142,
+· · · Token: INT, "2",
+· · },
+· · Token: '^',
+· },
+· Token: '*',
+}
+`,
+		},
+	} {
+		for _, src := range v.src {
+			in, err := NewInput(strings.NewReader(src), false)
+			if err != nil {
+				t.Fatal(i, src)
+			}
+
+			expr, err := in.ParseExpression(token.NewFileSet().AddFile("", -1, len(src)))
+			if err != nil {
+				t.Errorf("#%v: %v: %v", i, src, err)
+				continue
+			}
+
+			if g, e := fmt.Sprint(expr), strings.TrimSpace(v.ast); g != e {
+				t.Errorf("#%v: %v\ngot\n%v\nexp\n%v", i, src, g, e)
+			}
+		}
+	}
+}
