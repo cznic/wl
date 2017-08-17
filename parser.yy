@@ -268,8 +268,8 @@ Expression:
 	{
 		switch lhs.Expression2.Case {
 		case
-			19, // Expression ":=" Expression                                 // Case 19
-			44: // Expression '=' Expression                                  // Case 44
+			39, // Expression ":=" Expression                                  // Case 39
+			128: // Expression '=' Expression                                  // Case 128
 
 			// ok
 		default:
