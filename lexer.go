@@ -304,22 +304,23 @@ func runeClass(r rune) int {
 
 type lexer struct {
 	*lex.Lexer
-	ast         Node
-	c           rune
-	err         error
-	exampleAST  interface{}
-	exampleRule int
-	in          []rune
-	interactive bool
-	mark        int
-	r           io.RuneReader
-	rerr        error
-	sc          int // Start condition.
-	stack       []int
-	str         []byte
-	sz          int
-	un          []rune
-	ungetTok    Token
+	ast          Node
+	c            rune
+	commentLevel int
+	err          error
+	exampleAST   interface{}
+	exampleRule  int
+	in           []rune
+	interactive  bool
+	mark         int
+	r            io.RuneReader
+	rerr         error
+	sc           int // Start condition.
+	stack        []int
+	str          []byte
+	sz           int
+	un           []rune
+	ungetTok     Token
 }
 
 func newLexer(r io.RuneReader) *lexer {
@@ -335,6 +336,7 @@ func (lx *lexer) init(l *lex.Lexer, interactive bool) {
 	lx.Lexer = l
 	lx.ast = nil
 	lx.c = -1
+	lx.commentLevel = 0
 	lx.err = nil
 	lx.exampleAST = nil
 	lx.in = lx.in[:0]
