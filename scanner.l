@@ -9,7 +9,7 @@
 %yym lx.Mark()
 %yyt lx.sc
 
-%x S
+%x S C C2
 
 %{
 package wl
@@ -21,6 +21,12 @@ import (
 )
 
 func (lx *lexer) scan() (r int) {
+	const (
+		scInitial = iota
+		scString
+		scComment
+		scComment2
+	)
 	c := lx.Enter()
 %}
 
@@ -124,10 +130,31 @@ symbolNext	{symbolFirst}|[0-9]|{D}
 	c = lx.Rule0()
 
 [ \t\r]+
-"(*"([^*\x80]|\*+[^*)\x80])*\*+\)
 
-\"	lx.sc = 1
-	lx.str = lx.str[:0]
+"(*"		lx.sc = scComment
+		lx.commentLevel++
+
+<C>"(*"		lx.commentLevel++
+
+<C>"*"		lx.sc = scComment2
+
+<C>.|\n
+
+<C2>"(*"	lx.commentLevel++
+
+<C2>"*"
+
+<C2>")"		lx.commentLevel--
+		if lx.commentLevel == 0 {
+			lx.sc = scInitial
+		}
+
+<C2>.|\n
+		lx.sc = scComment
+
+
+\"		lx.sc = scString
+		lx.str = lx.str[:0]
 
 <S>\x00		lx.str = append(lx.str, 0)
 <S>\\\\		lx.str = append(lx.str, '\\')
@@ -144,7 +171,7 @@ symbolNext	{symbolFirst}|[0-9]|{D}
 <S>{schar}
 	lx.str = append(lx.str, lx.TokenBytes(nil)...)
 
-<S>\"	lx.sc = 0
+<S>\"	lx.sc = scInitial
 	return STRING
 
 {ignore}
