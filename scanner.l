@@ -114,7 +114,7 @@ digiticks	{digits}(`{digits})*
 digits	{d}+
 exponent	[eE][+-]?{digits}
 float		{base}?{approx}(`|`{digits}|``{digits})?
-ident		{symbol}|`{symbol}|{symbol}`{symbol}|{symbol}`|{symbol}`{symbol}`|`{symbol}`
+ident		{symbol}|`{symbol}|{symbol}`{symbol}|{symbol}`|{symbol}`{symbol}`|{symbol}`{symbol}`{symbol}|`{symbol}`
 int		{base}?{digits}
 mantissa	{digiticks}"."{digiticks}|"."{digiticks}|{digiticks}"."
 out		%+|%{digits}
