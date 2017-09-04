@@ -106,6 +106,7 @@ var (
 		"Because":              '\u2235',
 		"Cap":                  '\u2322',
 		"CenterDot":            '\u00b7',
+		"CenterEllipsis":       '\u22ef',
 		"CircleDot":            '\u2299',
 		"CircleMinus":          '\u2296',
 		"CirclePlus":           '\u2295',
