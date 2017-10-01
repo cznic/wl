@@ -44,6 +44,11 @@ var (
 	}
 )
 
+// Precedence maps token numbers to token precedence.
+var Precedence map[int]int
+
+func init() { Precedence = yyPrec }
+
 // Node is implemented by all AST nodes.
 type Node interface {
 	Pos() token.Pos
