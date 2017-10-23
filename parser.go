@@ -2076,6 +2076,7 @@ yynewstate:
 	case 2:
 		{
 			yyVAL.Node = &Expression{
+				Case:       ExpressionPreInc,
 				Token:      yyS[yypt-1].Token,
 				Expression: yyS[yypt-0].Node.(*Expression),
 			}
@@ -2083,7 +2084,7 @@ yynewstate:
 	case 3:
 		{
 			yyVAL.Node = &Expression{
-				Case:       1,
+				Case:       ExpressionPreDec,
 				Token:      yyS[yypt-1].Token,
 				Expression: yyS[yypt-0].Node.(*Expression),
 			}
@@ -2190,7 +2191,7 @@ yynewstate:
 	case 16:
 		{
 			yyVAL.Node = &Expression{
-				Case:       14,
+				Case:       ExpressionParenExpr,
 				Token:      yyS[yypt-2].Token,
 				Expression: yyS[yypt-1].Node.(*Expression),
 				Token2:     yyS[yypt-0].Token,
@@ -2199,7 +2200,7 @@ yynewstate:
 	case 17:
 		{
 			yyVAL.Node = &Expression{
-				Case:       15,
+				Case:       ExpressionUnaryPlus,
 				Token:      yyS[yypt-1].Token,
 				Expression: yyS[yypt-0].Node.(*Expression),
 			}
@@ -2207,7 +2208,7 @@ yynewstate:
 	case 18:
 		{
 			yyVAL.Node = &Expression{
-				Case:       16,
+				Case:       ExpressionUnaryMinus,
 				Token:      yyS[yypt-1].Token,
 				Expression: yyS[yypt-0].Node.(*Expression),
 			}
@@ -2233,7 +2234,7 @@ yynewstate:
 	case 21:
 		{
 			yyVAL.Node = &Expression{
-				Case:        19,
+				Case:        ExpressionNe,
 				Expression:  yyS[yypt-2].Node.(*Expression),
 				Token:       yyS[yypt-1].Token,
 				Expression2: yyS[yypt-0].Node.(*Expression),
@@ -2242,7 +2243,7 @@ yynewstate:
 	case 22:
 		{
 			yyVAL.Node = &Expression{
-				Case:        20,
+				Case:        ExpressionLAnd,
 				Expression:  yyS[yypt-2].Node.(*Expression),
 				Token:       yyS[yypt-1].Token,
 				Expression2: yyS[yypt-0].Node.(*Expression),
@@ -2260,7 +2261,7 @@ yynewstate:
 	case 24:
 		{
 			yyVAL.Node = &Expression{
-				Case:        22,
+				Case:        ExpressionMulAssign,
 				Expression:  yyS[yypt-2].Node.(*Expression),
 				Token:       yyS[yypt-1].Token,
 				Expression2: yyS[yypt-0].Node.(*Expression),
@@ -2269,7 +2270,7 @@ yynewstate:
 	case 25:
 		{
 			yyVAL.Node = &Expression{
-				Case:       23,
+				Case:       ExpressionPostInc,
 				Expression: yyS[yypt-1].Node.(*Expression),
 				Token:      yyS[yypt-0].Token,
 			}
@@ -2277,7 +2278,7 @@ yynewstate:
 	case 26:
 		{
 			yyVAL.Node = &Expression{
-				Case:        24,
+				Case:        ExpressionAddAssign,
 				Expression:  yyS[yypt-2].Node.(*Expression),
 				Token:       yyS[yypt-1].Token,
 				Expression2: yyS[yypt-0].Node.(*Expression),
@@ -2286,7 +2287,7 @@ yynewstate:
 	case 27:
 		{
 			yyVAL.Node = &Expression{
-				Case:       25,
+				Case:       ExpressionPostDec,
 				Expression: yyS[yypt-1].Node.(*Expression),
 				Token:      yyS[yypt-0].Token,
 			}
@@ -2294,7 +2295,7 @@ yynewstate:
 	case 28:
 		{
 			yyVAL.Node = &Expression{
-				Case:        26,
+				Case:        ExpressionSubAssign,
 				Expression:  yyS[yypt-2].Node.(*Expression),
 				Token:       yyS[yypt-1].Token,
 				Expression2: yyS[yypt-0].Node.(*Expression),
@@ -2455,7 +2456,7 @@ yynewstate:
 	case 45:
 		{
 			yyVAL.Node = &Expression{
-				Case:        43,
+				Case:        ExpressionLe,
 				Expression:  yyS[yypt-2].Node.(*Expression),
 				Token:       yyS[yypt-1].Token,
 				Expression2: yyS[yypt-0].Node.(*Expression),
@@ -2482,7 +2483,7 @@ yynewstate:
 	case 48:
 		{
 			yyVAL.Node = &Expression{
-				Case:        46,
+				Case:        ExpressionEq,
 				Expression:  yyS[yypt-2].Node.(*Expression),
 				Token:       yyS[yypt-1].Token,
 				Expression2: yyS[yypt-0].Node.(*Expression),
@@ -2509,7 +2510,7 @@ yynewstate:
 	case 51:
 		{
 			yyVAL.Node = &Expression{
-				Case:       49,
+				Case:       ExpressionRsh,
 				Expression: yyS[yypt-2].Node.(*Expression),
 				Token:      yyS[yypt-1].Token,
 				FileName:   yyS[yypt-0].Node.(*FileName),
@@ -3085,7 +3086,7 @@ yynewstate:
 	case 115:
 		{
 			yyVAL.Node = &Expression{
-				Case:        113,
+				Case:        ExpressionLOr,
 				Expression:  yyS[yypt-2].Node.(*Expression),
 				Token:       yyS[yypt-1].Token,
 				Expression2: yyS[yypt-0].Node.(*Expression),
@@ -3128,7 +3129,7 @@ yynewstate:
 	case 120:
 		{
 			yyVAL.Node = &Expression{
-				Case:        118,
+				Case:        ExpressionMul,
 				Expression:  yyS[yypt-2].Node.(*Expression),
 				Token:       yyS[yypt-1].Token,
 				Expression2: yyS[yypt-0].Node.(*Expression),
@@ -3137,7 +3138,7 @@ yynewstate:
 	case 121:
 		{
 			yyVAL.Node = &Expression{
-				Case:        119,
+				Case:        ExpressionAdd,
 				Expression:  yyS[yypt-2].Node.(*Expression),
 				Token:       yyS[yypt-1].Token,
 				Expression2: yyS[yypt-0].Node.(*Expression),
@@ -3146,7 +3147,7 @@ yynewstate:
 	case 122:
 		{
 			yyVAL.Node = &Expression{
-				Case:        120,
+				Case:        ExpressionSub,
 				Expression:  yyS[yypt-2].Node.(*Expression),
 				Token:       yyS[yypt-1].Token,
 				Expression2: yyS[yypt-0].Node.(*Expression),
@@ -3164,7 +3165,7 @@ yynewstate:
 	case 124:
 		{
 			yyVAL.Node = &Expression{
-				Case:        122,
+				Case:        ExpressionDiv,
 				Expression:  yyS[yypt-2].Node.(*Expression),
 				Token:       yyS[yypt-1].Token,
 				Expression2: yyS[yypt-0].Node.(*Expression),
@@ -3199,7 +3200,7 @@ yynewstate:
 	case 128:
 		{
 			yyVAL.Node = &Expression{
-				Case:        126,
+				Case:        ExpressionLt,
 				Expression:  yyS[yypt-2].Node.(*Expression),
 				Token:       yyS[yypt-1].Token,
 				Expression2: yyS[yypt-0].Node.(*Expression),
@@ -3217,7 +3218,7 @@ yynewstate:
 	case 130:
 		{
 			yyVAL.Node = &Expression{
-				Case:        128,
+				Case:        ExpressionAssign,
 				Expression:  yyS[yypt-2].Node.(*Expression),
 				Token:       yyS[yypt-1].Token,
 				Expression2: yyS[yypt-0].Node.(*Expression),
@@ -3226,7 +3227,7 @@ yynewstate:
 	case 131:
 		{
 			yyVAL.Node = &Expression{
-				Case:        129,
+				Case:        ExpressionGt,
 				Expression:  yyS[yypt-2].Node.(*Expression),
 				Token:       yyS[yypt-1].Token,
 				Expression2: yyS[yypt-0].Node.(*Expression),
@@ -3282,7 +3283,7 @@ yynewstate:
 	case 137:
 		{
 			yyVAL.Node = &Expression{
-				Case:        135,
+				Case:        ExpressionOr,
 				Expression:  yyS[yypt-2].Node.(*Expression),
 				Token:       yyS[yypt-1].Token,
 				Expression2: yyS[yypt-0].Node.(*Expression),
@@ -3308,14 +3309,14 @@ yynewstate:
 	case 140:
 		{
 			yyVAL.Node = &Expression{
-				Case:  138,
+				Case:  ExpressionFloat,
 				Token: yyS[yypt-0].Token,
 			}
 		}
 	case 141:
 		{
 			yyVAL.Node = &Expression{
-				Case:  139,
+				Case:  ExpressionIdent,
 				Token: yyS[yypt-0].Token,
 			}
 		}
@@ -3342,7 +3343,7 @@ yynewstate:
 	case 144:
 		{
 			yyVAL.Node = &Expression{
-				Case:  142,
+				Case:  ExpressionInteger,
 				Token: yyS[yypt-0].Token,
 			}
 		}
@@ -3356,21 +3357,21 @@ yynewstate:
 	case 146:
 		{
 			yyVAL.Node = &Expression{
-				Case:  144,
+				Case:  ExpressionPattern,
 				Token: yyS[yypt-0].Token,
 			}
 		}
 	case 147:
 		{
 			yyVAL.Node = &Expression{
-				Case:  145,
+				Case:  ExpressionSlot,
 				Token: yyS[yypt-0].Token,
 			}
 		}
 	case 148:
 		{
 			yyVAL.Node = &Expression{
-				Case:  146,
+				Case:  ExpressionString,
 				Token: yyS[yypt-0].Token,
 			}
 		}
@@ -3402,26 +3403,28 @@ yynewstate:
 	case 153:
 		{
 			yyVAL.Node = &FileName{
+				Case:  FileNameIdent,
 				Token: yyS[yypt-0].Token,
 			}
 		}
 	case 154:
 		{
 			yyVAL.Node = &FileName{
-				Case:  1,
+				Case:  FileNameString,
 				Token: yyS[yypt-0].Token,
 			}
 		}
 	case 155:
 		{
 			yyVAL.Node = &Tag{
+				Case:  TagIdent,
 				Token: yyS[yypt-0].Token,
 			}
 		}
 	case 156:
 		{
 			yyVAL.Node = &Tag{
-				Case:  1,
+				Case:  TagString,
 				Token: yyS[yypt-0].Token,
 			}
 		}

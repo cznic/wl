@@ -13,7 +13,7 @@ import (
 // CommaOpt represents data reduced by productions:
 //
 //	CommaOpt:
-//	        /* empty */
+//	        /* empty */  // Case 0
 //	|       ','          // Case 1
 type CommaOpt struct {
 	Token Token
@@ -38,7 +38,7 @@ func (n *CommaOpt) Pos() token.Pos {
 // ExprList represents data reduced by productions:
 //
 //	ExprList:
-//	        Expression
+//	        Expression               // Case 0
 //	|       ExprList ',' Expression  // Case 1
 type ExprList struct {
 	Case       int
@@ -87,11 +87,165 @@ func (n *ExprList) Pos() token.Pos {
 	}
 }
 
+// ExpressionCase represents case numbers of production Expression
+type ExpressionCase int
+
+// Values of type ExpressionCase
+const (
+	ExpressionPreInc ExpressionCase = iota
+	ExpressionPreDec
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	ExpressionParenExpr
+	ExpressionUnaryPlus
+	ExpressionUnaryMinus
+	_
+	_
+	ExpressionNe
+	ExpressionLAnd
+	_
+	ExpressionMulAssign
+	ExpressionPostInc
+	ExpressionAddAssign
+	ExpressionPostDec
+	ExpressionSubAssign
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	ExpressionLe
+	_
+	_
+	ExpressionEq
+	_
+	_
+	ExpressionRsh
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	_
+	ExpressionLOr
+	_
+	_
+	_
+	_
+	ExpressionMul
+	ExpressionAdd
+	ExpressionSub
+	_
+	ExpressionDiv
+	_
+	_
+	_
+	ExpressionLt
+	_
+	ExpressionAssign
+	ExpressionGt
+	_
+	_
+	_
+	_
+	_
+	ExpressionOr
+	_
+	_
+	ExpressionFloat
+	ExpressionIdent
+	_
+	_
+	ExpressionInteger
+	_
+	ExpressionPattern
+	ExpressionSlot
+	ExpressionString
+)
+
 // Expression represents data reduced by productions:
 //
 //	Expression:
-//	        "++" Expression
-//	|       "--" Expression                                            // Case 1
+//	        "++" Expression                                            // Case ExpressionPreInc
+//	|       "--" Expression                                            // Case ExpressionPreDec
 //	|       ";;"                                                       // Case 2
 //	|       ";;" Expression                                            // Case 3
 //	|       "<<" FileName                                              // Case 4
@@ -104,19 +258,19 @@ func (n *ExprList) Pos() token.Pos {
 //	|       "\\[Sqrt]" Expression                                      // Case 11
 //	|       "\\[Square]" Expression                                    // Case 12
 //	|       '!' Expression                                             // Case 13
-//	|       '(' Expression ')'                                         // Case 14
-//	|       '+' Expression                                             // Case 15
-//	|       '-' Expression                                             // Case 16
+//	|       '(' Expression ')'                                         // Case ExpressionParenExpr
+//	|       '+' Expression                                             // Case ExpressionUnaryPlus
+//	|       '-' Expression                                             // Case ExpressionUnaryMinus
 //	|       '{' '}'                                                    // Case 17
 //	|       '{' ExprList CommaOpt '}'                                  // Case 18
-//	|       Expression "!=" Expression                                 // Case 19
-//	|       Expression "&&" Expression                                 // Case 20
+//	|       Expression "!=" Expression                                 // Case ExpressionNe
+//	|       Expression "&&" Expression                                 // Case ExpressionLAnd
 //	|       Expression "**" Expression                                 // Case 21
-//	|       Expression "*=" Expression                                 // Case 22
-//	|       Expression "++"                                            // Case 23
-//	|       Expression "+=" Expression                                 // Case 24
-//	|       Expression "--"                                            // Case 25
-//	|       Expression "-=" Expression                                 // Case 26
+//	|       Expression "*=" Expression                                 // Case ExpressionMulAssign
+//	|       Expression "++"                                            // Case ExpressionPostInc
+//	|       Expression "+=" Expression                                 // Case ExpressionAddAssign
+//	|       Expression "--"                                            // Case ExpressionPostDec
+//	|       Expression "-=" Expression                                 // Case ExpressionSubAssign
 //	|       Expression "->" Expression                                 // Case 27
 //	|       Expression ".."                                            // Case 28
 //	|       Expression "..."                                           // Case 29
@@ -133,13 +287,13 @@ func (n *ExprList) Pos() token.Pos {
 //	|       Expression ":>" Expression                                 // Case 40
 //	|       Expression ";;"                                            // Case 41
 //	|       Expression ";;" Expression                                 // Case 42
-//	|       Expression "<=" Expression                                 // Case 43
+//	|       Expression "<=" Expression                                 // Case ExpressionLe
 //	|       Expression "<>" Expression                                 // Case 44
 //	|       Expression "=!=" Expression                                // Case 45
-//	|       Expression "==" Expression                                 // Case 46
+//	|       Expression "==" Expression                                 // Case ExpressionEq
 //	|       Expression "===" Expression                                // Case 47
 //	|       Expression ">=" Expression                                 // Case 48
-//	|       Expression ">>" FileName                                   // Case 49
+//	|       Expression ">>" FileName                                   // Case ExpressionRsh
 //	|       Expression ">>>" FileName                                  // Case 50
 //	|       Expression "@*" Expression                                 // Case 51
 //	|       Expression "@@" Expression                                 // Case 52
@@ -203,42 +357,42 @@ func (n *ExprList) Pos() token.Pos {
 //	|       Expression "\\`" STRING                                    // Case 110
 //	|       Expression "^:=" Expression                                // Case 111
 //	|       Expression "^=" Expression                                 // Case 112
-//	|       Expression "||" Expression                                 // Case 113
+//	|       Expression "||" Expression                                 // Case ExpressionLOr
 //	|       Expression "~~" Expression                                 // Case 114
 //	|       Expression '!'                                             // Case 115
 //	|       Expression '!' '!'                                         // Case 116
 //	|       Expression '&'                                             // Case 117
-//	|       Expression '*' Expression                                  // Case 118
-//	|       Expression '+' Expression                                  // Case 119
-//	|       Expression '-' Expression                                  // Case 120
+//	|       Expression '*' Expression                                  // Case ExpressionMul
+//	|       Expression '+' Expression                                  // Case ExpressionAdd
+//	|       Expression '-' Expression                                  // Case ExpressionSub
 //	|       Expression '.' Expression                                  // Case 121
-//	|       Expression '/' Expression                                  // Case 122
+//	|       Expression '/' Expression                                  // Case ExpressionDiv
 //	|       Expression ':' Expression                                  // Case 123
 //	|       Expression ';'                                             // Case 124
 //	|       Expression ';' Expression                                  // Case 125
-//	|       Expression '<' Expression                                  // Case 126
+//	|       Expression '<' Expression                                  // Case ExpressionLt
 //	|       Expression '=' '.'                                         // Case 127
-//	|       Expression '=' Expression                                  // Case 128
-//	|       Expression '>' Expression                                  // Case 129
+//	|       Expression '=' Expression                                  // Case ExpressionAssign
+//	|       Expression '>' Expression                                  // Case ExpressionGt
 //	|       Expression '?' Expression                                  // Case 130
 //	|       Expression '@' Expression                                  // Case 131
 //	|       Expression '[' ']'                                         // Case 132
 //	|       Expression '[' ExprList CommaOpt ']'                       // Case 133
 //	|       Expression '^' Expression                                  // Case 134
-//	|       Expression '|' Expression                                  // Case 135
+//	|       Expression '|' Expression                                  // Case ExpressionOr
 //	|       Expression '~' Expression                                  // Case 136
 //	|       Expression QUOTE                                           // Case 137
-//	|       FLOAT                                                      // Case 138
-//	|       IDENT                                                      // Case 139
+//	|       FLOAT                                                      // Case ExpressionFloat
+//	|       IDENT                                                      // Case ExpressionIdent
 //	|       IDENT "::" Tag                                             // Case 140
 //	|       IDENT "::" Tag "::" Tag                                    // Case 141
-//	|       INT                                                        // Case 142
+//	|       INT                                                        // Case ExpressionInteger
 //	|       OUT                                                        // Case 143
-//	|       PATTERN                                                    // Case 144
-//	|       SLOT                                                       // Case 145
-//	|       STRING                                                     // Case 146
+//	|       PATTERN                                                    // Case ExpressionPattern
+//	|       SLOT                                                       // Case ExpressionSlot
+//	|       STRING                                                     // Case ExpressionString
 type Expression struct {
-	Case        int
+	Case        ExpressionCase
 	CommaOpt    *CommaOpt
 	ExprList    *ExprList
 	Expression  *Expression
@@ -275,13 +429,22 @@ func (n *Expression) Pos() token.Pos {
 	}
 }
 
+// FileNameCase represents case numbers of production FileName
+type FileNameCase int
+
+// Values of type FileNameCase
+const (
+	FileNameIdent FileNameCase = iota
+	FileNameString
+)
+
 // FileName represents data reduced by productions:
 //
 //	FileName:
-//	        IDENT
-//	|       STRING  // Case 1
+//	        IDENT   // Case FileNameIdent
+//	|       STRING  // Case FileNameString
 type FileName struct {
-	Case  int
+	Case  FileNameCase
 	Token Token
 }
 
@@ -301,13 +464,22 @@ func (n *FileName) Pos() token.Pos {
 	return n.Token.Pos()
 }
 
+// TagCase represents case numbers of production Tag
+type TagCase int
+
+// Values of type TagCase
+const (
+	TagIdent TagCase = iota
+	TagString
+)
+
 // Tag represents data reduced by productions:
 //
 //	Tag:
-//	        IDENT
-//	|       STRING  // Case 1
+//	        IDENT   // Case TagIdent
+//	|       STRING  // Case TagString
 type Tag struct {
-	Case  int
+	Case  TagCase
 	Token Token
 }
 
@@ -330,7 +502,7 @@ func (n *Tag) Pos() token.Pos {
 // start represents data reduced by production:
 //
 //	start:
-//	        Expression
+//	        Expression  // Case 0
 type start struct {
 	Expression *Expression
 }
