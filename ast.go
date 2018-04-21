@@ -7,6 +7,7 @@
 package wl
 
 import (
+	"fmt"
 	"go/token"
 )
 
@@ -140,7 +141,7 @@ const (
 	_
 	ExpressionEq
 	_
-	_
+	ExpressionGe
 	ExpressionRsh
 	_
 	_
@@ -207,7 +208,7 @@ const (
 	_
 	ExpressionLOr
 	_
-	_
+	ExpressionFactorial
 	_
 	_
 	ExpressionMul
@@ -217,7 +218,7 @@ const (
 	ExpressionDiv
 	_
 	_
-	_
+	ExpressionCompound
 	ExpressionLt
 	_
 	ExpressionAssign
@@ -240,6 +241,80 @@ const (
 	ExpressionSlot
 	ExpressionString
 )
+
+// String implements fmt.Stringer
+func (n ExpressionCase) String() string {
+	switch n {
+	case ExpressionPreInc:
+		return "ExpressionPreInc"
+	case ExpressionPreDec:
+		return "ExpressionPreDec"
+	case ExpressionParenExpr:
+		return "ExpressionParenExpr"
+	case ExpressionUnaryPlus:
+		return "ExpressionUnaryPlus"
+	case ExpressionUnaryMinus:
+		return "ExpressionUnaryMinus"
+	case ExpressionNe:
+		return "ExpressionNe"
+	case ExpressionLAnd:
+		return "ExpressionLAnd"
+	case ExpressionMulAssign:
+		return "ExpressionMulAssign"
+	case ExpressionPostInc:
+		return "ExpressionPostInc"
+	case ExpressionAddAssign:
+		return "ExpressionAddAssign"
+	case ExpressionPostDec:
+		return "ExpressionPostDec"
+	case ExpressionSubAssign:
+		return "ExpressionSubAssign"
+	case ExpressionLe:
+		return "ExpressionLe"
+	case ExpressionEq:
+		return "ExpressionEq"
+	case ExpressionGe:
+		return "ExpressionGe"
+	case ExpressionRsh:
+		return "ExpressionRsh"
+	case ExpressionLOr:
+		return "ExpressionLOr"
+	case ExpressionFactorial:
+		return "ExpressionFactorial"
+	case ExpressionMul:
+		return "ExpressionMul"
+	case ExpressionAdd:
+		return "ExpressionAdd"
+	case ExpressionSub:
+		return "ExpressionSub"
+	case ExpressionDiv:
+		return "ExpressionDiv"
+	case ExpressionCompound:
+		return "ExpressionCompound"
+	case ExpressionLt:
+		return "ExpressionLt"
+	case ExpressionAssign:
+		return "ExpressionAssign"
+	case ExpressionGt:
+		return "ExpressionGt"
+	case ExpressionOr:
+		return "ExpressionOr"
+	case ExpressionFloat:
+		return "ExpressionFloat"
+	case ExpressionIdent:
+		return "ExpressionIdent"
+	case ExpressionInteger:
+		return "ExpressionInteger"
+	case ExpressionPattern:
+		return "ExpressionPattern"
+	case ExpressionSlot:
+		return "ExpressionSlot"
+	case ExpressionString:
+		return "ExpressionString"
+	default:
+		return fmt.Sprintf("ExpressionCase(%v)", int(n))
+	}
+}
 
 // Expression represents data reduced by productions:
 //
@@ -292,7 +367,7 @@ const (
 //	|       Expression "=!=" Expression                                // Case 45
 //	|       Expression "==" Expression                                 // Case ExpressionEq
 //	|       Expression "===" Expression                                // Case 47
-//	|       Expression ">=" Expression                                 // Case 48
+//	|       Expression ">=" Expression                                 // Case ExpressionGe
 //	|       Expression ">>" FileName                                   // Case ExpressionRsh
 //	|       Expression ">>>" FileName                                  // Case 50
 //	|       Expression "@*" Expression                                 // Case 51
@@ -359,7 +434,7 @@ const (
 //	|       Expression "^=" Expression                                 // Case 112
 //	|       Expression "||" Expression                                 // Case ExpressionLOr
 //	|       Expression "~~" Expression                                 // Case 114
-//	|       Expression '!'                                             // Case 115
+//	|       Expression '!'                                             // Case ExpressionFactorial
 //	|       Expression '!' '!'                                         // Case 116
 //	|       Expression '&'                                             // Case 117
 //	|       Expression '*' Expression                                  // Case ExpressionMul
@@ -369,7 +444,7 @@ const (
 //	|       Expression '/' Expression                                  // Case ExpressionDiv
 //	|       Expression ':' Expression                                  // Case 123
 //	|       Expression ';'                                             // Case 124
-//	|       Expression ';' Expression                                  // Case 125
+//	|       Expression ';' Expression                                  // Case ExpressionCompound
 //	|       Expression '<' Expression                                  // Case ExpressionLt
 //	|       Expression '=' '.'                                         // Case 127
 //	|       Expression '=' Expression                                  // Case ExpressionAssign
@@ -438,6 +513,18 @@ const (
 	FileNameString
 )
 
+// String implements fmt.Stringer
+func (n FileNameCase) String() string {
+	switch n {
+	case FileNameIdent:
+		return "FileNameIdent"
+	case FileNameString:
+		return "FileNameString"
+	default:
+		return fmt.Sprintf("FileNameCase(%v)", int(n))
+	}
+}
+
 // FileName represents data reduced by productions:
 //
 //	FileName:
@@ -472,6 +559,18 @@ const (
 	TagIdent TagCase = iota
 	TagString
 )
+
+// String implements fmt.Stringer
+func (n TagCase) String() string {
+	switch n {
+	case TagIdent:
+		return "TagIdent"
+	case TagString:
+		return "TagString"
+	default:
+		return fmt.Sprintf("TagCase(%v)", int(n))
+	}
+}
 
 // Tag represents data reduced by productions:
 //

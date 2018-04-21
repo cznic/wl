@@ -288,7 +288,7 @@ start:
 			|	Expression "=!=" Expression
 /*yy:case Eq */		|	Expression "==" Expression
 			|	Expression "===" Expression
-			|	Expression ">=" Expression
+/*yy:case Ge */		|	Expression ">=" Expression
 /*yy:case Rsh */	|	Expression ">>" FileName
 			|	Expression ">>>" FileName
 			|	Expression "@*" Expression
@@ -355,7 +355,7 @@ start:
 			|	Expression "^=" Expression
 /*yy:case LOr */	|	Expression "||" Expression
 			|	Expression "~~" Expression
-			|	Expression '!'
+/*yy:case Factorial */	|	Expression '!'
 			|	Expression '!' '!'
 			|	Expression '&'
 /*yy:case Mul */	|	Expression '*' Expression
@@ -365,7 +365,7 @@ start:
 /*yy:case Div */	|	Expression '/' Expression
 			|	Expression ':' Expression
 			|	Expression ';'
-			|	Expression ';' Expression
+/*yy:case Compound */	|	Expression ';' Expression
 /*yy:case Lt */		|	Expression '<' Expression
 			|	Expression '=' '.'
 /*yy:case Assign */	|	Expression '=' Expression
