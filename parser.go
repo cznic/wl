@@ -2501,7 +2501,7 @@ yynewstate:
 	case 50:
 		{
 			yyVAL.Node = &Expression{
-				Case:        48,
+				Case:        ExpressionGe,
 				Expression:  yyS[yypt-2].Node.(*Expression),
 				Token:       yyS[yypt-1].Token,
 				Expression2: yyS[yypt-0].Node.(*Expression),
@@ -3104,7 +3104,7 @@ yynewstate:
 	case 117:
 		{
 			yyVAL.Node = &Expression{
-				Case:       115,
+				Case:       ExpressionFactorial,
 				Expression: yyS[yypt-1].Node.(*Expression),
 				Token:      yyS[yypt-0].Token,
 			}
@@ -3191,7 +3191,7 @@ yynewstate:
 	case 127:
 		{
 			yyVAL.Node = &Expression{
-				Case:        125,
+				Case:        ExpressionCompound,
 				Expression:  yyS[yypt-2].Node.(*Expression),
 				Token:       yyS[yypt-1].Token,
 				Expression2: yyS[yypt-0].Node.(*Expression),

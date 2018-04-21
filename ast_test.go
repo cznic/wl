@@ -10,7 +10,7 @@ import (
 	"fmt"
 )
 
-func ExampleCommaOpt() {
+func ExampleCommaOpt_case0() {
 	fmt.Println(exampleAST(151, "{ 1.97 }") == (*CommaOpt)(nil))
 	// Output:
 	// false
@@ -24,7 +24,7 @@ func ExampleCommaOpt_case1() {
 	// }
 }
 
-func ExampleExprList() {
+func ExampleExprList_case0() {
 	fmt.Println(exampleAST(149, "{ 1.97 ,"))
 	// Output:
 	// &wl.ExprList{
@@ -54,7 +54,7 @@ func ExampleExprList_case1() {
 	// }
 }
 
-func ExampleExpression() {
+func ExampleExpression_preInc() {
 	fmt.Println(exampleAST(2, "++ 1.97"))
 	// Output:
 	// &wl.Expression{
@@ -66,7 +66,7 @@ func ExampleExpression() {
 	// }
 }
 
-func ExampleExpression_case001() {
+func ExampleExpression_preDec() {
 	fmt.Println(exampleAST(3, "-- 1.97"))
 	// Output:
 	// &wl.Expression{
@@ -240,7 +240,7 @@ func ExampleExpression_case013() {
 	// }
 }
 
-func ExampleExpression_case014() {
+func ExampleExpression_parenExpr() {
 	fmt.Println(exampleAST(16, "( 1.97 )"))
 	// Output:
 	// &wl.Expression{
@@ -254,7 +254,7 @@ func ExampleExpression_case014() {
 	// }
 }
 
-func ExampleExpression_case015() {
+func ExampleExpression_unaryPlus() {
 	fmt.Println(exampleAST(17, "+ 1.97"))
 	// Output:
 	// &wl.Expression{
@@ -267,7 +267,7 @@ func ExampleExpression_case015() {
 	// }
 }
 
-func ExampleExpression_case016() {
+func ExampleExpression_unaryMinus() {
 	fmt.Println(exampleAST(18, "- 1.97"))
 	// Output:
 	// &wl.Expression{
@@ -306,7 +306,7 @@ func ExampleExpression_case018() {
 	// }
 }
 
-func ExampleExpression_case019() {
+func ExampleExpression_ne() {
 	fmt.Println(exampleAST(21, "1.97 != 1.98"))
 	// Output:
 	// &wl.Expression{
@@ -323,7 +323,7 @@ func ExampleExpression_case019() {
 	// }
 }
 
-func ExampleExpression_case020() {
+func ExampleExpression_lAnd() {
 	fmt.Println(exampleAST(22, "1.97 && 1.98"))
 	// Output:
 	// &wl.Expression{
@@ -357,7 +357,7 @@ func ExampleExpression_case021() {
 	// }
 }
 
-func ExampleExpression_case022() {
+func ExampleExpression_mulAssign() {
 	fmt.Println(exampleAST(24, "1.97 *= 1.98"))
 	// Output:
 	// &wl.Expression{
@@ -374,7 +374,7 @@ func ExampleExpression_case022() {
 	// }
 }
 
-func ExampleExpression_case023() {
+func ExampleExpression_postInc() {
 	fmt.Println(exampleAST(25, "1.97 ++"))
 	// Output:
 	// &wl.Expression{
@@ -387,7 +387,7 @@ func ExampleExpression_case023() {
 	// }
 }
 
-func ExampleExpression_case024() {
+func ExampleExpression_addAssign() {
 	fmt.Println(exampleAST(26, "1.97 += 1.98"))
 	// Output:
 	// &wl.Expression{
@@ -404,7 +404,7 @@ func ExampleExpression_case024() {
 	// }
 }
 
-func ExampleExpression_case025() {
+func ExampleExpression_postDec() {
 	fmt.Println(exampleAST(27, "1.97 --"))
 	// Output:
 	// &wl.Expression{
@@ -417,7 +417,7 @@ func ExampleExpression_case025() {
 	// }
 }
 
-func ExampleExpression_case026() {
+func ExampleExpression_subAssign() {
 	fmt.Println(exampleAST(28, "1.97 -= 1.98"))
 	// Output:
 	// &wl.Expression{
@@ -702,7 +702,7 @@ func ExampleExpression_case042() {
 	// }
 }
 
-func ExampleExpression_case043() {
+func ExampleExpression_le() {
 	fmt.Println(exampleAST(45, "1.97 <= 1.98"))
 	// Output:
 	// &wl.Expression{
@@ -753,7 +753,7 @@ func ExampleExpression_case045() {
 	// }
 }
 
-func ExampleExpression_case046() {
+func ExampleExpression_eq() {
 	fmt.Println(exampleAST(48, "1.97 == 1.98"))
 	// Output:
 	// &wl.Expression{
@@ -787,7 +787,7 @@ func ExampleExpression_case047() {
 	// }
 }
 
-func ExampleExpression_case048() {
+func ExampleExpression_ge() {
 	fmt.Println(exampleAST(50, "1.97 >= 1.98"))
 	// Output:
 	// &wl.Expression{
@@ -804,7 +804,7 @@ func ExampleExpression_case048() {
 	// }
 }
 
-func ExampleExpression_case049() {
+func ExampleExpression_rsh() {
 	fmt.Println(exampleAST(51, "1.97 >> b"))
 	// Output:
 	// &wl.Expression{
@@ -1879,7 +1879,7 @@ func ExampleExpression_case112() {
 	// }
 }
 
-func ExampleExpression_case113() {
+func ExampleExpression_lOr() {
 	fmt.Println(exampleAST(115, "1.97 || 1.98"))
 	// Output:
 	// &wl.Expression{
@@ -1913,7 +1913,7 @@ func ExampleExpression_case114() {
 	// }
 }
 
-func ExampleExpression_case115() {
+func ExampleExpression_factorial() {
 	fmt.Println(exampleAST(117, "1.97 !"))
 	// Output:
 	// &wl.Expression{
@@ -1953,7 +1953,7 @@ func ExampleExpression_case117() {
 	// }
 }
 
-func ExampleExpression_case118() {
+func ExampleExpression_mul() {
 	fmt.Println(exampleAST(120, "1.97 * 1.98"))
 	// Output:
 	// &wl.Expression{
@@ -1970,7 +1970,7 @@ func ExampleExpression_case118() {
 	// }
 }
 
-func ExampleExpression_case119() {
+func ExampleExpression_add() {
 	fmt.Println(exampleAST(121, "1.97 + 1.98"))
 	// Output:
 	// &wl.Expression{
@@ -1987,7 +1987,7 @@ func ExampleExpression_case119() {
 	// }
 }
 
-func ExampleExpression_case120() {
+func ExampleExpression_sub() {
 	fmt.Println(exampleAST(122, "1.97 - 1.98"))
 	// Output:
 	// &wl.Expression{
@@ -2021,7 +2021,7 @@ func ExampleExpression_case121() {
 	// }
 }
 
-func ExampleExpression_case122() {
+func ExampleExpression_div() {
 	fmt.Println(exampleAST(124, "1.97 / 1.98"))
 	// Output:
 	// &wl.Expression{
@@ -2068,7 +2068,7 @@ func ExampleExpression_case124() {
 	// }
 }
 
-func ExampleExpression_case125() {
+func ExampleExpression_compound() {
 	fmt.Println(exampleAST(127, "1.97 ; 1.98"))
 	// Output:
 	// &wl.Expression{
@@ -2085,7 +2085,7 @@ func ExampleExpression_case125() {
 	// }
 }
 
-func ExampleExpression_case126() {
+func ExampleExpression_lt() {
 	fmt.Println(exampleAST(128, "1.97 < 1.98"))
 	// Output:
 	// &wl.Expression{
@@ -2116,7 +2116,7 @@ func ExampleExpression_case127() {
 	// }
 }
 
-func ExampleExpression_case128() {
+func ExampleExpression_assign() {
 	fmt.Println(exampleAST(130, "1.97 = 1.98"))
 	// Output:
 	// &wl.Expression{
@@ -2133,7 +2133,7 @@ func ExampleExpression_case128() {
 	// }
 }
 
-func ExampleExpression_case129() {
+func ExampleExpression_gt() {
 	fmt.Println(exampleAST(131, "1.97 > 1.98"))
 	// Output:
 	// &wl.Expression{
@@ -2235,7 +2235,7 @@ func ExampleExpression_case134() {
 	// }
 }
 
-func ExampleExpression_case135() {
+func ExampleExpression_or() {
 	fmt.Println(exampleAST(137, "1.97 | 1.98"))
 	// Output:
 	// &wl.Expression{
@@ -2282,7 +2282,7 @@ func ExampleExpression_case137() {
 	// }
 }
 
-func ExampleExpression_case138() {
+func ExampleExpression_float() {
 	fmt.Println(exampleAST(140, "1.97"))
 	// Output:
 	// &wl.Expression{
@@ -2291,7 +2291,7 @@ func ExampleExpression_case138() {
 	// }
 }
 
-func ExampleExpression_case139() {
+func ExampleExpression_ident() {
 	fmt.Println(exampleAST(141, "a"))
 	// Output:
 	// &wl.Expression{
@@ -2330,7 +2330,7 @@ func ExampleExpression_case141() {
 	// }
 }
 
-func ExampleExpression_case142() {
+func ExampleExpression_integer() {
 	fmt.Println(exampleAST(144, "97"))
 	// Output:
 	// &wl.Expression{
@@ -2348,7 +2348,7 @@ func ExampleExpression_case143() {
 	// }
 }
 
-func ExampleExpression_case144() {
+func ExampleExpression_pattern() {
 	fmt.Println(exampleAST(146, "a_"))
 	// Output:
 	// &wl.Expression{
@@ -2357,7 +2357,7 @@ func ExampleExpression_case144() {
 	// }
 }
 
-func ExampleExpression_case145() {
+func ExampleExpression_slot() {
 	fmt.Println(exampleAST(147, "#97"))
 	// Output:
 	// &wl.Expression{
@@ -2366,7 +2366,7 @@ func ExampleExpression_case145() {
 	// }
 }
 
-func ExampleExpression_case146() {
+func ExampleExpression_string() {
 	fmt.Println(exampleAST(148, "\"a\""))
 	// Output:
 	// &wl.Expression{
@@ -2375,7 +2375,7 @@ func ExampleExpression_case146() {
 	// }
 }
 
-func ExampleFileName() {
+func ExampleFileName_ident() {
 	fmt.Println(exampleAST(153, "<< a"))
 	// Output:
 	// &wl.FileName{
@@ -2383,7 +2383,7 @@ func ExampleFileName() {
 	// }
 }
 
-func ExampleFileName_case1() {
+func ExampleFileName_string() {
 	fmt.Println(exampleAST(154, "<< \"a\""))
 	// Output:
 	// &wl.FileName{
@@ -2392,7 +2392,7 @@ func ExampleFileName_case1() {
 	// }
 }
 
-func ExampleTag() {
+func ExampleTag_ident() {
 	fmt.Println(exampleAST(155, "a :: b"))
 	// Output:
 	// &wl.Tag{
@@ -2400,7 +2400,7 @@ func ExampleTag() {
 	// }
 }
 
-func ExampleTag_case1() {
+func ExampleTag_string() {
 	fmt.Println(exampleAST(156, "a :: \"b\""))
 	// Output:
 	// &wl.Tag{
@@ -2409,7 +2409,7 @@ func ExampleTag_case1() {
 	// }
 }
 
-func Examplestart() {
+func Examplestart_case0() {
 	fmt.Println(exampleAST(1, "1.97"))
 	// Output:
 }
