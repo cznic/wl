@@ -11,13 +11,13 @@ import (
 )
 
 func ExampleCommaOpt_case0() {
-	fmt.Println(exampleAST(151, "{ 1.97 }") == (*CommaOpt)(nil))
+	fmt.Println(exampleAST(153, "{ 1.97 }") == (*CommaOpt)(nil))
 	// Output:
 	// false
 }
 
 func ExampleCommaOpt_case1() {
-	fmt.Println(exampleAST(152, "{ 1.97 , ]"))
+	fmt.Println(exampleAST(154, "{ 1.97 , ]"))
 	// Output:
 	// &wl.CommaOpt{
 	// · Token: ',',
@@ -25,30 +25,30 @@ func ExampleCommaOpt_case1() {
 }
 
 func ExampleExprList_case0() {
-	fmt.Println(exampleAST(149, "{ 1.97 ,"))
+	fmt.Println(exampleAST(151, "{ 1.97 ,"))
 	// Output:
 	// &wl.ExprList{
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// }
 }
 
 func ExampleExprList_case1() {
-	fmt.Println(exampleAST(150, "{ 1.97 , 1.98 ,"))
+	fmt.Println(exampleAST(152, "{ 1.97 , 1.98 ,"))
 	// Output:
 	// &wl.ExprList{
 	// · ExprList: &wl.ExprList{
 	// · · Case: 1,
 	// · · Expression: &wl.Expression{
-	// · · · Case: 138,
+	// · · · Case: 140,
 	// · · · Token: FLOAT, "1.98",
 	// · · },
 	// · · Token: ',',
 	// · },
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// }
@@ -59,7 +59,7 @@ func ExampleExpression_preInc() {
 	// Output:
 	// &wl.Expression{
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Token: INC, "++",
@@ -72,7 +72,7 @@ func ExampleExpression_preDec() {
 	// &wl.Expression{
 	// · Case: 1,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Token: DEC, "--",
@@ -94,7 +94,7 @@ func ExampleExpression_case003() {
 	// &wl.Expression{
 	// · Case: 3,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Token: SPAN, ";;",
@@ -119,7 +119,7 @@ func ExampleExpression_case005() {
 	// &wl.Expression{
 	// · Case: 5,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Token: SQRT2, "\\@",
@@ -132,11 +132,11 @@ func ExampleExpression_case006() {
 	// &wl.Expression{
 	// · Case: 6,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: SQRT2, "\\@",
@@ -150,7 +150,7 @@ func ExampleExpression_case007() {
 	// &wl.Expression{
 	// · Case: 7,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Token: DEL, "∇",
@@ -163,11 +163,11 @@ func ExampleExpression_case008() {
 	// &wl.Expression{
 	// · Case: 8,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: INTEGRATE, "∫",
@@ -181,7 +181,7 @@ func ExampleExpression_case009() {
 	// &wl.Expression{
 	// · Case: 9,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Token: MINUS_PLUS, "∓",
@@ -194,7 +194,7 @@ func ExampleExpression_case010() {
 	// &wl.Expression{
 	// · Case: 10,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Token: PLUS_MINUS, "±",
@@ -207,7 +207,7 @@ func ExampleExpression_case011() {
 	// &wl.Expression{
 	// · Case: 11,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Token: SQRT, "√",
@@ -220,7 +220,7 @@ func ExampleExpression_case012() {
 	// &wl.Expression{
 	// · Case: 12,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Token: SQUARE, "\uf520",
@@ -233,7 +233,7 @@ func ExampleExpression_case013() {
 	// &wl.Expression{
 	// · Case: 13,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Token: '!',
@@ -246,7 +246,7 @@ func ExampleExpression_parenExpr() {
 	// &wl.Expression{
 	// · Case: 14,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Token: '(',
@@ -260,7 +260,7 @@ func ExampleExpression_unaryPlus() {
 	// &wl.Expression{
 	// · Case: 15,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Token: '+',
@@ -273,7 +273,7 @@ func ExampleExpression_unaryMinus() {
 	// &wl.Expression{
 	// · Case: 16,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Token: '-',
@@ -297,7 +297,7 @@ func ExampleExpression_case018() {
 	// · Case: 18,
 	// · ExprList: &wl.ExprList{
 	// · · Expression: &wl.Expression{
-	// · · · Case: 138,
+	// · · · Case: 140,
 	// · · · Token: FLOAT, "1.97",
 	// · · },
 	// · },
@@ -312,11 +312,11 @@ func ExampleExpression_ne() {
 	// &wl.Expression{
 	// · Case: 19,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: UNEQUAL, "!=",
@@ -329,11 +329,11 @@ func ExampleExpression_lAnd() {
 	// &wl.Expression{
 	// · Case: 20,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: AND, "&&",
@@ -346,11 +346,11 @@ func ExampleExpression_case021() {
 	// &wl.Expression{
 	// · Case: 21,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: NON_COMMUTATIVE_MULTIPLY, "**",
@@ -363,11 +363,11 @@ func ExampleExpression_mulAssign() {
 	// &wl.Expression{
 	// · Case: 22,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: TIMES_BY, "*=",
@@ -380,7 +380,7 @@ func ExampleExpression_postInc() {
 	// &wl.Expression{
 	// · Case: 23,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Token: INC, "++",
@@ -393,11 +393,11 @@ func ExampleExpression_addAssign() {
 	// &wl.Expression{
 	// · Case: 24,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: ADD_TO, "+=",
@@ -410,7 +410,7 @@ func ExampleExpression_postDec() {
 	// &wl.Expression{
 	// · Case: 25,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Token: DEC, "--",
@@ -423,11 +423,11 @@ func ExampleExpression_subAssign() {
 	// &wl.Expression{
 	// · Case: 26,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: SUBTRACT_FROM, "-=",
@@ -440,11 +440,11 @@ func ExampleExpression_case027() {
 	// &wl.Expression{
 	// · Case: 27,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: RULE, "->",
@@ -457,7 +457,7 @@ func ExampleExpression_case028() {
 	// &wl.Expression{
 	// · Case: 28,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Token: REPEATED, "..",
@@ -470,7 +470,7 @@ func ExampleExpression_case029() {
 	// &wl.Expression{
 	// · Case: 29,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Token: REPEATED_NULL, "...",
@@ -483,11 +483,11 @@ func ExampleExpression_case030() {
 	// &wl.Expression{
 	// · Case: 30,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: RIGHT_COMPOSITION, "/*",
@@ -500,11 +500,11 @@ func ExampleExpression_case031() {
 	// &wl.Expression{
 	// · Case: 31,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: REPLACEALL, "/.",
@@ -517,11 +517,11 @@ func ExampleExpression_case032() {
 	// &wl.Expression{
 	// · Case: 32,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: POSTFIX, "//",
@@ -534,11 +534,11 @@ func ExampleExpression_case033() {
 	// &wl.Expression{
 	// · Case: 33,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: REPLACEREP, "//.",
@@ -551,11 +551,11 @@ func ExampleExpression_case034() {
 	// &wl.Expression{
 	// · Case: 34,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: MAP_ALL, "//@",
@@ -568,17 +568,17 @@ func ExampleExpression_case035() {
 	// &wl.Expression{
 	// · Case: 35,
 	// · Expression: &wl.Expression{
-	// · · Case: 139,
+	// · · Case: 141,
 	// · · Token: IDENT, "a",
 	// · },
 	// · Expression2: &wl.Expression{
 	// · · Case: 128,
 	// · · Expression: &wl.Expression{
-	// · · · Case: 139,
+	// · · · Case: 141,
 	// · · · Token: IDENT, "b",
 	// · · },
 	// · · Expression2: &wl.Expression{
-	// · · · Case: 139,
+	// · · · Case: 141,
 	// · · · Token: IDENT, "c",
 	// · · },
 	// · · Token: '=',
@@ -593,11 +593,11 @@ func ExampleExpression_case036() {
 	// &wl.Expression{
 	// · Case: 36,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: CONDITION, "/;",
@@ -610,11 +610,11 @@ func ExampleExpression_case037() {
 	// &wl.Expression{
 	// · Case: 37,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: DIVIDE_BY, "/=",
@@ -627,11 +627,11 @@ func ExampleExpression_case038() {
 	// &wl.Expression{
 	// · Case: 38,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: MAP, "/@",
@@ -644,11 +644,11 @@ func ExampleExpression_case039() {
 	// &wl.Expression{
 	// · Case: 39,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: SET_DELAYED, ":=",
@@ -661,11 +661,11 @@ func ExampleExpression_case040() {
 	// &wl.Expression{
 	// · Case: 40,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: RULEDELAYED, ":>",
@@ -678,7 +678,7 @@ func ExampleExpression_case041() {
 	// &wl.Expression{
 	// · Case: 41,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Token: SPAN, ";;",
@@ -691,11 +691,11 @@ func ExampleExpression_case042() {
 	// &wl.Expression{
 	// · Case: 42,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: SPAN, ";;",
@@ -708,11 +708,11 @@ func ExampleExpression_le() {
 	// &wl.Expression{
 	// · Case: 43,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: LEQ, "<=",
@@ -725,11 +725,11 @@ func ExampleExpression_case044() {
 	// &wl.Expression{
 	// · Case: 44,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: STRINGJOIN, "<>",
@@ -742,11 +742,11 @@ func ExampleExpression_case045() {
 	// &wl.Expression{
 	// · Case: 45,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: UNSAME, "=!=",
@@ -759,11 +759,11 @@ func ExampleExpression_eq() {
 	// &wl.Expression{
 	// · Case: 46,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: EQUAL, "==",
@@ -776,11 +776,11 @@ func ExampleExpression_case047() {
 	// &wl.Expression{
 	// · Case: 47,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: SAME, "===",
@@ -793,11 +793,11 @@ func ExampleExpression_ge() {
 	// &wl.Expression{
 	// · Case: 48,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: GEQ, ">=",
@@ -810,7 +810,7 @@ func ExampleExpression_rsh() {
 	// &wl.Expression{
 	// · Case: 49,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · FileName: &wl.FileName{
@@ -826,7 +826,7 @@ func ExampleExpression_case050() {
 	// &wl.Expression{
 	// · Case: 50,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · FileName: &wl.FileName{
@@ -842,11 +842,11 @@ func ExampleExpression_case051() {
 	// &wl.Expression{
 	// · Case: 51,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: COMPOSITION, "@*",
@@ -859,11 +859,11 @@ func ExampleExpression_case052() {
 	// &wl.Expression{
 	// · Case: 52,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: APPLY, "@@",
@@ -876,11 +876,11 @@ func ExampleExpression_case053() {
 	// &wl.Expression{
 	// · Case: 53,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: APPLY_ALL, "@@@",
@@ -894,12 +894,12 @@ func ExampleExpression_case054() {
 	// · Case: 54,
 	// · ExprList: &wl.ExprList{
 	// · · Expression: &wl.Expression{
-	// · · · Case: 138,
+	// · · · Case: 140,
 	// · · · Token: FLOAT, "1.98",
 	// · · },
 	// · },
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Token: LPART, "[[",
@@ -913,11 +913,11 @@ func ExampleExpression_case055() {
 	// &wl.Expression{
 	// · Case: 55,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: OVERSCRIPT, "\\&",
@@ -930,11 +930,11 @@ func ExampleExpression_case056() {
 	// &wl.Expression{
 	// · Case: 56,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: UNDERSCRIPT, "\\+",
@@ -947,11 +947,11 @@ func ExampleExpression_case057() {
 	// &wl.Expression{
 	// · Case: 57,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: BACKSLASH, "∖",
@@ -964,11 +964,11 @@ func ExampleExpression_case058() {
 	// &wl.Expression{
 	// · Case: 58,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: BECAUSE, "∵",
@@ -981,11 +981,11 @@ func ExampleExpression_case059() {
 	// &wl.Expression{
 	// · Case: 59,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: CAP, "⌢",
@@ -998,11 +998,11 @@ func ExampleExpression_case060() {
 	// &wl.Expression{
 	// · Case: 60,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: CENTER_DOT, "·",
@@ -1015,11 +1015,11 @@ func ExampleExpression_case061() {
 	// &wl.Expression{
 	// · Case: 61,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: CIRCLE_DOT, "⊙",
@@ -1032,11 +1032,11 @@ func ExampleExpression_case062() {
 	// &wl.Expression{
 	// · Case: 62,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: CIRCLE_MINUS, "⊖",
@@ -1049,11 +1049,11 @@ func ExampleExpression_case063() {
 	// &wl.Expression{
 	// · Case: 63,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: CIRCLE_PLUS, "⊕",
@@ -1066,11 +1066,11 @@ func ExampleExpression_case064() {
 	// &wl.Expression{
 	// · Case: 64,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: CIRCLE_TIMES, "⊗",
@@ -1083,7 +1083,7 @@ func ExampleExpression_case065() {
 	// &wl.Expression{
 	// · Case: 65,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Token: CONJUGATE_TRANSPOSE, "\uf3c9",
@@ -1096,7 +1096,7 @@ func ExampleExpression_case066() {
 	// &wl.Expression{
 	// · Case: 66,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Token: CONJUGATE, "\uf3c8",
@@ -1109,11 +1109,11 @@ func ExampleExpression_case067() {
 	// &wl.Expression{
 	// · Case: 67,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: COPRODUCT, "∐",
@@ -1126,11 +1126,11 @@ func ExampleExpression_case068() {
 	// &wl.Expression{
 	// · Case: 68,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: CROSS, "\uf4a0",
@@ -1143,11 +1143,11 @@ func ExampleExpression_case069() {
 	// &wl.Expression{
 	// · Case: 69,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: CUP, "⌣",
@@ -1160,11 +1160,11 @@ func ExampleExpression_case070() {
 	// &wl.Expression{
 	// · Case: 70,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: DIAMOND, "⋄",
@@ -1177,11 +1177,11 @@ func ExampleExpression_case071() {
 	// &wl.Expression{
 	// · Case: 71,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: DIFFERENCE_DELTA, "∆",
@@ -1194,11 +1194,11 @@ func ExampleExpression_case072() {
 	// &wl.Expression{
 	// · Case: 72,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: DISCRETE_RATIO, "\uf4a4",
@@ -1211,11 +1211,11 @@ func ExampleExpression_case073() {
 	// &wl.Expression{
 	// · Case: 73,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: DISCRETE_SHIFT, "\uf4a3",
@@ -1228,11 +1228,11 @@ func ExampleExpression_case074() {
 	// &wl.Expression{
 	// · Case: 74,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: DOUBLE_LEFT_TEE, "⫤",
@@ -1245,11 +1245,11 @@ func ExampleExpression_case075() {
 	// &wl.Expression{
 	// · Case: 75,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: DOUBLE_RIGHT_TEE, "⊨",
@@ -1262,11 +1262,11 @@ func ExampleExpression_case076() {
 	// &wl.Expression{
 	// · Case: 76,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: DOUBLE_VERTICAL_BAR, "∥",
@@ -1279,11 +1279,11 @@ func ExampleExpression_case077() {
 	// &wl.Expression{
 	// · Case: 77,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: DOWN_TEE, "⊤",
@@ -1296,11 +1296,11 @@ func ExampleExpression_case078() {
 	// &wl.Expression{
 	// · Case: 78,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: ELEMENT, "∈",
@@ -1313,11 +1313,11 @@ func ExampleExpression_case079() {
 	// &wl.Expression{
 	// · Case: 79,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: EQUIVALENT, "⧦",
@@ -1330,11 +1330,11 @@ func ExampleExpression_case080() {
 	// &wl.Expression{
 	// · Case: 80,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: FUNCTION, "\uf4a1",
@@ -1347,7 +1347,7 @@ func ExampleExpression_case081() {
 	// &wl.Expression{
 	// · Case: 81,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Token: HERMITIAN_CONJUGATE, "\uf3ce",
@@ -1360,11 +1360,11 @@ func ExampleExpression_case082() {
 	// &wl.Expression{
 	// · Case: 82,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: IMPLIES, "\uf523",
@@ -1377,11 +1377,11 @@ func ExampleExpression_case083() {
 	// &wl.Expression{
 	// · Case: 83,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: INTERSECTION, "⋂",
@@ -1394,11 +1394,11 @@ func ExampleExpression_case084() {
 	// &wl.Expression{
 	// · Case: 84,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: LEFT_TEE, "⊣",
@@ -1411,11 +1411,11 @@ func ExampleExpression_case085() {
 	// &wl.Expression{
 	// · Case: 85,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: NAND, "⊼",
@@ -1428,11 +1428,11 @@ func ExampleExpression_case086() {
 	// &wl.Expression{
 	// · Case: 86,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: NOR, "⊽",
@@ -1445,11 +1445,11 @@ func ExampleExpression_case087() {
 	// &wl.Expression{
 	// · Case: 87,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: NOT_DOUBLE_VERTICAL_BAR, "∦",
@@ -1462,11 +1462,11 @@ func ExampleExpression_case088() {
 	// &wl.Expression{
 	// · Case: 88,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: NOT_ELEMENT, "∉",
@@ -1479,11 +1479,11 @@ func ExampleExpression_case089() {
 	// &wl.Expression{
 	// · Case: 89,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: NOT_VERTICAL_BAR, "\uf3d1",
@@ -1496,11 +1496,11 @@ func ExampleExpression_case090() {
 	// &wl.Expression{
 	// · Case: 90,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: PARTIAL_D, "∂",
@@ -1513,11 +1513,11 @@ func ExampleExpression_case091() {
 	// &wl.Expression{
 	// · Case: 91,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: RIGHT_TEE, "⊢",
@@ -1530,11 +1530,11 @@ func ExampleExpression_case092() {
 	// &wl.Expression{
 	// · Case: 92,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: SMALL_CIRCLE, "∘",
@@ -1547,11 +1547,11 @@ func ExampleExpression_case093() {
 	// &wl.Expression{
 	// · Case: 93,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: STAR, "⋆",
@@ -1564,11 +1564,11 @@ func ExampleExpression_case094() {
 	// &wl.Expression{
 	// · Case: 94,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: SUBSET, "⊂",
@@ -1581,11 +1581,11 @@ func ExampleExpression_case095() {
 	// &wl.Expression{
 	// · Case: 95,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: SUCH_THAT, "∍",
@@ -1598,11 +1598,11 @@ func ExampleExpression_case096() {
 	// &wl.Expression{
 	// · Case: 96,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: SUPERSET, "⊃",
@@ -1615,11 +1615,11 @@ func ExampleExpression_case097() {
 	// &wl.Expression{
 	// · Case: 97,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: THEREFORE, "∴",
@@ -1632,7 +1632,7 @@ func ExampleExpression_case098() {
 	// &wl.Expression{
 	// · Case: 98,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Token: TRANSPOSE, "\uf3c7",
@@ -1645,11 +1645,11 @@ func ExampleExpression_case099() {
 	// &wl.Expression{
 	// · Case: 99,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: UNION, "⋃",
@@ -1662,11 +1662,11 @@ func ExampleExpression_case100() {
 	// &wl.Expression{
 	// · Case: 100,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: UP_TEE, "⊥",
@@ -1679,11 +1679,11 @@ func ExampleExpression_case101() {
 	// &wl.Expression{
 	// · Case: 101,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: VEE, "⋁",
@@ -1696,11 +1696,11 @@ func ExampleExpression_case102() {
 	// &wl.Expression{
 	// · Case: 102,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: VERTICAL_BAR, "\uf3d0",
@@ -1713,11 +1713,11 @@ func ExampleExpression_case103() {
 	// &wl.Expression{
 	// · Case: 103,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: VERTICAL_SEPARATOR, "\uf432",
@@ -1730,11 +1730,11 @@ func ExampleExpression_case104() {
 	// &wl.Expression{
 	// · Case: 104,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: VERTICAL_TILDE, "≀",
@@ -1747,11 +1747,11 @@ func ExampleExpression_case105() {
 	// &wl.Expression{
 	// · Case: 105,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: WEDGE, "⋀",
@@ -1764,11 +1764,11 @@ func ExampleExpression_case106() {
 	// &wl.Expression{
 	// · Case: 106,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: XNOR, "\uf4a2",
@@ -1781,11 +1781,11 @@ func ExampleExpression_case107() {
 	// &wl.Expression{
 	// · Case: 107,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: XOR, "⊻",
@@ -1798,15 +1798,15 @@ func ExampleExpression_case108() {
 	// &wl.Expression{
 	// · Case: 108,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Expression3: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.99",
 	// · },
 	// · Token: POWER_SUBSCRIPT1, "\\^",
@@ -1820,11 +1820,11 @@ func ExampleExpression_case109() {
 	// &wl.Expression{
 	// · Case: 109,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: SUBSCRIPT, "\\_",
@@ -1837,7 +1837,7 @@ func ExampleExpression_case110() {
 	// &wl.Expression{
 	// · Case: 110,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Token: FORM_BOX, "\\`",
@@ -1851,11 +1851,11 @@ func ExampleExpression_case111() {
 	// &wl.Expression{
 	// · Case: 111,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: UP_SET_DELAYED, "^:=",
@@ -1868,11 +1868,11 @@ func ExampleExpression_case112() {
 	// &wl.Expression{
 	// · Case: 112,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: UP_SET, "^=",
@@ -1885,11 +1885,11 @@ func ExampleExpression_lOr() {
 	// &wl.Expression{
 	// · Case: 113,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: OR, "||",
@@ -1902,11 +1902,11 @@ func ExampleExpression_case114() {
 	// &wl.Expression{
 	// · Case: 114,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: STRING_EXPRESSION, "~~",
@@ -1919,7 +1919,7 @@ func ExampleExpression_factorial() {
 	// &wl.Expression{
 	// · Case: 115,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Token: '!',
@@ -1932,7 +1932,7 @@ func ExampleExpression_case116() {
 	// &wl.Expression{
 	// · Case: 116,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Token: '!',
@@ -1946,7 +1946,7 @@ func ExampleExpression_case117() {
 	// &wl.Expression{
 	// · Case: 117,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Token: '&',
@@ -1959,11 +1959,11 @@ func ExampleExpression_mul() {
 	// &wl.Expression{
 	// · Case: 118,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: '*',
@@ -1976,11 +1976,11 @@ func ExampleExpression_add() {
 	// &wl.Expression{
 	// · Case: 119,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: '+',
@@ -1993,11 +1993,11 @@ func ExampleExpression_sub() {
 	// &wl.Expression{
 	// · Case: 120,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: '-',
@@ -2010,11 +2010,11 @@ func ExampleExpression_case121() {
 	// &wl.Expression{
 	// · Case: 121,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: '.',
@@ -2027,11 +2027,11 @@ func ExampleExpression_div() {
 	// &wl.Expression{
 	// · Case: 122,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: '/',
@@ -2044,11 +2044,11 @@ func ExampleExpression_case123() {
 	// &wl.Expression{
 	// · Case: 123,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: ':',
@@ -2061,7 +2061,7 @@ func ExampleExpression_case124() {
 	// &wl.Expression{
 	// · Case: 124,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Token: ';',
@@ -2074,11 +2074,11 @@ func ExampleExpression_compound() {
 	// &wl.Expression{
 	// · Case: 125,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: ';',
@@ -2091,11 +2091,11 @@ func ExampleExpression_lt() {
 	// &wl.Expression{
 	// · Case: 126,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: '<',
@@ -2108,7 +2108,7 @@ func ExampleExpression_case127() {
 	// &wl.Expression{
 	// · Case: 127,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Token: '=',
@@ -2122,11 +2122,11 @@ func ExampleExpression_assign() {
 	// &wl.Expression{
 	// · Case: 128,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: '=',
@@ -2139,28 +2139,28 @@ func ExampleExpression_gt() {
 	// &wl.Expression{
 	// · Case: 129,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: '>',
 	// }
 }
 
-func ExampleExpression_case130() {
+func ExampleExpression_patternTest() {
 	fmt.Println(exampleAST(132, "1.97 ? 1.98"))
 	// Output:
 	// &wl.Expression{
 	// · Case: 130,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: '?',
@@ -2173,11 +2173,11 @@ func ExampleExpression_case131() {
 	// &wl.Expression{
 	// · Case: 131,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: '@',
@@ -2190,7 +2190,7 @@ func ExampleExpression_case132() {
 	// &wl.Expression{
 	// · Case: 132,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Token: '[',
@@ -2205,12 +2205,12 @@ func ExampleExpression_case133() {
 	// · Case: 133,
 	// · ExprList: &wl.ExprList{
 	// · · Expression: &wl.Expression{
-	// · · · Case: 138,
+	// · · · Case: 140,
 	// · · · Token: FLOAT, "1.98",
 	// · · },
 	// · },
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Token: '[',
@@ -2224,11 +2224,11 @@ func ExampleExpression_case134() {
 	// &wl.Expression{
 	// · Case: 134,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: '^',
@@ -2241,11 +2241,11 @@ func ExampleExpression_or() {
 	// &wl.Expression{
 	// · Case: 135,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: '|',
@@ -2258,11 +2258,11 @@ func ExampleExpression_case136() {
 	// &wl.Expression{
 	// · Case: 136,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Expression2: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.98",
 	// · },
 	// · Token: '~',
@@ -2275,36 +2275,61 @@ func ExampleExpression_case137() {
 	// &wl.Expression{
 	// · Case: 137,
 	// · Expression: &wl.Expression{
-	// · · Case: 138,
+	// · · Case: 140,
 	// · · Token: FLOAT, "1.97",
 	// · },
 	// · Token: QUOTE, "'",
 	// }
 }
 
-func ExampleExpression_float() {
-	fmt.Println(exampleAST(140, "1.97"))
+func ExampleExpression_infoShort() {
+	fmt.Println(exampleAST(140, "? a"))
 	// Output:
 	// &wl.Expression{
 	// · Case: 138,
+	// · Tag: &wl.Tag{
+	// · · Token: IDENT, "a",
+	// · },
+	// · Token: '?',
+	// }
+}
+
+func ExampleExpression_info() {
+	fmt.Println(exampleAST(141, "? ? a"))
+	// Output:
+	// &wl.Expression{
+	// · Case: 139,
+	// · Tag: &wl.Tag{
+	// · · Token: IDENT, "a",
+	// · },
+	// · Token: '?',
+	// · Token2: '?',
+	// }
+}
+
+func ExampleExpression_float() {
+	fmt.Println(exampleAST(142, "1.97"))
+	// Output:
+	// &wl.Expression{
+	// · Case: 140,
 	// · Token: FLOAT, "1.97",
 	// }
 }
 
 func ExampleExpression_ident() {
-	fmt.Println(exampleAST(141, "a"))
+	fmt.Println(exampleAST(143, "a"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 139,
+	// · Case: 141,
 	// · Token: IDENT, "a",
 	// }
 }
 
-func ExampleExpression_case140() {
-	fmt.Println(exampleAST(142, "a :: b"))
+func ExampleExpression_messageName() {
+	fmt.Println(exampleAST(144, "a :: b"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 140,
+	// · Case: 142,
 	// · Tag: &wl.Tag{
 	// · · Token: IDENT, "b",
 	// · },
@@ -2313,11 +2338,11 @@ func ExampleExpression_case140() {
 	// }
 }
 
-func ExampleExpression_case141() {
-	fmt.Println(exampleAST(143, "a :: b :: c"))
+func ExampleExpression_messageName2() {
+	fmt.Println(exampleAST(145, "a :: b :: c"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 141,
+	// · Case: 143,
 	// · Tag: &wl.Tag{
 	// · · Token: IDENT, "b",
 	// · },
@@ -2331,52 +2356,52 @@ func ExampleExpression_case141() {
 }
 
 func ExampleExpression_integer() {
-	fmt.Println(exampleAST(144, "97"))
+	fmt.Println(exampleAST(146, "97"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 142,
+	// · Case: 144,
 	// · Token: INT, "97",
 	// }
 }
 
-func ExampleExpression_case143() {
-	fmt.Println(exampleAST(145, "%97"))
+func ExampleExpression_case145() {
+	fmt.Println(exampleAST(147, "%97"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 143,
+	// · Case: 145,
 	// · Token: OUT, "%97",
 	// }
 }
 
 func ExampleExpression_pattern() {
-	fmt.Println(exampleAST(146, "a_"))
+	fmt.Println(exampleAST(148, "a_"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 144,
+	// · Case: 146,
 	// · Token: PATTERN, "a_",
 	// }
 }
 
 func ExampleExpression_slot() {
-	fmt.Println(exampleAST(147, "#97"))
+	fmt.Println(exampleAST(149, "#97"))
 	// Output:
 	// &wl.Expression{
-	// · Case: 145,
+	// · Case: 147,
 	// · Token: SLOT, "#97",
 	// }
 }
 
 func ExampleExpression_string() {
-	fmt.Println(exampleAST(148, "\"a\""))
+	fmt.Println(exampleAST(150, "\"a\""))
 	// Output:
 	// &wl.Expression{
-	// · Case: 146,
+	// · Case: 148,
 	// · Token: STRING, "a",
 	// }
 }
 
 func ExampleFileName_ident() {
-	fmt.Println(exampleAST(153, "<< a"))
+	fmt.Println(exampleAST(155, "<< a"))
 	// Output:
 	// &wl.FileName{
 	// · Token: IDENT, "a",
@@ -2384,7 +2409,7 @@ func ExampleFileName_ident() {
 }
 
 func ExampleFileName_string() {
-	fmt.Println(exampleAST(154, "<< \"a\""))
+	fmt.Println(exampleAST(156, "<< \"a\""))
 	// Output:
 	// &wl.FileName{
 	// · Case: 1,
@@ -2393,19 +2418,19 @@ func ExampleFileName_string() {
 }
 
 func ExampleTag_ident() {
-	fmt.Println(exampleAST(155, "a :: b"))
+	fmt.Println(exampleAST(157, "? a"))
 	// Output:
 	// &wl.Tag{
-	// · Token: IDENT, "b",
+	// · Token: IDENT, "a",
 	// }
 }
 
 func ExampleTag_string() {
-	fmt.Println(exampleAST(156, "a :: \"b\""))
+	fmt.Println(exampleAST(158, "? \"a\""))
 	// Output:
 	// &wl.Tag{
 	// · Case: 1,
-	// · Token: STRING, "b",
+	// · Token: STRING, "a",
 	// }
 }
 

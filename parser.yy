@@ -217,6 +217,8 @@ package wl
 %nonassoc	INC DEC					// Increment, Decrement
 %left		'[' ']' LPART RPART			// expr, Part
 %left		'?'					// PatternTest
+%precedence	INFOSHORT
+%precedence	INFO
 %right		SUBSCRIPT
 %right		OVERSCRIPT UNDERSCRIPT
 %nonassoc	GET
@@ -370,7 +372,7 @@ start:
 			|	Expression '=' '.'
 /*yy:case Assign */	|	Expression '=' Expression
 /*yy:case Gt */		|	Expression '>' Expression
-			|	Expression '?' Expression
+/*yy:case PatternTest */			|	Expression '?' Expression
 			|	Expression '@' Expression
 			|	Expression '[' ']'
 			|	Expression '[' ExprList CommaOpt ']'
@@ -378,10 +380,12 @@ start:
 /*yy:case Or */		|	Expression '|' Expression
 			|	Expression '~' Expression
 			|	Expression QUOTE
+/*yy:case InfoShort */	|	'?' Tag %prec INFOSHORT
+/*yy:case Info */	|	'?' '?' Tag %prec INFO
 /*yy:case Float */	|	FLOAT
 /*yy:case Ident */	|	IDENT
-			|	IDENT "::" Tag
-			|	IDENT "::" Tag "::" Tag
+/*yy:case MessageName */	|	IDENT "::" Tag
+/*yy:case MessageName2 */	|   IDENT "::" Tag "::" Tag
 /*yy:case Integer */	|	INT
 			|	OUT
 /*yy:case Pattern */	|	PATTERN
