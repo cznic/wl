@@ -41,6 +41,12 @@ var (
 			}
 			f.Format(suffix)
 		},
+		reflect.TypeOf(ExpressionCase(0)): func(f strutil.Formatter, v interface{}, prefix string, suffix string) {
+			t := v.(ExpressionCase)
+			f.Format(prefix)
+			f.Format("%s", t)
+			f.Format(suffix)
+		},
 	}
 )
 

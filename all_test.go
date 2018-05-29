@@ -242,13 +242,13 @@ func TestIssue4(t *testing.T) {
 			[]string{"x*y", "x y"},
 			`
 &wl.Expression{
-· Case: 118,
+· Case: ExpressionMul,
 · Expression: &wl.Expression{
-· · Case: 139,
+· · Case: ExpressionIdent,
 · · Token: IDENT, "x",
 · },
 · Expression2: &wl.Expression{
-· · Case: 139,
+· · Case: ExpressionIdent,
 · · Token: IDENT, "y",
 · },
 · Token: '*',
@@ -259,21 +259,21 @@ func TestIssue4(t *testing.T) {
 			[]string{"x*y*z", "x y z"},
 			`
 &wl.Expression{
-· Case: 118,
+· Case: ExpressionMul,
 · Expression: &wl.Expression{
-· · Case: 118,
+· · Case: ExpressionMul,
 · · Expression: &wl.Expression{
-· · · Case: 139,
+· · · Case: ExpressionIdent,
 · · · Token: IDENT, "x",
 · · },
 · · Expression2: &wl.Expression{
-· · · Case: 139,
+· · · Case: ExpressionIdent,
 · · · Token: IDENT, "y",
 · · },
 · · Token: '*',
 · },
 · Expression2: &wl.Expression{
-· · Case: 139,
+· · Case: ExpressionIdent,
 · · Token: IDENT, "z",
 · },
 · Token: '*',
@@ -284,13 +284,13 @@ func TestIssue4(t *testing.T) {
 			[]string{"2*x", "2x"},
 			`
 &wl.Expression{
-· Case: 118,
+· Case: ExpressionMul,
 · Expression: &wl.Expression{
-· · Case: 142,
+· · Case: ExpressionInteger,
 · · Token: INT, "2",
 · },
 · Expression2: &wl.Expression{
-· · Case: 139,
+· · Case: ExpressionIdent,
 · · Token: IDENT, "x",
 · },
 · Token: '*',
@@ -301,15 +301,15 @@ func TestIssue4(t *testing.T) {
 			[]string{"2*(x)", "2(x)"},
 			`
 &wl.Expression{
-· Case: 118,
+· Case: ExpressionMul,
 · Expression: &wl.Expression{
-· · Case: 142,
+· · Case: ExpressionInteger,
 · · Token: INT, "2",
 · },
 · Expression2: &wl.Expression{
-· · Case: 14,
+· · Case: ExpressionParenExpr,
 · · Expression: &wl.Expression{
-· · · Case: 139,
+· · · Case: ExpressionIdent,
 · · · Token: IDENT, "x",
 · · },
 · · Token: '(',
@@ -323,20 +323,20 @@ func TestIssue4(t *testing.T) {
 			[]string{"(x)*(y)", "(x)(y)"},
 			`
 &wl.Expression{
-· Case: 118,
+· Case: ExpressionMul,
 · Expression: &wl.Expression{
-· · Case: 14,
+· · Case: ExpressionParenExpr,
 · · Expression: &wl.Expression{
-· · · Case: 139,
+· · · Case: ExpressionIdent,
 · · · Token: IDENT, "x",
 · · },
 · · Token: '(',
 · · Token2: ')',
 · },
 · Expression2: &wl.Expression{
-· · Case: 14,
+· · Case: ExpressionParenExpr,
 · · Expression: &wl.Expression{
-· · · Case: 139,
+· · · Case: ExpressionIdent,
 · · · Token: IDENT, "y",
 · · },
 · · Token: '(',
@@ -350,17 +350,17 @@ func TestIssue4(t *testing.T) {
 			[]string{"x!*y", "x!y"},
 			`
 &wl.Expression{
-· Case: 118,
+· Case: ExpressionMul,
 · Expression: &wl.Expression{
-· · Case: 115,
+· · Case: ExpressionFactorial,
 · · Expression: &wl.Expression{
-· · · Case: 139,
+· · · Case: ExpressionIdent,
 · · · Token: IDENT, "x",
 · · },
 · · Token: '!',
 · },
 · Expression2: &wl.Expression{
-· · Case: 139,
+· · Case: ExpressionIdent,
 · · Token: IDENT, "y",
 · },
 · Token: '*',
@@ -371,21 +371,21 @@ func TestIssue4(t *testing.T) {
 			[]string{"x^2*y", "x^2y"},
 			`
 &wl.Expression{
-· Case: 118,
+· Case: ExpressionMul,
 · Expression: &wl.Expression{
-· · Case: 134,
+· · Case: ExpressionCase(134),
 · · Expression: &wl.Expression{
-· · · Case: 139,
+· · · Case: ExpressionIdent,
 · · · Token: IDENT, "x",
 · · },
 · · Expression2: &wl.Expression{
-· · · Case: 142,
+· · · Case: ExpressionInteger,
 · · · Token: INT, "2",
 · · },
 · · Token: '^',
 · },
 · Expression2: &wl.Expression{
-· · Case: 139,
+· · Case: ExpressionIdent,
 · · Token: IDENT, "y",
 · },
 · Token: '*',
@@ -396,21 +396,21 @@ func TestIssue4(t *testing.T) {
 			[]string{"x/2*y", "x/2y"},
 			`
 &wl.Expression{
-· Case: 118,
+· Case: ExpressionMul,
 · Expression: &wl.Expression{
-· · Case: 122,
+· · Case: ExpressionDiv,
 · · Expression: &wl.Expression{
-· · · Case: 139,
+· · · Case: ExpressionIdent,
 · · · Token: IDENT, "x",
 · · },
 · · Expression2: &wl.Expression{
-· · · Case: 142,
+· · · Case: ExpressionInteger,
 · · · Token: INT, "2",
 · · },
 · · Token: '/',
 · },
 · Expression2: &wl.Expression{
-· · Case: 139,
+· · Case: ExpressionIdent,
 · · Token: IDENT, "y",
 · },
 · Token: '*',
@@ -421,19 +421,19 @@ func TestIssue4(t *testing.T) {
 			[]string{"4*a^2", "4a^2"},
 			`
 &wl.Expression{
-· Case: 118,
+· Case: ExpressionMul,
 · Expression: &wl.Expression{
-· · Case: 142,
+· · Case: ExpressionInteger,
 · · Token: INT, "4",
 · },
 · Expression2: &wl.Expression{
-· · Case: 134,
+· · Case: ExpressionCase(134),
 · · Expression: &wl.Expression{
-· · · Case: 139,
+· · · Case: ExpressionIdent,
 · · · Token: IDENT, "a",
 · · },
 · · Expression2: &wl.Expression{
-· · · Case: 142,
+· · · Case: ExpressionInteger,
 · · · Token: INT, "2",
 · · },
 · · Token: '^',
