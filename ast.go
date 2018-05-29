@@ -223,7 +223,7 @@ const (
 	_
 	ExpressionAssign
 	ExpressionGt
-	_
+	ExpressionPatternTest
 	_
 	_
 	_
@@ -231,10 +231,12 @@ const (
 	ExpressionOr
 	_
 	_
+	ExpressionInfoShort
+	ExpressionInfo
 	ExpressionFloat
 	ExpressionIdent
-	_
-	_
+	ExpressionMessageName
+	ExpressionMessageName2
 	ExpressionInteger
 	_
 	ExpressionPattern
@@ -297,12 +299,22 @@ func (n ExpressionCase) String() string {
 		return "ExpressionAssign"
 	case ExpressionGt:
 		return "ExpressionGt"
+	case ExpressionPatternTest:
+		return "ExpressionPatternTest"
 	case ExpressionOr:
 		return "ExpressionOr"
+	case ExpressionInfoShort:
+		return "ExpressionInfoShort"
+	case ExpressionInfo:
+		return "ExpressionInfo"
 	case ExpressionFloat:
 		return "ExpressionFloat"
 	case ExpressionIdent:
 		return "ExpressionIdent"
+	case ExpressionMessageName:
+		return "ExpressionMessageName"
+	case ExpressionMessageName2:
+		return "ExpressionMessageName2"
 	case ExpressionInteger:
 		return "ExpressionInteger"
 	case ExpressionPattern:
@@ -449,7 +461,7 @@ func (n ExpressionCase) String() string {
 //	|       Expression '=' '.'                                         // Case 127
 //	|       Expression '=' Expression                                  // Case ExpressionAssign
 //	|       Expression '>' Expression                                  // Case ExpressionGt
-//	|       Expression '?' Expression                                  // Case 130
+//	|       Expression '?' Expression                                  // Case ExpressionPatternTest
 //	|       Expression '@' Expression                                  // Case 131
 //	|       Expression '[' ']'                                         // Case 132
 //	|       Expression '[' ExprList CommaOpt ']'                       // Case 133
@@ -457,12 +469,14 @@ func (n ExpressionCase) String() string {
 //	|       Expression '|' Expression                                  // Case ExpressionOr
 //	|       Expression '~' Expression                                  // Case 136
 //	|       Expression QUOTE                                           // Case 137
+//	|       '?' Tag                                                    // Case ExpressionInfoShort
+//	|       '?' '?' Tag                                                // Case ExpressionInfo
 //	|       FLOAT                                                      // Case ExpressionFloat
 //	|       IDENT                                                      // Case ExpressionIdent
-//	|       IDENT "::" Tag                                             // Case 140
-//	|       IDENT "::" Tag "::" Tag                                    // Case 141
+//	|       IDENT "::" Tag                                             // Case ExpressionMessageName
+//	|       IDENT "::" Tag "::" Tag                                    // Case ExpressionMessageName2
 //	|       INT                                                        // Case ExpressionInteger
-//	|       OUT                                                        // Case 143
+//	|       OUT                                                        // Case 145
 //	|       PATTERN                                                    // Case ExpressionPattern
 //	|       SLOT                                                       // Case ExpressionSlot
 //	|       STRING                                                     // Case ExpressionString
@@ -497,7 +511,7 @@ func (n *Expression) Pos() token.Pos {
 	switch n.Case {
 	case 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137:
 		return n.Expression.Pos()
-	case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 138, 139, 140, 141, 142, 143, 144, 145, 146:
+	case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148:
 		return n.Token.Pos()
 	default:
 		panic("internal error")
