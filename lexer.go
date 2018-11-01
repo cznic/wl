@@ -135,6 +135,8 @@ var (
 		"ForAll":               '\u2200',
 		"Function":             '\uf4a1',
 		"HermitianConjugate":   '\uf3ce',
+		"ImaginaryI":           '\u2148',
+		"ImaginaryJ":           '\u2149',
 		"Implies":              '\uf523',
 		"Integrate":            '\u222b',
 		"Intersection":         '\u22c2',

@@ -65,6 +65,8 @@ package wl
 	GET				"<<"
 	HERMITIAN_CONJUGATE		"\\[HermitianConjugate]"
 	IGNORE				// internal use only
+	IMAGINARYI			"\\[ImaginaryI]"
+	IMAGINARYJ			"\\[ImaginaryJ]"
 	IMPLIES				"\\[Implies]"
 	INC				"++"
 	INTEGRATE			"\\[Integrate]"
@@ -272,7 +274,7 @@ start:
 					case
 						39, // Expression ":=" Expression                                  // Case 39
 						128: // Expression '=' Expression                                  // Case 128
-			
+
 						// ok
 					default:
 						lx.errPos(lhs.Expression2.Pos(), "expected 'Expression = Expression' or 'Expression := Expression'")
