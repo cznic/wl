@@ -1,9 +1,5 @@
-# wl
+`github.com/cznic/wl` has moved to [`modernc.org/wl`](https://godoc.org/modernc.org/wl) ([vcs](https://gitlab.com/cznic/wl)).
 
-Package WL provides a [Wolfram Language](http://www.wolfram.com/language) parser. (Work In Progress)
+Please update your import paths to `modernc.org/wl`.
 
-Installation
-
-    $ go get github.com/cznic/wl
-
-Documentation: [godoc.org/github.com/cznic/wl](http://godoc.org/github.com/cznic/wl)
+This repo is now archived.
